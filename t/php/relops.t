@@ -1,0 +1,263 @@
+# $Id$
+
+=head1 NAME
+
+plumhead/t/relops.t - tests for Plumhead
+
+=head1 DESCRIPTION
+
+Test relational ops.
+
+=head1 TODO
+
+Set up tests in an array, like in arithmetics.t
+
+=cut
+
+# pragmata
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../../lib";
+
+use Parrot::Config (); 
+use Parrot::Test;
+use Test::More     tests => 13;
+
+# True tests
+my $expected = "Condition is true.\n";
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'zero is less than' );
+<?php
+if ( 0 < 2 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'less than' );
+<?php
+if ( 1 < 2 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'less equal' );
+<?php
+if ( 1 <= 1 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'equal', todo => 'currently broken' );
+<?php
+if ( 1 == 1 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'greater equal' );
+<?php
+if ( 1 >= 1 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'greater than' );
+<?php
+if ( 2 > 1 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'unequal', todo => 'currently broken' );
+<?php
+if ( 1 != 2 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+$expected = "Condition is false.\n";
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'not less than' );
+<?php
+if ( 2 < 1 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'not less equal' );
+<?php
+if ( 2 <= 1 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'not equal', todo => 'currently broken' );
+<?php
+if ( 1 == 2 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'not greater equal' );
+<?php
+if ( 1 >= 2 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'not greater than' );
+<?php
+if ( 2 > 2 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
+
+language_output_is( 'Plumhead', <<'END_CODE', $expected, 'not unequal', todo => 'currently broken' );
+<?php
+if ( 1 != 1 )
+{
+?>
+Condition is true.
+<?php
+}
+else
+{
+?>
+Condition is false.
+<?php
+}
+?>
+END_CODE
+
