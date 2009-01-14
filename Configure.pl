@@ -6,10 +6,10 @@ use warnings;
 use 5.008;
 
 my $build_dir = '../..';
-my $cmd = qq{$^X -Ilib tools/dev/reconfigure.pl --step=gen::languages --languages=pipp};
+my $hll       = 'pipp';
+my $cmd       = qq{$^X -Ilib tools/dev/reconfigure.pl --step=gen::languages --languages=$hll};
 
 print "Running '$cmd' in $build_dir\n";
-
 chdir $build_dir;
 `$cmd`
 
