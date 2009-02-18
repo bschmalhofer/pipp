@@ -6,6 +6,7 @@ pipp.c
 pipp.o
 pipp.obj
 pipp.exe
+pipp_test_run.tar.gz
 
 *.patch
 
