@@ -1,5 +1,5 @@
 /Makefile
-*.pbc
+/*.pbc
 
 /pipp
 /pipp.c
