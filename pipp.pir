@@ -86,7 +86,7 @@ Bernhard Schmalhofer - L<Bernhard.Schmalhofer@gmx.de>
     cfg  = $P0()
     .local string lib_dir, pbc_fn
     lib_dir = cfg['build_dir']
-    lib_dir .= '/languages/pipp/src/common'
+    lib_dir .= '/languages/pipp'
 
     pbc_fn = concat lib_dir, '/pipplib.pbc'
     load_bytecode pbc_fn

@@ -111,9 +111,9 @@ PHP_SRC_STD_EXT = \
   src/common/php_versioning.pir
 
 PHP_EXT = \
-  src/common/php_ctype.pbc \
-  src/common/php_gmp.pbc \
-  src/common/php_pcre.pbc
+  php_ctype.pbc \
+  php_gmp.pbc \
+  php_pcre.pbc
 
 # default
 all: build
@@ -154,14 +154,14 @@ Makefile: config/makefiles/root.in
 
 build:           build-common
 
-#build-common:    build-pmc src/common/pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
-build-common:    build-pmc src/common/pipplib.pbc pipp.pbc $(PHP_EXT)
+#build-common:    build-pmc pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
+build-common:    build-pmc pipplib.pbc pipp.pbc $(PHP_EXT)
 
 # Target for building a standalone Pipp.
 pipp$(EXE): build-common
 	$(PBC_TO_EXE) pipp.pbc
 
-src/common/pipplib.pbc: \
+pipplib.pbc: \
   src/common/builtins.pir \
   src/common/guts.pir \
   src/common/eval.pir \
@@ -170,16 +170,16 @@ src/common/pipplib.pbc: \
   $(PHP_SRC_STD_EXT) \
   src/common/php_API.pir \
   src/common/php_MACRO.pir
-	$(PARROT) -o src/common/pipplib.pbc src/common/builtins.pir
+	$(PARROT) -o pipplib.pbc src/common/builtins.pir
 
-src/common/php_ctype.pbc: src/common/php_ctype.pir src/common/php_MACRO.pir
-	$(PARROT) -o src/common/php_ctype.pbc src/common/php_ctype.pir
+php_ctype.pbc: src/common/php_ctype.pir src/common/php_MACRO.pir
+	$(PARROT) -o php_ctype.pbc src/common/php_ctype.pir
 
-src/common/php_gmp.pbc: src/common/php_gmp.pir src/common/php_MACRO.pir
-	$(PARROT) -o src/common/php_gmp.pbc src/common/php_gmp.pir
+php_gmp.pbc: src/common/php_gmp.pir src/common/php_MACRO.pir
+	$(PARROT) -o php_gmp.pbc src/common/php_gmp.pir
 
-src/common/php_pcre.pbc: src/common/php_pcre.pir src/common/php_MACRO.pir
-	$(PARROT) -o src/common/php_pcre.pbc src/common/php_pcre.pir
+php_pcre.pbc: src/common/php_pcre.pir src/common/php_MACRO.pir
+	$(PARROT) -o php_pcre.pbc src/common/php_pcre.pir
 
 src/pct/gen_grammar.pir: $(LIBRARY_DIR)/PGE/Perl6Grammar.pir src/pct/grammar.pg
 	$(PARROT) $(LIBRARY_DIR)/PGE/Perl6Grammar.pir \
@@ -328,13 +328,11 @@ codetest-pod:
 # cleaning up
 clean: clean-pmc clean-test clean-hash
 	$(RM_F) \
-  src/common/pipplib.pbc \
-  src/common/*.pbc \
   src/pct/gen_grammar.pir \
   src/pct/gen_actions.pir \
-  pipp.pbc \
+  *.pbc \
   pipp.c \
-  pipp.o \
+  pipp.$(O) \
   pipp$(EXE)
 
 clean-pmc:
