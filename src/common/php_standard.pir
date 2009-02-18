@@ -1,5 +1,4 @@
 # Copyright (C) 2008, The Perl Foundation.
-# $Id$
 
 .include 'languages/pipp/src/common/php_API.pir'
 

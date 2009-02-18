@@ -1,4 +1,3 @@
-# $Id$
 # Copyright (C) 2009, The Perl Foundation.
 
 use strict;

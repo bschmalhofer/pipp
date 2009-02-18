@@ -1,6 +1,5 @@
 /*
 Copyright (C) 2008 The Perl Foundation.
-$Id$
 */
 
 #ifndef PARROT_PIPP_HASH_H_GUARD

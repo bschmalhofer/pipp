@@ -19,7 +19,6 @@ TODO: AST:source_rep
 -->
 <!--
 
-$Id: phc_xml_to_past_xml.xsl 33276 2008-11-27 20:12:54Z bernhard $
 
 This transformation takes a XML abstract syntax tree as generated
 by PHC from PHP source code. It generates an XML representation of a PAST data structure.

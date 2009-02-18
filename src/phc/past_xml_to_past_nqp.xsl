@@ -5,7 +5,6 @@
   version="1.0" >
 <!--
 
-$Id$
 
 This transformation takes an abstract syntax tree as generated
 by phc_xml_to_past_xml.xsl. It generates a PIR-script that creates

@@ -1,5 +1,4 @@
 # Copyright (C) 2008-2009, The Perl Foundation.
-# $Id$
 
 =begin comments
 

@@ -1,5 +1,4 @@
 # Copyright (C) 2006-2009, The Perl Foundation.
-# $Id$
 
 # PHP grammar for Pipp PCT
 grammar Pipp::Grammar is PCT::Grammar;

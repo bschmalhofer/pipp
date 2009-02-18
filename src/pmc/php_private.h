@@ -1,6 +1,5 @@
 /*
  *  Copyright (C) 2008, The Perl Foundation.
- * $Id$
  */
 
 #ifndef PARROT_PHP_PRIVATE_H_GUARD

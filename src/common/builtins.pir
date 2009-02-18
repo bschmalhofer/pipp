@@ -1,4 +1,3 @@
-# $Id$
 
 .HLL 'pipp'
 
