@@ -111,9 +111,9 @@ PHP_SRC_STD_EXT = \
   src/common/php_versioning.pir
 
 PHP_EXT = \
-  php_ctype.pbc \
-  php_gmp.pbc \
-  php_pcre.pbc
+  library/php_ctype.pbc \
+  library/php_gmp.pbc \
+  library/php_pcre.pbc
 
 # default
 all: build
@@ -154,14 +154,14 @@ Makefile: config/makefiles/root.in
 
 build:           build-common
 
-#build-common:    build-pmc pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
-build-common:    build-pmc pipplib.pbc pipp.pbc $(PHP_EXT)
+#build-common:    build-pmc library/pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
+build-common:    build-pmc library/pipplib.pbc pipp.pbc $(PHP_EXT)
 
 # Target for building a standalone Pipp.
 pipp$(EXE): build-common
 	$(PBC_TO_EXE) pipp.pbc
 
-pipplib.pbc: \
+library/pipplib.pbc: \
   src/common/builtins.pir \
   src/common/guts.pir \
   src/common/eval.pir \
@@ -170,16 +170,16 @@ pipplib.pbc: \
   $(PHP_SRC_STD_EXT) \
   src/common/php_API.pir \
   src/common/php_MACRO.pir
-	$(PARROT) -o pipplib.pbc src/common/builtins.pir
+	$(PARROT) -o library/pipplib.pbc src/common/builtins.pir
 
-php_ctype.pbc: src/common/php_ctype.pir src/common/php_MACRO.pir
-	$(PARROT) -o php_ctype.pbc src/common/php_ctype.pir
+library/php_ctype.pbc: src/common/php_ctype.pir src/common/php_MACRO.pir
+	$(PARROT) -o library/php_ctype.pbc src/common/php_ctype.pir
 
-php_gmp.pbc: src/common/php_gmp.pir src/common/php_MACRO.pir
-	$(PARROT) -o php_gmp.pbc src/common/php_gmp.pir
+library/php_gmp.pbc: src/common/php_gmp.pir src/common/php_MACRO.pir
+	$(PARROT) -o library/php_gmp.pbc src/common/php_gmp.pir
 
-php_pcre.pbc: src/common/php_pcre.pir src/common/php_MACRO.pir
-	$(PARROT) -o php_pcre.pbc src/common/php_pcre.pir
+library/php_pcre.pbc: src/common/php_pcre.pir src/common/php_MACRO.pir
+	$(PARROT) -o library/php_pcre.pbc src/common/php_pcre.pir
 
 src/pct/gen_grammar.pir: $(LIBRARY_DIR)/PGE/Perl6Grammar.pir src/pct/grammar.pg
 	$(PARROT) $(LIBRARY_DIR)/PGE/Perl6Grammar.pir \
@@ -328,9 +328,10 @@ codetest-pod:
 # cleaning up
 clean: clean-pmc clean-test clean-hash
 	$(RM_F) \
+  library/*.pbc \
   src/pct/gen_grammar.pir \
   src/pct/gen_actions.pir \
-  *.pbc \
+  pipp.pbc \
   pipp.c \
   pipp.$(O) \
   pipp$(EXE)

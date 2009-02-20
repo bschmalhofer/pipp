@@ -1,6 +1,6 @@
 /Makefile
-/*.pbc
 
+/pipp.pbc
 /pipp
 /pipp.c
 /pipp.o
@@ -9,6 +9,8 @@
 /pipp_test_run.tar.gz
 
 *.patch
+
+/library/*.pbc
 
 /src/pct/gen_*.pir
 
