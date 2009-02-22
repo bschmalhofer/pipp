@@ -20,7 +20,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Parrot::Test  tests => 19;
+use Parrot::Test  tests => 23;
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'if, one statement in block' );
 <?php
@@ -308,10 +308,56 @@ round 8
 round 9
 OUT
 
-language_output_is( 'Pipp', <<'CODE', '', 'switch without a case' );
+language_output_is( 'Pipp', <<'CODE', '', 'switch, no case' );
 <?php
 
 switch (22) {
+}
+
+?>
+CODE
+
+language_output_is( 'Pipp', <<'CODE', '', 'switch, single non-matching case' );
+<?php
+
+switch (22) {
+    case 11:
+       echo 'no match';
+}
+
+?>
+CODE
+
+language_output_is( 'Pipp', <<'CODE', 'match', 'switch, single matching case' );
+<?php
+
+switch (22) {
+    case 22:
+       echo 'match';
+}
+
+?>
+CODE
+
+language_output_is( 'Pipp', <<'CODE', 'default', 'switch, default case' );
+<?php
+
+switch (22) {
+    case 22:
+       echo 'default';
+}
+
+?>
+CODE
+
+language_output_is( 'Pipp', <<'CODE', 'twentytwo', 'switch, two cases' );
+<?php
+
+switch (22) {
+    case 21:
+       echo 'twentyone';
+    case 22:
+       echo 'twentytwo';
 }
 
 ?>

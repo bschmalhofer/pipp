@@ -210,9 +210,14 @@ rule else_clause {
     'else' <block>
 }
 
+
+# taken from lolcode
 rule switch_statement {
     'switch' '(' <expression> ')'
-    '{' '}' {*}
+    '{'
+        [ 'case' <literal> ':' <statement_list>  ]*
+        [ 'default'        ':' <default=statement_list>  ]?
+    '}' {*}
 }
 
 rule elseif_clause {

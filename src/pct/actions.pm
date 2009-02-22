@@ -427,8 +427,64 @@ method elseif_clause($/) {
     );
 }
 
+# taken from lolcode
 method switch_statement($/) {
-    my $past := PAST::Stmts.new( :name('switch') );
+    my $past;
+    my $it    := $( $<expression> );
+    my $count := +$<literal>;
+    if $count >= 1 {
+        # there is at least a single case
+        $count    := $count - 1;
+        my $val   := $( $<literal>[$count] );
+        my $then  := PAST::Block.new(
+                         :blocktype('immediate'),
+                         $( $<statement_list>[$count] )
+                     );
+        $then.blocktype('immediate');
+        my $expr  := PAST::Op.new(
+                         :pasttype('call'),
+                         :name('infix:=='),
+                         $it,
+                         $val
+                     );
+        $past  := PAST::Op.new(
+                      :pasttype('if'),
+                      :node( $/ ),
+                      $expr,
+                      $then
+                  );
+    }
+    else {
+        # there are no cases, however there might be a 'default'
+        $past := PAST::Stmts.new();
+    }
+    if ( $<default> ) {
+        my $default := $( $<default>[0] );
+        $default.blocktype('immediate');
+        $past.push( $default );
+    }
+    while ($count > 0) {
+        $count := $count - 1;
+        my $val   := $( $<literal>[$count] );
+        my $expr  := PAST::Op.new(
+                         :pasttype('call'),
+                         :name('infix:=='),
+                         $it,
+                         $val
+                     );
+        my $then  := PAST::Block.new(
+                         :blocktype('immediate'),
+                         $( $<statement_list>[$count] )
+                     );
+        $then.blocktype('immediate');
+        $past  := PAST::Op.new(
+                      :pasttype('if'),
+                      :node( $/ ),
+                      $expr,
+                      $then,
+                      $past
+                  );
+    }
 
     make $past;
 }
