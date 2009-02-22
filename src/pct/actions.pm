@@ -368,13 +368,6 @@ method argument_list($/) {
     make $past;
 }
 
-method conditional_expression($/) {
-    make PAST::Op.new(
-        :node($/),
-        $( $<expression> ),
-        $( $<block> )
-    );
-}
 
 method do_while_statement($/) {
     make PAST::Op.new(
@@ -386,8 +379,12 @@ method do_while_statement($/) {
 }
 
 method if_statement($/) {
-    my $past := $( $<conditional_expression> );
-    $past.pasttype('if');
+    my $past := PAST::Op.new(
+        :node($/),
+        :pasttype('if'),
+        $( $<expression> ),
+        $( $<block> )
+    );
 
     my $else := undef;
     if +$<else_clause> {
@@ -422,10 +419,12 @@ method if_statement($/) {
 }
 
 method elseif_clause($/) {
-    my $past := $( $<conditional_expression> );
-    $past.pasttype('if');
-
-    make $past;
+    make PAST::Op.new(
+        :node($/),
+        :pasttype('if'),
+        $( $<expression> ),
+        $( $<block> )
+    );
 }
 
 method switch_statement($/) {
@@ -514,10 +513,12 @@ method member($/) {
 }
 
 method while_statement($/) {
-    my $past := $( $<conditional_expression> );
-    $past.pasttype('while');
-
-    make $past;
+    make PAST::Op.new(
+        :node($/),
+        :pasttype('while'),
+        $( $<expression> ),
+        $( $<block> )
+    );
 }
 
 method for_statement($/) {
