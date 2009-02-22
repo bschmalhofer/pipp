@@ -299,8 +299,8 @@ echo 'no variable expansion: $dummy', "\n";
 echo 'no variable expansion in twiddles: {$dummy}', "\n";
 echo 'backslash at end: \\', "\n";
 echo 'backslash not at end: \dummy', "\n";
-echo 'backslash before a space: \ ', "\n";
-echo 'escaped backslash before a space: \\ ', "\n";
+echo 'backslash before a space: \ xxxxx', "\n";
+echo 'escaped backslash before a space: \\ yyyyy', "\n";
 echo 'not a newline: \n', "\n";
 echo 'not a carriage return: \r', "\n";
 echo 'not a tab: \t', "\n";
@@ -323,8 +323,8 @@ no variable expansion: $dummy
 no variable expansion in twiddles: {$dummy}
 backslash at end: \
 backslash not at end: \dummy
-backslash before a space: \
-escaped backslash before a space: \
+backslash before a space: \ xxxxx
+escaped backslash before a space: \ yyyyy
 not a newline: \n
 not a carriage return: \r
 not a tab: \t
@@ -350,8 +350,8 @@ $dummy = 'INTERPOLATED';
 echo "variable expansion: $dummy", "\n";
 echo "backslash at end: \\", "\n";
 echo "backslash not at end: \dummy", "\n";
-echo "backslash before a space: \ ", "\n";
-echo "escaped backslash before a space: \\ ", "\n";
+echo "backslash before a space: \ XXXXX", "\n";
+echo "escaped backslash before a space: \\ YYYYY", "\n";
 echo "a newline: \n", "\n";
 echo "a tab: \t", "\n";
 echo "an octal: \101", "\n";
@@ -369,11 +369,11 @@ CODE
 variable expansion: INTERPOLATED
 backslash at end: \
 backslash not at end: \dummy
-backslash before a space: \
-escaped backslash before a space: \
-a newline:
+backslash before a space: \ XXXXX
+escaped backslash before a space: \ YYYYY
+a newline: 
 
-a tab:
+a tab: 	
 an octal: A
 an hex: A
 single quote: '
