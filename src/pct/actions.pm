@@ -111,6 +111,10 @@ method statement_list($/) {
     make $stmts;
 }
 
+method block($/) {
+    make $( $<statement_list> );
+}
+
 method inline_sea_short_tag($/) {
    make PAST::Op.new(
        PAST::Val.new(
@@ -133,7 +137,7 @@ method namespace_definition($/, $key) {
             PAST::Block.new(
                 :namespace($?NS),
                 :blocktype('immediate'),
-                $( $<statement_list> )
+                $( $<block> )
             );
         $?NS := '';
 
@@ -368,7 +372,7 @@ method conditional_expression($/) {
     make PAST::Op.new(
         :node($/),
         $( $<expression> ),
-        $( $<statement_list> )
+        $( $<block> )
     );
 }
 
@@ -377,7 +381,7 @@ method do_while_statement($/) {
         :pasttype('repeat_while'),
         :node($/),
         $( $<expression> ),
-        $( $<statement_list> )
+        $( $<block> )
     );
 }
 
@@ -387,7 +391,7 @@ method if_statement($/) {
 
     my $else := undef;
     if +$<else_clause> {
-        $else := $( $<else_clause>[0]<statement_list> );
+        $else := $( $<else_clause>[0]<block> );
     }
     my $first_eif := undef;
     if +$<elseif_clause> {
@@ -520,7 +524,7 @@ method for_statement($/) {
     my $init  := $( $<var_assign> );
 
     my $cond  := $( $<expression>[0] );
-    my $work  := PAST::Stmts.new( $( $<statement_list> ), $( $<expression>[1] ) );
+    my $work  := PAST::Stmts.new( $( $<block> ), $( $<expression>[1] ) );
     my $while := PAST::Op.new(
                        $cond,
                        $work,
@@ -623,7 +627,7 @@ method closure($/, $key) {
         my $block := @?BLOCK.shift();
 
         $block.control('return_pir');
-        $block.push( $( $<statement_list> ) );
+        $block.push( $( $<block> ) );
 
         make $block;
     }
@@ -647,7 +651,7 @@ method function_definition($/, $key) {
 
         $block.name( ~$<function_name> );
         $block.control('return_pir');
-        $block.push( $( $<statement_list> ) );
+        $block.push( $( $<block> ) );
 
         make $block;
     }
@@ -773,7 +777,7 @@ method class_method_definition($/, $key) {
             )
         );
 
-        $block.push( $( $<statement_list> ) );
+        $block.push( $( $<block> ) );
 
         make $block;
     }
