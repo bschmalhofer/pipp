@@ -10,8 +10,6 @@
 
 *.patch
 
-/library/*.pbc
-
 /src/pct/gen_*.pir
 
 /src/pmc/php*.c
