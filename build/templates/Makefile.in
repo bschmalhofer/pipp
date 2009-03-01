@@ -14,6 +14,7 @@ PMC_DIR       = src/pmc
 PARROT_DYNEXT = $(BUILD_DIR)/runtime/parrot/dynext
 
 # Set up commands
+MAKE          = @make_c@
 PARROT        = $(BUILD_DIR)/parrot@exe@
 PERL          = @perl@
 RM_F          = @rm_f@
@@ -116,7 +117,7 @@ PHP_EXT = \
   library/php_pcre.pbc
 
 # default
-build
+all: build
 
 # This is a listing of all targets, that are meant to be called by users
 help:
@@ -149,7 +150,7 @@ help:
 	@echo ""
 
 # regenerate the Makefile
-Makefile: build/Makefile.in
+Makefile: build/templates/Makefile.in
 	$(PERL) Configure.pl
 
 build:           build-common
@@ -337,14 +338,7 @@ clean: clean-pmc clean-test clean-hash
   pipp$(EXE)
 
 clean-pmc:
-	$(RM_F) \
-  "$(PMC_DIR)/*dump" \
-  "$(PMC_DIR)/php*.c" \
-  "$(PMC_DIR)/pmc_*h" \
-  "$(PMC_DIR)/php_group.h" \
-  "$(PMC_DIR)/*$(O)" \
-  "$(PMC_DIR)/*$(LOAD_EXT)"
-
+	$(MAKE) $(PMC_DIR) clean
 
 clean-test:
 	$(RM_F) \

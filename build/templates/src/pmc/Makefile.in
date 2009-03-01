@@ -1,7 +1,20 @@
 # Build the PMCs for Pipp.
 
+# Set up commands
+PERL          = @perl@
+RM_F          = @rm_f@
+
+# Set up directories
+PMC_DIR       = src/pmc
+
+# Set up extensions
+LOAD_EXT      = @load_ext@
+O             = @o@
+
 # default
-build
+build:
+	@echo "Not yet implemented"
+
 
 # This is a listing of all targets, that are meant to be called by users
 help:
@@ -11,3 +24,12 @@ help:
 	@echo "Building:"
 	@echo "  build:             Build the PMCs."
 	@echo "                     This is the default."
+	@echo ""
+	@echo "Cleaning:"
+	@echo "  clean:             Clean up."
+	@echo ""
+
+# cleaning up
+clean:
+	$(RM_F) "*dump" "php*.c" "pmc_*h" "php_group.h" "*$(O)" "*$(LOAD_EXT)"
+

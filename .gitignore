@@ -12,6 +12,7 @@
 
 /src/pct/gen_*.pir
 
+/src/pmc/Makefile
 /src/pmc/php*.c
 /src/pmc/php*.h
 /src/pmc/pmc_php*.h
