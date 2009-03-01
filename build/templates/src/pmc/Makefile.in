@@ -42,7 +42,7 @@ PMC_SOURCES = \
 
 
 # default
-build: pipp_hash$(O) $(PIPP_GROUP)
+build: $(PIPP_GROUP)
 
 
 # This is a listing of all targets, that are meant to be called by users
@@ -57,12 +57,6 @@ help:
 	@echo "Cleaning:"
 	@echo "  clean:             Clean up."
 	@echo ""
-
-#Any change to the hash code means phparray needs to be relinked too.
-#Recompiling is close enough for now.
-pipp_hash$(O): pipp_hash.c pipp_hash.h
-	$(TOUCH) phparray.pmc
-	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) pipp_hash.c -c -g -o pipp_hash$(O)
 
 $(PIPP_GROUP): $(PMC_SOURCES)
 	$(PMCBUILD) generate $(PMCS)
