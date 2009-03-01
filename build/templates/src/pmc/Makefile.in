@@ -23,7 +23,7 @@ HASH_SOURCES = pipp_hash.c
 HASH_H       = pipp_hash.h
 HASH_OBJS    = pipp_hash$(O)
 
-PHP_GROUP    = $(PMC_DIR)/php_group$(LOAD_EXT)
+PIPP_GROUP    = $(PMC_DIR)/pipp_group$(LOAD_EXT)
 
 PMC_SOURCES  = \
   php.pmc \
@@ -57,7 +57,7 @@ PMC_SOURCES = \
 
 
 # default
-build: $(HASH_OBJS) $(PHP_GROUP)
+build: $(HASH_OBJS) $(PIPP_GROUP)
 
 
 # This is a listing of all targets, that are meant to be called by users
@@ -82,7 +82,7 @@ $(HASH_OBJS): $(HASH_SOURCES) $(HASH_H)
 export DYNPMC_INCLUDE=$(BUILD_DIR)/languages/pipp
 export DYNPMC_LINK=$(BUILD_DIR)/languages/pipp/src/pmc/$(HASH_OBJS)
 
-$(PHP_GROUP): $(PMC_SOURCES)
+$(PIPP_GROUP): $(PMC_SOURCES)
 	@$(PMCBUILD) generate $(PMCS)
 	@$(PMCBUILD) compile $(PMCS)
 	@$(PMCBUILD) linklibs $(PMCS)
@@ -90,5 +90,5 @@ $(PHP_GROUP): $(PMC_SOURCES)
 
 # cleaning up
 clean:
-	$(RM_F) "*dump" "php*.c" "pmc_*h" "php_group.h" "*$(O)" "*$(LOAD_EXT)"
+	$(RM_F) "*dump" "php*.c" "pmc_*h" "pipp_group.h" "*$(O)" "*$(LOAD_EXT)"
 

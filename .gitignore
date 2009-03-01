@@ -14,6 +14,8 @@
 
 /src/pmc/Makefile
 /src/pmc/php*.c
+/src/pmc/pipp_group.c
+/src/pmc/pipp_group.h
 /src/pmc/php*.h
 /src/pmc/pmc_php*.h
 /src/pmc/*.bundle

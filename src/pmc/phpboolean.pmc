@@ -23,7 +23,7 @@ pmclass PhpBoolean
     provides boolean
     provides integer
     dynpmc
-    group    php_group
+    group    pipp_group
     hll      PHP
     maps     Boolean {
 

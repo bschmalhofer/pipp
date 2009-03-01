@@ -22,7 +22,7 @@ pmclass PhpString
     provides scalar
     provides string
     dynpmc
-    group    php_group
+    group    pipp_group
     hll      PHP
     maps     String {
 

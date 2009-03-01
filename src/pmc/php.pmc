@@ -32,7 +32,7 @@ static PMC * Php_PMC;
 pmclass Php
     singleton
     dynpmc
-    group php_group {
+    group pipp_group {
 
 /*
 * Class initialization.

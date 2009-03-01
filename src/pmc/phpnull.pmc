@@ -20,7 +20,7 @@ src/pmc/phpnull.pmc - PHP Null
 pmclass PhpNull
     extends  Undef
     dynpmc
-    group    php_group
+    group    pipp_group
     hll      PHP {
 
 /*

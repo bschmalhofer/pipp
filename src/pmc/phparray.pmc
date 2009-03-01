@@ -24,7 +24,7 @@ pmclass PhpArray
     dynpmc
     need_ext
     hll      PHP
-    group    php_group
+    group    pipp_group
     provides array
     provides hash
     maps     Array

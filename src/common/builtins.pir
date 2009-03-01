@@ -1,7 +1,7 @@
 
 .HLL 'pipp'
 
-.loadlib 'php_group'
+.loadlib 'pipp_group'
 
 .include 'languages/pipp/src/common/php_MACRO.pir'
 .include 'languages/pipp/src/common/guts.pir'

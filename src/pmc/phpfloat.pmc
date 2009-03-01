@@ -22,7 +22,7 @@ pmclass PhpFloat
     provides scalar
     provides float
     dynpmc
-    group    php_group
+    group    pipp_group
     hll      PHP
     maps     Float {
 

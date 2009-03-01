@@ -15,7 +15,7 @@ Tests the PhpArray PMC.
 
 =cut
 
-.loadlib 'php_group'
+.loadlib 'pipp_group'
 
 .sub main :main
     .include 'include/test_more.pir'

@@ -20,7 +20,7 @@ pmclass PhpInteger
     provides scalar
     provides integer
     dynpmc
-    group    php_group
+    group    pipp_group
     hll      PHP
     maps     Integer {
 
