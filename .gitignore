@@ -1,5 +1,7 @@
 /Makefile
 
+parrot
+
 /pipp.pbc
 /pipp
 /pipp.c
