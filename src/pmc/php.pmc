@@ -17,7 +17,7 @@ This singleton PMC holds some static methods.
 
 */
 
-#include "php_private.h"
+#include "pipp_private.h"
 
 INTVAL dynpmc_PhpArray;
 INTVAL dynpmc_PhpBoolean;

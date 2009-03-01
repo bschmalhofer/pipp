@@ -15,7 +15,7 @@ src/pmc/phpfloat.pmc - PHP Float
 
 */
 
-#include "php_private.h"
+#include "pipp_private.h"
 
 pmclass PhpFloat
     extends  Float

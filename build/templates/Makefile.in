@@ -221,7 +221,7 @@ t/php_qa_testsuite/php5/tests:
 
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 
-T_C     = src//pmc//*.pmc src//pmc//php_private.h src//pmc//pipp_hash.c src//pmc//pipp_hash.h
+T_C     = src//pmc//*.pmc src//pmc//pipp_private.h src//pmc//pipp_hash.c src//pmc//pipp_hash.h
 T_MAKE  = config//makefiles//root.in
 T_PERL  = Configure.pl t//harness t//php//*.t src//build//genskel.pl \
           lib//Parrot//Test//*.pm lib//Parrot//Test//Pipp//*.pm

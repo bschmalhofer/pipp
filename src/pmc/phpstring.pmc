@@ -15,7 +15,7 @@ src/pmc/phpstring.pmc - PHP String
 
 */
 
-#include "php_private.h"
+#include "pipp_private.h"
 
 pmclass PhpString
     extends  String

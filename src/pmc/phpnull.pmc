@@ -15,7 +15,7 @@ src/pmc/phpnull.pmc - PHP Null
 
 */
 
-#include "php_private.h"
+#include "pipp_private.h"
 
 pmclass PhpNull
     extends  Undef

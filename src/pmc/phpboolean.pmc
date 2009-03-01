@@ -15,7 +15,7 @@ pmc/phpboolean.pmc - PHP Boolean
 
 */
 
-#include "php_private.h"
+#include "pipp_private.h"
 
 pmclass PhpBoolean
     extends  Boolean

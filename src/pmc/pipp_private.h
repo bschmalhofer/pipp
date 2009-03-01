@@ -2,8 +2,8 @@
  *  Copyright (C) 2008, The Perl Foundation.
  */
 
-#ifndef PARROT_PHP_PRIVATE_H_GUARD
-#define PARROT_PHP_PRIVATE_H_GUARD
+#ifndef PARROT_PIPP_PRIVATE_H_GUARD
+#define PARROT_PIPP_PRIVATE_H_GUARD
 
 #include "parrot/parrot.h"
 
@@ -14,7 +14,7 @@ extern INTVAL dynpmc_PhpInteger;
 extern INTVAL dynpmc_PhpString;
 extern INTVAL dynpmc_PhpNull;
 
-#endif /* PARROT_PHP_PRIVATE_H_GUARD */
+#endif /* PARROT_PIPP_PRIVATE_H_GUARD */
 
 /*
  * Local variables:

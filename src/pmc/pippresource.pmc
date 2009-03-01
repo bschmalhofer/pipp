@@ -15,7 +15,7 @@ src/pmc/pippresource.pmc - Pipp Resource
 
 */
 
-#include "php_private.h"
+#include "pipp_private.h"
 
 pmclass PippResource
     provides ref

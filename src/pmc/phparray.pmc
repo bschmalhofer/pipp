@@ -17,7 +17,7 @@ Implementation of the Array datatype.
 
 */
 
-#include "php_private.h"
+#include "pipp_private.h"
 #include "src/pmc/pipp_hash.h"
 
 pmclass PhpArray
