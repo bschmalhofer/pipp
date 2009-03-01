@@ -21,16 +21,6 @@ O             = @o@
 
 PIPP_GROUP    = $(PMC_DIR)/pipp_group$(LOAD_EXT)
 
-PMC_SOURCES  = \
-  php.pmc \
-  phparray.pmc \
-  phpboolean.pmc \
-  phpfloat.pmc \
-  phpinteger.pmc \
-  phpresource.pmc \
-  phpstring.pmc \
-  phpnull.pmc
-
 PMCS = \
   php \
   phparray \
