@@ -26,8 +26,8 @@ use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 use Test::More     tests => 10;
 use Parrot::Test;
 
-
 unlink 'file.txt' if -f 'file.txt';
+
 open my $X, '>', 'file.txt';
 binmode $X, ':raw';
 print {$X} "line 1\n";

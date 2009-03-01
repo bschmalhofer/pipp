@@ -106,6 +106,7 @@ CODE
 bool(false)
 OUT
 
+unlink 'file.txt' if -f 'file.txt';
 
 # Local Variables:
 #   mode: cperl

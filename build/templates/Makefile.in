@@ -298,8 +298,7 @@ clean-test:
   t/php/*.pir \
   t/php/*.out \
   t/pmc/*.pir \
-  pipp_test_run.tar.gz \
-  file.txt
+  pipp_test_run.tar.gz
 
 clean-hash:
 	$(RM_F) "$(HASH_OBJS)"

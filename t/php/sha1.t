@@ -67,8 +67,6 @@ CODE
 c12252ceda8be8994d5fa0290a47231c1d16aae3
 OUT
 
-unlink 'file.txt' if -f 'file.txt';
-
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'sha1_file(nofile)' );
 <?php
   echo sha1_file('nofile.txt'), "\n";
@@ -76,6 +74,8 @@ language_output_is( 'Pipp', <<'CODE', <<'OUT', 'sha1_file(nofile)' );
 CODE
 
 OUT
+
+unlink 'file.txt' if -f 'file.txt';
 
 # Local Variables:
 #   mode: cperl

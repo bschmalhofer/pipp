@@ -60,7 +60,7 @@ CODE
 21
 OUT
 
-unlink 'file.txt' if (-f 'file.txt');
+unlink 'file.txt' if -f 'file.txt';
 
 
 # Local Variables:

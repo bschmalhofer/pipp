@@ -287,6 +287,8 @@ CODE
 -1
 OUT
 
+unlink 'file.txt' if -f 'file.txt';
+
 # Local Variables:
 #   mode: cperl
 #   cperl-indent-level: 4
