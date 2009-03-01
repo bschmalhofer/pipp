@@ -6,21 +6,15 @@ languages/pipp/t/harness - A harness for Pipp
 
 =head1 SYNOPSIS
 
-  cd languages && perl pipp/t/harness --files --master
+  perl t/harness
 
-  cd languages/pipp && perl t/harness
+  perl t/harness --with-phc
 
-  cd languages/pipp && perl t/harness --with-phc
+  perl t/harness --with-pct
 
-  cd languages/pipp && perl t/harness --with-pct
-
-  cd languages/pipp && perl t/harness --verbose t/hello.t
+  perl t/harness --verbose t/hello.t
 
 =head1 DESCRIPTION
-
-If I'm called with a single
-argument of "--files", I just return a list of files to process.
-This list is one per line, and is relative to the languages dir.
 
 If I'm called with no args, I run the complete suite.
 
@@ -35,7 +29,7 @@ Parrot Compiler Toolkit.
 use strict;
 use warnings;
 use FindBin ();
-use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin/../lib";
+use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin/../lib", "$FindBin::Bin/../parrot/lib";
 
 use Cwd                     ();
 use File::Spec              ();
@@ -46,11 +40,10 @@ use Getopt::Long;
 use Parrot::Harness::Smoke;
 use Parrot::Test;
 
-my ( $files_flag, $master_flag, $send_to_smolder_flag, $archive_flag, $verbose_flag );
+my ( $files_flag, $send_to_smolder_flag, $archive_flag, $verbose_flag );
 my ( $php_flag, $pct_flag, $phc_flag);
 GetOptions(
     'files'           => \$files_flag,
-    'master'          => \$master_flag,          # unused, but passed by languages/t/harness
     'send-to-smolder' => \$send_to_smolder_flag,
     'archive'         => \$archive_flag,
     'verbose'         => \$verbose_flag,
@@ -73,7 +66,7 @@ if ( $files_flag ) {
 }
 else {
     my $path_to_parrot = Parrot::Test::path_to_parrot();
-    my @cmd = ( "$path_to_parrot/parrot$PConfig{exe}", "$path_to_parrot/languages/pipp/pipp.pbc" );
+    my @cmd = ( "$path_to_parrot/parrot$PConfig{exe}", 'pipp.pbc' );
     $ENV{PARROT_PIPP_TEST_MODULE} = 'Parrot::Test::Pipp::PCT';
 
     if ( $php_flag ) {
@@ -95,10 +88,7 @@ else {
     }
     else {
         ( undef, undef, my $current_dir ) = File::Spec->splitpath( Cwd::getcwd() );
-        if ( $current_dir eq 'languages' ) {
-            @files = glob( File::Spec->catfile( $hll, 't', '*/*.t' ) );
-        }
-        elsif ( $current_dir eq $hll ) {
+        if ( $current_dir eq $hll ) {
             @files = glob( File::Spec->catfile( 't', '*/*.t' ) );
         }
         else {
