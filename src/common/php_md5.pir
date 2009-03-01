@@ -12,7 +12,7 @@ php_md5.pir - PHP md5 Standard Library
 
 =cut
 
-.include 'languages/pipp/src/common/php_MACRO.pir'
+.include 'src/common/php_MACRO.pir'
 
 .sub '__onload' :anon :load
     $P0 = loadlib 'digest_group'

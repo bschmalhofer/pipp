@@ -12,7 +12,7 @@ php_base64.pir - PHP base64 Standard Library
 
 =cut
 
-.include 'languages/pipp/src/common/php_MACRO.pir'
+.include 'src/common/php_MACRO.pir'
 
 .sub '__onload' :load
     load_bytecode 'MIME/Base64.pbc'

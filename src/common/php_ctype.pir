@@ -14,7 +14,7 @@ php_ctype.pir - PHP ctype Library
 
 .HLL 'pipp'
 
-.include 'languages/pipp/src/common/php_MACRO.pir'
+.include 'src/common/php_MACRO.pir'
 .include 'cclass.pasm'
 
 .macro CTYPE(class, args)

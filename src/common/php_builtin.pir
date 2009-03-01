@@ -12,7 +12,7 @@ php_builtin.pir - PHP builtin Library
 
 =cut
 
-.include 'languages/pipp/src/common/php_MACRO.pir'
+.include 'src/common/php_MACRO.pir'
 
 =item C<bool class_exists(string classname [, bool autoload])>
 

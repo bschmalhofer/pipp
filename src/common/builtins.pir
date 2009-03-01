@@ -3,10 +3,10 @@
 
 .loadlib 'pipp_group'
 
-.include 'languages/pipp/src/common/php_MACRO.pir'
-.include 'languages/pipp/src/common/guts.pir'
-.include 'languages/pipp/src/classes/Object.pir'
-.include 'languages/pipp/src/common/eval.pir'
+.include 'src/common/php_MACRO.pir'
+.include 'src/common/guts.pir'
+.include 'src/classes/Object.pir'
+.include 'src/common/eval.pir'
 
 # steal builtins from Perl6
 .sub 'print'
@@ -325,7 +325,7 @@
     .return($P0)
 .end
 
-.include 'languages/pipp/src/common/php_standard.pir'
+.include 'src/common/php_standard.pir'
 
 # Local Variables:
 #   mode: pir

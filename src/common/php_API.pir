@@ -12,7 +12,7 @@ php_API.pir - PHP API Library
 
 =cut
 
-.include 'languages/pipp/src/common/php_MACRO.pir'
+.include 'src/common/php_MACRO.pir'
 
 .sub '__onload' :anon :load :init
 

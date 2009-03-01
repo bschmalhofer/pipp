@@ -10,7 +10,6 @@ CFLAGS        = @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ 
 
 # Set up directories
 BUILD_DIR     = @build_dir@
-PMC_DIR       = src/pmc
 INCLUDE_DIR   = $(BUILD_DIR)/include
 PARROT_DYNEXT = $(BUILD_DIR)/runtime/parrot/dynext
 
@@ -19,7 +18,7 @@ LOAD_EXT      = @load_ext@
 O             = @o@
 
 
-PIPP_GROUP    = $(PMC_DIR)/pipp_group$(LOAD_EXT)
+PIPP_GROUP    = pipp_group$(LOAD_EXT)
 
 PMCS = \
   php \
@@ -27,7 +26,7 @@ PMCS = \
   phpboolean \
   phpfloat \
   phpinteger \
-  pippresource \
+  phpresource \
   phpstring \
   phpnull
 
@@ -37,7 +36,7 @@ PMC_SOURCES = \
   phpboolean.pmc \
   phpfloat.pmc \
   phpinteger.pmc \
-  pippresource.pmc \
+  phpresource.pmc \
   phpstring.pmc \
   phpnull.pmc
 
@@ -65,14 +64,11 @@ pipp_hash$(O): pipp_hash.c pipp_hash.h
 	$(TOUCH) phparray.pmc
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) pipp_hash.c -c -g -o pipp_hash$(O)
 
-export DYNPMC_INCLUDE=$(BUILD_DIR)/languages/pipp
-export DYNPMC_LINK=$(BUILD_DIR)/languages/pipp/src/pmc/pipp_hash$(O)
-
 $(PIPP_GROUP): $(PMC_SOURCES)
-	@$(PMCBUILD) generate $(PMCS)
-	@$(PMCBUILD) compile $(PMCS)
-	@$(PMCBUILD) linklibs $(PMCS)
-	@$(PMCBUILD) copy "--destination=$(PARROT_DYNEXT)" $(PMCS)
+	$(PMCBUILD) generate $(PMCS)
+	$(PMCBUILD) compile $(PMCS)
+	$(PMCBUILD) linklibs $(PMCS)
+	$(PMCBUILD) copy "--destination=$(PARROT_DYNEXT)" $(PMCS)
 
 # cleaning up
 clean:
