@@ -111,7 +111,7 @@ php_MACRO.pir - PHP API macros
 =cut
 
 .macro RETURN_RESOURCE(val)
-    new $P0, 'PippResource', .val
+    new $P0, 'PhpResource', .val
     .return ($P0)
 .endm
 

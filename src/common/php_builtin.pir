@@ -100,7 +100,7 @@ STILL INCOMPLETE.
     if $I0 goto L4
     $I0 = isa $P2, 'PhpBoolean'
     if $I0 goto L4
-    $I0 = isa $P2, 'PippResource'
+    $I0 = isa $P2, 'PhpResource'
     if $I0 goto L4
     $I0 = isa $P2, 'PhpNull'
     if $I0 goto L4
@@ -426,7 +426,7 @@ Get the resource type name for a given resource
     .RETURN_NULL()
   L1:
     $P1 = shift args
-    $I0 = isa $P1, 'PippResource'
+    $I0 = isa $P1, 'PhpResource'
     if $I0 goto L2
     error(E_WARNING, "Supplied argument is not a valid resource handle")
     .RETURN_FALSE()
