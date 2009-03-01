@@ -19,10 +19,6 @@ LOAD_EXT      = @load_ext@
 O             = @o@
 
 
-HASH_SOURCES = pipp_hash.c
-HASH_H       = pipp_hash.h
-HASH_OBJS    = pipp_hash$(O)
-
 PIPP_GROUP    = $(PMC_DIR)/pipp_group$(LOAD_EXT)
 
 PMC_SOURCES  = \
@@ -57,7 +53,7 @@ PMC_SOURCES = \
 
 
 # default
-build: $(HASH_OBJS) $(PIPP_GROUP)
+build: pipp_hash$(O) $(PIPP_GROUP)
 
 
 # This is a listing of all targets, that are meant to be called by users
@@ -75,12 +71,12 @@ help:
 
 #Any change to the hash code means phparray needs to be relinked too.
 #Recompiling is close enough for now.
-$(HASH_OBJS): $(HASH_SOURCES) $(HASH_H)
+pipp_hash$(O): pipp_hash.c pipp_hash.h
 	$(TOUCH) phparray.pmc
-	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) $(HASH_SOURCES) -c -g -o $(HASH_OBJS)
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) pipp_hash.c -c -g -o pipp_hash$(O)
 
 export DYNPMC_INCLUDE=$(BUILD_DIR)/languages/pipp
-export DYNPMC_LINK=$(BUILD_DIR)/languages/pipp/src/pmc/$(HASH_OBJS)
+export DYNPMC_LINK=$(BUILD_DIR)/languages/pipp/src/pmc/pipp_hash$(O)
 
 $(PIPP_GROUP): $(PMC_SOURCES)
 	@$(PMCBUILD) generate $(PMCS)
