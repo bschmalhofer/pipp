@@ -18,40 +18,10 @@ MAKE          = @make_c@
 PARROT        = $(BUILD_DIR)/parrot@exe@
 PERL          = @perl@
 RM_F          = @rm_f@
-PMCBUILD      = $(PERL) @build_dir@/tools/build/dynpmc.pl
 NQP           = $(BUILD_DIR)/compilers/nqp/nqp.pbc
 PCT           = $(BUILD_DIR)/runtime/parrot/library/PCT.pbc
 PBC_TO_EXE    = $(BUILD_DIR)/pbc_to_exe$(EXE)
-CC            = @cc@
-#copy/pasta from CFLAGS in config/gen/makefiles/dynpmc_pl.in
-CFLAGS        = @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ @gc_flag@
 TOUCH         = @touch@
-
-PMCS = \
-  php \
-  phparray \
-  phpboolean \
-  phpfloat \
-  phpinteger \
-  phpresource \
-  phpstring \
-  phpnull
-
-PMC_SOURCES = \
-  $(PMC_DIR)/php.pmc \
-  $(PMC_DIR)/phparray.pmc \
-  $(PMC_DIR)/phpboolean.pmc \
-  $(PMC_DIR)/phpfloat.pmc \
-  $(PMC_DIR)/phpinteger.pmc \
-  $(PMC_DIR)/phpresource.pmc \
-  $(PMC_DIR)/phpstring.pmc \
-  $(PMC_DIR)/phpnull.pmc
-
-HASH_SOURCES = $(PMC_DIR)/pipp_hash.c
-HASH_H       = $(PMC_DIR)/pipp_hash.h
-HASH_OBJS    = $(PMC_DIR)/pipp_hash$(O)
-
-PHP_GROUP = $(PMC_DIR)/php_group$(LOAD_EXT)
 
 INTERNALS_PIR = \
   src/classes/Object.pir
@@ -135,7 +105,6 @@ help:
 	@echo "  test:              Run the test suite for Pipp."
 	@echo "  test-all:          Run the test suite for reference implementation and for Pipp."
 	@echo "  test-php:          Run the test suite for the reference implementation."
-	@echo "  test-pmc:          Run the test suite for Pipp's PMCs."
 	@echo "  smoke:             Run the test suite and send report to the smolder server"
 	@echo "  codetest:          Run file metadata and coding standards tests."
 	@echo ""
@@ -200,27 +169,13 @@ Test.pir: Test.php pipp.pbc
 	$(PARROT) pipp.pbc --target=pir --output=Test.pir Test.php
 
 
-build-pmc: $(HASH_OBJS) $(PHP_GROUP)
-
-#Any change to the hash code means phparray needs to be relinked too.
-#Recompiling is close enough for now.
-$(HASH_OBJS): $(HASH_SOURCES) $(HASH_H)
-	$(TOUCH) $(PMC_DIR)/phparray.pmc
-	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) $(HASH_SOURCES) -c -g -o $(HASH_OBJS)
-
-export DYNPMC_INCLUDE=$(BUILD_DIR)/languages/pipp
-export DYNPMC_LINK=$(BUILD_DIR)/languages/pipp/$(HASH_OBJS)
-
-$(PHP_GROUP): $(PMC_SOURCES)
-	@cd $(PMC_DIR) && $(PMCBUILD) generate $(PMCS)
-	@cd $(PMC_DIR) && $(PMCBUILD) compile $(PMCS)
-	@cd $(PMC_DIR) && $(PMCBUILD) linklibs $(PMCS)
-	@cd $(PMC_DIR) && $(PMCBUILD) copy "--destination=$(PARROT_DYNEXT)" $(PMCS)
+build-pmc:
+	$(MAKE) $(PMC_DIR) build
 
 test:     all
 	- $(PERL) t/harness
 
-test-all: all test-php test test-pmc
+test-all: all test-php test
 
 test-php:
 	- $(PERL) t/harness --with-php
@@ -233,9 +188,6 @@ smoke : build
 
 # make sure debugging output is disabled while running the tests
 export PMCDEBUG=
-
-test-pmc: build-pmc
-	@ prove -I../../lib t/pmc
 
 # this does not work yet
 test-pcc-testsuite: all t/pcc-testsuite

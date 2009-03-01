@@ -3,17 +3,61 @@
 # Set up commands
 PERL          = @perl@
 RM_F          = @rm_f@
+TOUCH         = @touch@
+PMCBUILD      = $(PERL) @build_dir@/tools/build/dynpmc.pl
+CC            = @cc@
+CFLAGS        = @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ @gc_flag@
 
 # Set up directories
+BUILD_DIR     = @build_dir@
 PMC_DIR       = src/pmc
+INCLUDE_DIR   = $(BUILD_DIR)/include
+PARROT_DYNEXT = $(BUILD_DIR)/runtime/parrot/dynext
 
 # Set up extensions
 LOAD_EXT      = @load_ext@
 O             = @o@
 
+
+HASH_SOURCES = pipp_hash.c
+HASH_H       = pipp_hash.h
+HASH_OBJS    = pipp_hash$(O)
+
+PHP_GROUP    = $(PMC_DIR)/php_group$(LOAD_EXT)
+
+PMC_SOURCES  = \
+  php.pmc \
+  phparray.pmc \
+  phpboolean.pmc \
+  phpfloat.pmc \
+  phpinteger.pmc \
+  phpresource.pmc \
+  phpstring.pmc \
+  phpnull.pmc
+
+PMCS = \
+  php \
+  phparray \
+  phpboolean \
+  phpfloat \
+  phpinteger \
+  phpresource \
+  phpstring \
+  phpnull
+
+PMC_SOURCES = \
+  php.pmc \
+  phparray.pmc \
+  phpboolean.pmc \
+  phpfloat.pmc \
+  phpinteger.pmc \
+  phpresource.pmc \
+  phpstring.pmc \
+  phpnull.pmc
+
+
 # default
-build:
-	@echo "Not yet implemented"
+build: $(HASH_OBJS) $(PHP_GROUP)
 
 
 # This is a listing of all targets, that are meant to be called by users
@@ -28,6 +72,21 @@ help:
 	@echo "Cleaning:"
 	@echo "  clean:             Clean up."
 	@echo ""
+
+#Any change to the hash code means phparray needs to be relinked too.
+#Recompiling is close enough for now.
+$(HASH_OBJS): $(HASH_SOURCES) $(HASH_H)
+	$(TOUCH) phparray.pmc
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) $(HASH_SOURCES) -c -g -o $(HASH_OBJS)
+
+export DYNPMC_INCLUDE=$(BUILD_DIR)/languages/pipp
+export DYNPMC_LINK=$(BUILD_DIR)/languages/pipp/src/pmc/$(HASH_OBJS)
+
+$(PHP_GROUP): $(PMC_SOURCES)
+	@$(PMCBUILD) generate $(PMCS)
+	@$(PMCBUILD) compile $(PMCS)
+	@$(PMCBUILD) linklibs $(PMCS)
+	@$(PMCBUILD) copy "--destination=$(PARROT_DYNEXT)" $(PMCS)
 
 # cleaning up
 clean:
