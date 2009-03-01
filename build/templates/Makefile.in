@@ -116,7 +116,7 @@ PHP_EXT = \
   library/php_pcre.pbc
 
 # default
-all: build
+build
 
 # This is a listing of all targets, that are meant to be called by users
 help:
@@ -149,7 +149,7 @@ help:
 	@echo ""
 
 # regenerate the Makefile
-Makefile: config/makefiles/root.in
+Makefile: build/Makefile.in
 	$(PERL) Configure.pl
 
 build:           build-common

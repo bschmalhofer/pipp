@@ -1,0 +1,13 @@
+# Build the PMCs for Pipp.
+
+# default
+build
+
+# This is a listing of all targets, that are meant to be called by users
+help:
+	@echo ""
+	@echo "Following targets are available for the user:"
+	@echo ""
+	@echo "Building:"
+	@echo "  build:             Build the PMCs."
+	@echo "                     This is the default."
