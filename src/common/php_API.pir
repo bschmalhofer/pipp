@@ -62,7 +62,7 @@ php_API.pir - PHP API Library
     .param pmc val
     .param string type
 
-    $I0 = isa val, 'PhpResource'
+    $I0 = isa val, 'PippResource'
     if $I0 goto L1
     $P0 = getinterp
     $P1 = $P0['sub'; 1]
@@ -325,7 +325,7 @@ STILL INCOMPLETE (see parse_arg_impl).
     .return ('boolean')
   not_boolean:
     unless c == 'r' goto not_resource
-    $I0 = isa arg, 'PhpResource'
+    $I0 = isa arg, 'PippResource'
     if $I0 goto L5
     $I0 = isa arg, 'PhpNull'
     unless $I0 goto L51

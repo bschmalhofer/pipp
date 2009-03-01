@@ -13,11 +13,13 @@
 /src/pct/gen_*.pir
 
 /src/pmc/Makefile
-/src/pmc/php*.c
 /src/pmc/pipp_group.c
 /src/pmc/pipp_group.h
 /src/pmc/php*.h
-/src/pmc/pmc_php*.h
+/src/pmc/php*.c
+/src/pmc/pippresource.c
+/src/pmc/pmc_*.h
+/src/pmc/pmc_*.c
 /src/pmc/*.bundle
 /src/pmc/*.dll
 /src/pmc/*.dump

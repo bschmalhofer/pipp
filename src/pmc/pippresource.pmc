@@ -3,7 +3,7 @@ Copyright (C) 2008, The Perl Foundation.
 
 =head1 NAME
 
-src/pmc/phpresource.pmc - PHP Resource
+src/pmc/pippresource.pmc - Pipp Resource
 
 =head1 DESCRIPTION
 
@@ -17,7 +17,7 @@ src/pmc/phpresource.pmc - PHP Resource
 
 #include "php_private.h"
 
-pmclass PhpResource
+pmclass PippResource
     provides ref
     dynpmc
     group    pipp_group
@@ -34,7 +34,7 @@ Raises an exception. Use C<init_pmc()>.
 */
     void init() {
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_INVALID_OPERATION,
-                       "PhpResource init without pmc");
+                       "PippResource init without pmc");
     }
 
 /*

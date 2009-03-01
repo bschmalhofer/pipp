@@ -27,7 +27,7 @@ PMCS = \
   phpboolean \
   phpfloat \
   phpinteger \
-  phpresource \
+  pippresource \
   phpstring \
   phpnull
 
@@ -37,7 +37,7 @@ PMC_SOURCES = \
   phpboolean.pmc \
   phpfloat.pmc \
   phpinteger.pmc \
-  phpresource.pmc \
+  pippresource.pmc \
   phpstring.pmc \
   phpnull.pmc
 

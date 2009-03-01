@@ -348,7 +348,7 @@ Gets signed long value of GMP number
     .RETURN_NULL()
   L1:
     $P1 = shift args
-    $I0 = isa $P1, 'PhpResource'
+    $I0 = isa $P1, 'PippResource'
     unless $I0 goto L2
     .local pmc gmpnum
     gmpnum = fetch_resource($P1, GMP_PMC)
