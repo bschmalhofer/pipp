@@ -19,7 +19,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Parrot::Test tests => 16;
+use Pipp::Test tests => 16;
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'function with no args' );
 <?php

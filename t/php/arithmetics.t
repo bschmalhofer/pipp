@@ -18,7 +18,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Parrot::Test;
+use Pipp::Test;
 
 # A little helper to do data driven testing
 sub run_tests {

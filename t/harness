@@ -35,15 +35,12 @@ use Cwd                     ();
 use File::Spec              ();
 use TAP::Harness            3.12;     # support closures for the 'exec' option
 use TAP::Harness::Archive   0.12;
-use Parrot::Config          qw( %PConfig );
 use Getopt::Long;
 use Parrot::Harness::Smoke;
-use Parrot::Test;
 
-my ( $files_flag, $send_to_smolder_flag, $archive_flag, $verbose_flag );
+my ( $send_to_smolder_flag, $archive_flag, $verbose_flag );
 my ( $php_flag, $pct_flag, $phc_flag);
 GetOptions(
-    'files'           => \$files_flag,
     'send-to-smolder' => \$send_to_smolder_flag,
     'archive'         => \$archive_flag,
     'verbose'         => \$verbose_flag,
@@ -56,29 +53,15 @@ my $hll = 'pipp';
 my $verbosity = $verbose_flag ? 1 : $ENV{HARNESS_VERBOSE};
 $verbosity ||= 0;
 
-if ( $files_flag ) {
-    # Only the Makefile in 'parrot/languages' uses --files for unified testing
-    my $dir = File::Spec->catfile( $hll, 't' );
-    # unified testing can't handle test scripts written in PHP
-    my @files = grep { ! m!in_php|pmc|embed! } glob( File::Spec->catfile( $dir, '*/*.t' ) );
-    print join( "\n", @files );
-    print "\n" if scalar(@files);
-}
-else {
-    my $path_to_parrot = Parrot::Test::path_to_parrot();
-    my @cmd = ( "$path_to_parrot/parrot$PConfig{exe}", 'pipp.pbc' );
-    $ENV{PARROT_PIPP_TEST_MODULE} = 'Parrot::Test::Pipp::PCT';
+{
+    my $path_to_parrot = path_to_parrot();
+    my @cmd = ( "$path_to_parrot/parrot", 'pipp.pbc' );
 
     if ( $php_flag ) {
-         $ENV{PARROT_PIPP_TEST_MODULE} = 'Parrot::Test::Pipp::PHP';
          @cmd = qw{ php-cgi -q -C -n } ;
     }
     elsif ( $phc_flag ) {
-        $ENV{PARROT_PIPP_TEST_MODULE} = 'Parrot::Test::Pipp::Phc';
         push @cmd, '--variant=phc';
-    }
-    elsif ( $pct_flag ) {
-        $ENV{PARROT_PIPP_TEST_MODULE} = 'Parrot::Test::Pipp::PCT';
     }
 
     my @files;
@@ -101,16 +84,16 @@ else {
               my ( $harness, $test_file ) = @_;
 
               # the directory t/embed contains only PIR test files
-              return [ "$path_to_parrot/parrot$PConfig{exe}", $test_file ] if $test_file =~ m!t/embed/.*[.]t$!;
+              return [ "$path_to_parrot/parrot", $test_file ] if $test_file =~ m!t/embed/.*[.]t$!;
 
               # the directory t/pmc contains only PIR test files
-              return [ "$path_to_parrot/parrot$PConfig{exe}", $test_file ] if $test_file =~ m!t/pmc/.*[.]t$!;
+              return [ "$path_to_parrot/parrot", $test_file ] if $test_file =~ m!t/pmc/.*[.]t$!;
 
               # the directory t/in_php contains only test scripts written in PHP
               return [ @cmd, $test_file ] if $test_file =~ m!t/in_php/.*[.]t$!;
 
               # all other directories contain test scripts written in Perl
-              return [ $PConfig{perl}, $test_file ];
+              return [ $^X, $test_file ];
           };
     if ( $archive_flag ) {
         my %env_data = Parrot::Harness::Smoke::collect_test_environment_data();
@@ -142,6 +125,14 @@ else {
        );
         $harness->runtests(@files);
     }
+}
+
+sub path_to_parrot {
+
+    my $path = $INC{'Parrot/Config.pm'};
+    $path =~ s{ /lib/Parrot/Config.pm \z}{}xms;
+
+    return Cwd::realpath( $path );
 }
 
 =head1 SEE ALSO

@@ -26,7 +26,7 @@ use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 use Test::More     tests => 10;
 
 # Parrot modules
-use Parrot::Test;
+use Pipp::Test;
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'end of line comment //' );
 <script language="php">

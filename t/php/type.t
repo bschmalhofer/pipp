@@ -22,8 +22,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Test::More;
-use Parrot::Test   tests => 18;
+use Pipp::Test   tests => 18;
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'floatval()' );
 <?php

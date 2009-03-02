@@ -21,8 +21,9 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Parrot::Test   tests => 25;
-use Parrot::Config qw( %PConfig );
+use Pipp::Test   tests => 25;
+
+my %PConfig = Pipp::Test::read_parrot_config();
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'define() and constant(), string' );
 <?php

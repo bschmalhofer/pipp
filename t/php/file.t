@@ -24,7 +24,7 @@ use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
 use Test::More     tests => 10;
-use Parrot::Test;
+use Pipp::Test;
 
 unlink 'file.txt' if -f 'file.txt';
 

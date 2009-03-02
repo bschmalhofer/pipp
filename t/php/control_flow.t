@@ -20,7 +20,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Parrot::Test  tests => 23;
+use Pipp::Test  tests => 23;
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'if, one statement in block' );
 <?php

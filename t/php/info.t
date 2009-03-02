@@ -22,7 +22,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Parrot::Test tests => 10;
+use Pipp::Test tests => 10;
 
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'php_egg_logo_guid()' );

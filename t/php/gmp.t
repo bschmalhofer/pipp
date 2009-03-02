@@ -24,7 +24,7 @@ use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
 use Test::More;
-use Parrot::Test;
+use Pipp::Test;
 
 plan tests => 24;
 

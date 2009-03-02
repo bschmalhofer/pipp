@@ -122,7 +122,7 @@ help:
 Makefile: build/templates/Makefile.in
 	$(PERL) Configure.pl
 
-build:           build-common
+build:           pipp$(EXE)
 
 #build-common:    build-pmc library/pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
 build-common:    build-pmc library/pipplib.pbc pipp.pbc $(PHP_EXT)
