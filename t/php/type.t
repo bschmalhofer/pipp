@@ -243,11 +243,7 @@ CODE
 1
 OUT
 
-TODO:
-{
-    local $TODO = 'update compiler';
-
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'settype()' );
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'settype()', todo => 'broken' );
 <?php
   $var = 3.14;
   echo settype($var, 'int'), "\n";
@@ -257,8 +253,6 @@ CODE
 1
 3
 OUT
-
-}
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'strval(TRUE)' );
 <?php
