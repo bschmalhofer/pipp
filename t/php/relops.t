@@ -25,9 +25,9 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Parrot::Config ();
-use Pipp::Test;
-use Test::More     tests => 13;
+use Pipp::Test tests => 13;
+
+my %PConfig = Pipp::Test::read_parrot_config();
 
 # True tests
 my $expected = "Condition is true.\n";
