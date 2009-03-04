@@ -9,9 +9,7 @@ EXE           = @exe@
 # Set up directories
 BUILD_DIR     = @build_dir@
 LIBRARY_DIR   = $(BUILD_DIR)/runtime/parrot/library
-INCLUDE_DIR   = $(BUILD_DIR)/include
 PMC_DIR       = src/pmc
-PARROT_DYNEXT = $(BUILD_DIR)/runtime/parrot/dynext
 
 # Set up commands
 MAKE          = @make_c@
@@ -21,7 +19,6 @@ RM_F          = @rm_f@
 NQP           = $(BUILD_DIR)/compilers/nqp/nqp.pbc
 PCT           = $(BUILD_DIR)/runtime/parrot/library/PCT.pbc
 PBC_TO_EXE    = $(BUILD_DIR)/pbc_to_exe$(EXE)
-TOUCH         = @touch@
 
 INTERNALS_PIR = \
   src/classes/Object.pir
