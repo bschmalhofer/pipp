@@ -87,7 +87,7 @@ PHP_EXT = \
   library/php_pcre.pbc
 
 # default
-all: build
+all: pipp$(EXE)
 
 # This is a listing of all targets, that are meant to be called by users
 help:
@@ -124,11 +124,10 @@ Makefile: build/templates/Makefile.in
 
 build:           pipp$(EXE)
 
-#build-common:    build-pmc library/pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
-build-common:    build-pmc library/pipplib.pbc pipp.pbc $(PHP_EXT)
 
 # Target for building a standalone Pipp.
-pipp$(EXE): build-common
+#pipp$(EXE): build-pmc library/pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
+pipp$(EXE): build-pmc library/pipplib.pbc pipp.pbc $(PHP_EXT)
 	$(PBC_TO_EXE) pipp.pbc
 
 library/pipplib.pbc: \
