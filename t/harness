@@ -54,15 +54,12 @@ my $verbosity = $verbose_flag ? 1 : $ENV{HARNESS_VERBOSE};
 $verbosity ||= 0;
 
 {
-    my $path_to_parrot = path_to_parrot();
-    my @cmd = ( "$path_to_parrot/parrot", 'pipp.pbc' );
+    my @php_cmd;
+    if    ( $php_flag ) { @php_cmd = qw{ php-cgi -q -C -n } ; }
+    elsif ( $phc_flag ) { @php_cmd = ( './pipp', '--variant=phc' ); }
+    else                { @php_cmd = ( './pipp' ) }
 
-    if ( $php_flag ) {
-         @cmd = qw{ php-cgi -q -C -n } ;
-    }
-    elsif ( $phc_flag ) {
-        push @cmd, '--variant=phc';
-    }
+    my @pir_cmd = ( './pipp',  '--run-pir' );
 
     my @files;
     if ( scalar(@ARGV) ) {
@@ -84,15 +81,13 @@ $verbosity ||= 0;
               my ( $harness, $test_file ) = @_;
 
               # the directory t/embed contains only PIR test files
-              return [ "$path_to_parrot/parrot", 'pipp.pbc',  '--run-pir', $test_file ] if $test_file =~ m!t/embed/.*[.]t$!;
-              #return [ "$path_to_parrot/parrot", $test_file ] if $test_file =~ m!t/embed/.*[.]t$!;
+              return [ @pir_cmd, '--run-pir', $test_file ] if $test_file =~ m!t/embed/.*[.]t$!;
 
               # the directory t/pmc contains only PIR test files
-              return [ "$path_to_parrot/parrot", 'pipp.pbc', '--run-pir', $test_file ] if $test_file =~ m!t/pmc/.*[.]t$!;
-              #return [ "$path_to_parrot/parrot", $test_file ] if $test_file =~ m!t/pmc/.*[.]t$!;
+              return [ @pir_cmd, $test_file ]              if $test_file =~ m!t/pmc/.*[.]t$!;
 
               # the directory t/in_php contains only test scripts written in PHP
-              return [ @cmd, $test_file ] if $test_file =~ m!t/in_php/.*[.]t$!;
+              return [ @php_cmd, $test_file ]              if $test_file =~ m!t/in_php/.*[.]t$!;
 
               # all other directories contain test scripts written in Perl
               return [ $^X, $test_file ];

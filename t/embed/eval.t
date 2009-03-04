@@ -14,11 +14,16 @@ Tests the sub 'eval' used for supporting embedding Pipp in other applications.
 
 =cut
 
-.sub '_load' :anon :init :load
+#.sub '_load' :anon :init :load
 
-    load_bytecode 'pipp.pbc'
+    ## loadbytecode fails when script is run by    ./pipp --run-pir
+    # push_eh _ignore_exception
+    # load_bytecode 'pipp.pbc'
 
-.end
+  #_ignore_exception:
+    #pop_eh
+
+#.end
 
 .sub 'main' :main
     .include "include/test_more.pir"
