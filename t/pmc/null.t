@@ -15,8 +15,6 @@ Tests C<PhpNull> PMC.
 
 =cut
 
-.loadlib "pipp_group"
-
 .sub 'main' :main
     $P0 = loadlib "pipp_group"
 
