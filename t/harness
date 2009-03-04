@@ -124,17 +124,9 @@ $verbosity ||= 0;
     }
 }
 
-sub path_to_parrot {
-
-    my $path = $INC{'Parrot/Config.pm'};
-    $path =~ s{ /lib/Parrot/Config.pm \z}{}xms;
-
-    return Cwd::realpath( $path );
-}
-
 =head1 SEE ALSO
 
-  F<languages/perl6/t/harness>
+  F<rakudo/t/harness>
 
 =head1 AUTHOR
 
