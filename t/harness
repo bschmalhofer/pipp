@@ -84,9 +84,11 @@ $verbosity ||= 0;
               my ( $harness, $test_file ) = @_;
 
               # the directory t/embed contains only PIR test files
+              #return [ "$path_to_parrot/parrot pipp.pbc",  '--run-pir', $test_file ] if $test_file =~ m!t/embed/.*[.]t$!;
               return [ "$path_to_parrot/parrot", $test_file ] if $test_file =~ m!t/embed/.*[.]t$!;
 
               # the directory t/pmc contains only PIR test files
+              #return [ "$path_to_parrot/parrot pipp.pbc", '--run-pir', $test_file ] if $test_file =~ m!t/pmc/.*[.]t$!;
               return [ "$path_to_parrot/parrot", $test_file ] if $test_file =~ m!t/pmc/.*[.]t$!;
 
               # the directory t/in_php contains only test scripts written in PHP

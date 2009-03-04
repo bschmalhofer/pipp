@@ -15,10 +15,12 @@ Tests C<PhpBoolean> PMC.
 
 =cut
 
-.loadlib "pipp_group"
 
 .sub 'main' :main
+    $P0 = loadlib "pipp_group"
+
     .include "include/test_more.pir"
+
     plan(2)
 
     truth_tests()
