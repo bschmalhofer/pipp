@@ -3,7 +3,6 @@
 # Set up commands
 PERL          = @perl@
 RM_F          = @rm_f@
-TOUCH         = @touch@
 PMCBUILD      = $(PERL) @build_dir@/tools/build/dynpmc.pl
 CC            = @cc@
 CFLAGS        = @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ @gc_flag@
@@ -17,10 +16,9 @@ PARROT_DYNEXT = $(BUILD_DIR)/runtime/parrot/dynext
 LOAD_EXT      = @load_ext@
 O             = @o@
 
-
 PIPP_GROUP    = pipp_group$(LOAD_EXT)
 
-PMCS = \
+PMCS          = \
   php \
   phparray \
   phpboolean \

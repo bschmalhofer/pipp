@@ -20,6 +20,18 @@ NQP           = $(BUILD_DIR)/compilers/nqp/nqp.pbc
 PCT           = $(BUILD_DIR)/runtime/parrot/library/PCT.pbc
 PBC_TO_EXE    = $(BUILD_DIR)/pbc_to_exe$(EXE)
 
+PIPP_GROUP    = $(PMC_DIR)/pipp_group$(LOAD_EXT)
+
+PMC_DEPS      = \
+  $(PMC_DIR)/php.pmc \
+  $(PMC_DIR)/phparray.pmc \
+  $(PMC_DIR)/phpboolean.pmc \
+  $(PMC_DIR)/phpfloat.pmc \
+  $(PMC_DIR)/phpinteger.pmc \
+  $(PMC_DIR)/phpresource.pmc \
+  $(PMC_DIR)/phpstring.pmc \
+  $(PMC_DIR)/phpnull.pmc
+
 INTERNALS_PIR = \
   src/classes/Object.pir
 
@@ -95,8 +107,6 @@ help:
 	@echo "  all:               Build pipp.pbc"
 	@echo "                     This is the default."
 	@echo "  pipp$(EXE):        A fancy executable."
-	@echo "  build              Same as 'all'."
-	@echo "  build-pmc          Build all PMCs."
 	@echo ""
 	@echo "Testing:"
 	@echo "  test:              Run the test suite for Pipp."
@@ -119,13 +129,15 @@ help:
 Makefile: build/templates/Makefile.in
 	$(PERL) Configure.pl
 
-build:           pipp$(EXE)
-
-
 # Target for building a standalone Pipp.
-#pipp$(EXE): build-pmc library/pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
-pipp$(EXE): build-pmc library/pipplib.pbc pipp.pbc $(PHP_EXT)
+#pipp$(EXE): library/pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
+pipp.pbc: $(PIPP_GROUP) library/pipplib.pbc $(PHP_EXT)
+
+pipp$(EXE): pipp.pbc
 	$(PBC_TO_EXE) pipp.pbc
+
+$(PIPP_GROUP): $(PMC_DEPS) 
+	$(MAKE) $(PMC_DIR) build
 
 library/pipplib.pbc: \
   src/common/builtins.pir \
@@ -165,9 +177,6 @@ Test.pir: Test.php pipp.pbc
 	$(PARROT) pipp.pbc --target=pir --output=Test.pir Test.php
 
 
-build-pmc:
-	$(MAKE) $(PMC_DIR) build
-
 test:     all
 	- $(PERL) t/harness
 
@@ -178,7 +187,7 @@ test-php:
 
 # run the test suite, create a TAP archive and send it off to smolder
 smolder_test : smoke
-smoke : build
+smoke : all
 	- $(PERL) t/harness --archive --send-to-smolder
 
 
