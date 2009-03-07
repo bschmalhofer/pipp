@@ -2493,7 +2493,8 @@ failures.
 
         /* set the key's flags so get_x_keyed() knows when it's being called
          * from an Iterator. */
-        PObj_get_FLAGS(key) = KEY_pipp_iterator_FLAG;
+        PObj_get_FLAGS(key) = KEY_pipp_iterator_FLAG | KEY_integer_FLAG;
+
 
         /* Get the Iterator and ht->internalPointer in sync. */
         bkt = ht->tableHead;
