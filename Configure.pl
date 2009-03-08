@@ -68,7 +68,7 @@ END
 }
 
 #  Create the Makefile using the information we just got
-create_makefiles(
+create_files(
     \%config,
     { 'build/templates/Makefile.in'                => 'Makefile',
       'build/templates/src/pmc/Makefile.in'        => 'src/pmc/Makefile',
@@ -116,10 +116,10 @@ sub read_parrot_config {
 
 
 #  Generate a Makefile from a configuration
-sub create_makefiles {
-    my ($config, $makefiles) = @_;
+sub create_files {
+    my ($config, $setup) = @_;
 
-    while (my ($template_fn, $target_fn) = each %{$makefiles}) {
+    while (my ($template_fn, $target_fn) = each %{$setup}) {
         my $content;
         {
             open my $template_fh, '<', $template_fn or

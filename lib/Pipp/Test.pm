@@ -109,13 +109,12 @@ package Pipp::Test;
 
 use strict;
 use warnings;
+use lib qw( lib );
 
 use Cwd;
 use File::Spec;
-use File::Basename;
-use Memoize ();
 
-use lib qw( lib );
+use Pipp::FindParrot;
 
 require Exporter;
 require Test::Builder;
@@ -388,6 +387,7 @@ sub _prepare_exit_message {
 
 sub read_parrot_config {
      my @parrot_config_exe = (
+         $Pipp::FindParrot::parrot_config,
          'parrot/parrot_config', 
          '../../parrot_config',
          'parrot_config'

@@ -1,3 +1,9 @@
-use lib '/home/bernhard/devel/Parrot/install/lib/parrot/0.9.1-devel/tools/lib';
+# Set up @INC, so that the Parrot::* modules of an installed Parrot is found
+
+use lib '@lib_dir@@versiondir@/tools/lib';
+
+package Pipp::FindParrot;
+
+our $parrot_config = '@bin_dir@/parrot_config';
 
 1;
