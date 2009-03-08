@@ -10,6 +10,7 @@ EXE           = @exe@
 BUILD_DIR     = @build_dir@
 LIBRARY_DIR   = $(BUILD_DIR)/runtime/parrot/library
 PMC_DIR       = src/pmc
+DYNEXT_DIR    = dynext
 
 # Set up commands
 MAKE          = @make_c@
@@ -20,7 +21,7 @@ NQP           = $(BUILD_DIR)/compilers/nqp/nqp.pbc
 PCT           = $(BUILD_DIR)/runtime/parrot/library/PCT.pbc
 PBC_TO_EXE    = $(BUILD_DIR)/pbc_to_exe$(EXE)
 
-PIPP_GROUP    = $(PMC_DIR)/pipp_group$(LOAD_EXT)
+PIPP_GROUP    = $(DYNEXT_DIR)/pipp_group$(LOAD_EXT)
 
 PMC_DEPS      = \
   $(PMC_DIR)/php.pmc \

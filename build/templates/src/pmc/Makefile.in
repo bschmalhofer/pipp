@@ -10,13 +10,13 @@ CFLAGS        = @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ 
 # Set up directories
 BUILD_DIR     = @build_dir@
 INCLUDE_DIR   = $(BUILD_DIR)/include
-PARROT_DYNEXT = $(BUILD_DIR)/runtime/parrot/dynext
+DYNEXT_DIR    = ../../dynext
 
 # Set up extensions
 LOAD_EXT      = @load_ext@
 O             = @o@
 
-PIPP_GROUP    = pipp_group$(LOAD_EXT)
+PIPP_GROUP    = $(DYNEXT_DIR)/pipp_group$(LOAD_EXT)
 
 PMCS          = \
   php \
@@ -60,7 +60,7 @@ $(PIPP_GROUP): $(PMC_SOURCES)
 	$(PMCBUILD) generate $(PMCS)
 	$(PMCBUILD) compile $(PMCS)
 	$(PMCBUILD) linklibs $(PMCS)
-	$(PMCBUILD) copy "--destination=$(PARROT_DYNEXT)" $(PMCS)
+	$(PMCBUILD) copy "--destination=$(DYNEXT_DIR)" $(PMCS)
 
 # cleaning up
 clean:
