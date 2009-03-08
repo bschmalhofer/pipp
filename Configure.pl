@@ -1,10 +1,25 @@
 #! perl
 # Copyright (C) 2009 The Perl Foundation
 
+=head1 NAME
+
+Configure.pl - a configure script for a high level language running on Parrot
+
+=head1 SYNOPSIS
+
+  perl Configure.pl --help
+
+  perl Configure.pl
+
+  perl Configure.pl --parrot_config=<path_to_parrot>
+
+  perl Configure.pl --gen-parrot
+
+=cut
+
 use strict;
 use warnings;
 use 5.008;
-
 
 my %valid_options = (
     'help'          => 'Display configuration help',
@@ -32,9 +47,9 @@ if ($options{'gen-parrot'}) {
 
 #  Get a list of parrot-configs to invoke.
 my @parrot_config_exe = (
-    "parrot/parrot_config", 
-    "../../parrot_config",
-    "parrot_config"
+    'parrot/parrot_config', 
+    '../../parrot_config',
+    'parrot_config'
 );
 if ($options{'parrot-config'} && $options{'parrot-config'} ne '1') {
     @parrot_config_exe = ($options{'parrot-config'});
@@ -55,8 +70,9 @@ END
 #  Create the Makefile using the information we just got
 create_makefiles(
     \%config,
-    { 'build/templates/Makefile.in'          => 'Makefile',
-      'build/templates/src/pmc/Makefile.in'  => 'src/pmc/Makefile',
+    { 'build/templates/Makefile.in'                => 'Makefile',
+      'build/templates/src/pmc/Makefile.in'        => 'src/pmc/Makefile',
+      'build/templates/lib/Pipp/FindParrot_pm.in'  => 'lib/Pipp/FindParrot.pm',
     }
 );
 

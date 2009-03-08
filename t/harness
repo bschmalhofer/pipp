@@ -30,6 +30,7 @@ use strict;
 use warnings;
 use FindBin ();
 use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin/../lib", "$FindBin::Bin/../parrot/lib";
+use Pipp::FindParrot;
 
 use Cwd                     ();
 use File::Spec              ();
@@ -37,6 +38,7 @@ use TAP::Harness            3.12;     # support closures for the 'exec' option
 use TAP::Harness::Archive   0.12;
 use Getopt::Long;
 use Parrot::Harness::Smoke;
+
 
 my ( $send_to_smolder_flag, $archive_flag, $verbose_flag );
 my ( $php_flag, $pct_flag, $phc_flag);

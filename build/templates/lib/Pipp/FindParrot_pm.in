@@ -1,0 +1,3 @@
+use lib '/home/bernhard/devel/Parrot/install/lib/parrot/0.9.1-devel/tools/lib';
+
+1;
