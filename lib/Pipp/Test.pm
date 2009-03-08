@@ -387,10 +387,7 @@ sub _prepare_exit_message {
 
 sub read_parrot_config {
      my @parrot_config_exe = (
-         $Pipp::FindParrot::parrot_config,
-         'parrot/parrot_config', 
-         '../../parrot_config',
-         'parrot_config'
+         $Pipp::FindParrot::parrot_config_exe,
      );
 
     my %config;

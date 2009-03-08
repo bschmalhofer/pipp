@@ -4,6 +4,6 @@ use lib '@lib_dir@@versiondir@/tools/lib';
 
 package Pipp::FindParrot;
 
-our $parrot_config = '@bin_dir@/parrot_config';
+our $parrot_config_exe = '@parrot_config_exe@';
 
 1;
