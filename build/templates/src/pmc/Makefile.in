@@ -1,28 +1,28 @@
 # Build the PMCs for Pipp.
 
 # Set up commands
-CP            = @cp@
-PERL          = @perl@
-RM_F          = @rm_f@
-PMCBUILD      = $(PERL) @build_dir@/tools/build/dynpmc.pl
-CC            = @cc@
-CFLAGS        = @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ @gc_flag@
+CP            := @cp@
+PERL          := @perl@
+RM_F          := @rm_f@
+PMCBUILD      := $(PERL) @build_dir@/tools/build/dynpmc.pl
+CC            := @cc@
+CFLAGS        := @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ @gc_flag@
 
 # Set up directories
-BUILD_DIR     = @build_dir@
-INCLUDE_DIR   = $(BUILD_DIR)/include
-DYNEXT_DIR    = ../../dynext
-VERSION_DIR   = @versiondir@
-LIB_DIR       = @libdir@$(VERSION_DIR)
-INSTALL_DIR   = $(LIB_DIR)/dynext
+BUILD_DIR     := @build_dir@
+INCLUDE_DIR   := $(BUILD_DIR)/include
+DYNEXT_DIR    := ../../dynext
+VERSION_DIR   := @versiondir@
+LIB_DIR       := @libdir@$(VERSION_DIR)
+INSTALL_DIR   := $(LIB_DIR)/dynext
 
 # Set up extensions
-LOAD_EXT      = @load_ext@
-O             = @o@
+LOAD_EXT      := @load_ext@
+O             := @o@
 
-PIPP_GROUP    = $(DYNEXT_DIR)/pipp_group$(LOAD_EXT)
+PIPP_GROUP    := $(DYNEXT_DIR)/pipp_group$(LOAD_EXT)
 
-PMCS          = \
+PMCS          := \
   php \
   phparray \
   phpboolean \
@@ -32,7 +32,7 @@ PMCS          = \
   phpstring \
   phpnull
 
-PMC_SOURCES = \
+PMC_SOURCES := \
   php.pmc \
   phparray.pmc \
   phpboolean.pmc \
