@@ -1,6 +1,7 @@
 # Build the PMCs for Pipp.
 
 # Set up commands
+CP            = @cp@
 PERL          = @perl@
 RM_F          = @rm_f@
 PMCBUILD      = $(PERL) @build_dir@/tools/build/dynpmc.pl
@@ -11,6 +12,9 @@ CFLAGS        = @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ 
 BUILD_DIR     = @build_dir@
 INCLUDE_DIR   = $(BUILD_DIR)/include
 DYNEXT_DIR    = ../../dynext
+VERSION_DIR   = @versiondir@
+LIB_DIR       = @libdir@$(VERSION_DIR)
+INSTALL_DIR   = $(LIB_DIR)/dynext
 
 # Set up extensions
 LOAD_EXT      = @load_ext@
@@ -61,6 +65,10 @@ $(PIPP_GROUP): $(PMC_SOURCES)
 	$(PMCBUILD) compile $(PMCS)
 	$(PMCBUILD) linklibs $(PMCS)
 	$(PMCBUILD) copy "--destination=$(DYNEXT_DIR)" $(PMCS)
+
+install:
+#IF(cygwin or hpux):	CHMOD 0775 "*$(LOAD_EXT)"
+	$(CP) "*$(LOAD_EXT)" $(INSTALL_DIR)
 
 # cleaning up
 clean:

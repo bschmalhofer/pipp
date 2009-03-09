@@ -1,5 +1,12 @@
-# Copyright (C) 2006-2009, The Perl Foundation.
-# $Id$
+## arguments we want to run parrot with
+PARROT_ARGS   =
+
+## configuration settings
+VERSION_DIR   = @versiondir@
+BIN_DIR       = @bin_dir@
+LIB_DIR       = @lib_dir@$(VERSION_DIR)
+DOC_DIR       = @doc_dir@$(VERSION_DIR)
+MANDIR        = @mandir@$(VERSION_DIR)
 
 # Set up extensions
 LOAD_EXT      = @load_ext@
@@ -16,6 +23,9 @@ DYNEXT_DIR    = dynext
 MAKE          = @make_c@
 PARROT        = $(BUILD_DIR)/parrot@exe@
 PERL          = @perl@
+CHMOD         = @chmod@
+CP            = @cp@
+MKPATH        = @mkpath@
 RM_F          = @rm_f@
 NQP           = $(BUILD_DIR)/compilers/nqp/nqp.pbc
 PCT           = $(BUILD_DIR)/runtime/parrot/library/PCT.pbc
@@ -130,6 +140,7 @@ help:
 Makefile: build/templates/Makefile.in
 	$(PERL) Configure.pl
 
+
 # Target for building a standalone Pipp.
 #pipp$(EXE): library/pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
 pipp.pbc: $(PIPP_GROUP) library/pipplib.pbc $(PHP_EXT)
@@ -177,6 +188,36 @@ pipp.pbc: \
 Test.pir: Test.php pipp.pbc
 	$(PARROT) pipp.pbc --target=pir --output=Test.pir Test.php
 
+installable: installable_pipp@exe@
+
+installable_pipp@exe@: pipp.pbc
+	$(PBC_TO_EXE) pipp.pbc --install
+
+install: installable
+#	$(MAKE) $(OPS_DIR) install
+	$(MAKE) $(PMC_DIR) install
+	$(CP) installable_pipp@exe@ $(BIN_DIR)/parrot-pipp@exe@
+	$(CHMOD) 0755 $(BIN_DIR)/parrot-pipp@exe@
+	-$(MKPATH) $(LIB_DIR)/languages/pipp
+	$(CP) pipp.pbc $(LIB_DIR)/languages/pipp/pipp.pbc
+	-$(MKPATH) $(LIB_DIR)/languages/pipp/library
+	$(CP) library/*.pbc $(LIB_DIR)/languages/pipp/library
+	-$(MKPATH) $(LIB_DIR)/languages/pipp/dynext
+	$(CP) dynext/*$(LOAD_EXT) $(LIB_DIR)/languages/pipp/dynext
+
+#	-$(MKPATH) $(MANDIR)/man1
+#	$(POD2MAN) doc/running.pod > $(MANDIR)/man1/parrot-pipp.1
+#	-$(MKPATH) $(DOC_DIR)/languages/pipp
+#	$(CP) $(DOCS) $(DOC_DIR)/languages/pipp
+
+win32-inno-installer: installable
+#	-$(MKPATH) man/man1
+#	$(POD2MAN) doc/running.pod > man/man1/parrot-pipp.1
+#	-$(MKPATH) man/html
+#	pod2html --infile doc/running.pod --outfile man/html/parrot-pipp.html
+	$(CP) installable_pipp@exe@ parrot-pipp.exe
+	$(PERL) $(LIB_DIR)/tools/dev/mk_inno_language.pl pipp
+	iscc parrot-pipp.iss
 
 test:     all
 	- $(PERL) t/harness
