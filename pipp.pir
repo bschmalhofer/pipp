@@ -77,18 +77,13 @@ Bernhard Schmalhofer - L<Bernhard.Schmalhofer@gmx.de>
 
     load_bytecode 'P6object.pbc'
 
-    # determine location of libs from the Parrot config
-    .local string lib_dir, pbc_fn
-    lib_dir = 'library'
-
-    pbc_fn = concat lib_dir, '/pipplib.pbc'
-    load_bytecode pbc_fn
-    pbc_fn = concat lib_dir, '/php_ctype.pbc'
-    load_bytecode pbc_fn
-    pbc_fn = concat lib_dir, '/php_gmp.pbc'
-    load_bytecode pbc_fn
-    pbc_fn = concat lib_dir, '/php_pcre.pbc'
-    load_bytecode pbc_fn
+    # load bytecode from the standard search pathes
+    # the current dir for an uninstalled Pipp
+    # versiondir/library for an installed Pipp
+    load_bytecode 'pipplib.pbc'
+    load_bytecode 'php_ctype.pbc'
+    load_bytecode 'php_gmp.pbc'
+    load_bytecode 'php_pcre.pbc'
 
     load_bytecode 'CGI/QueryHash.pbc'
     load_bytecode 'dumper.pbc'

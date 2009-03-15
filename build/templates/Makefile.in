@@ -21,7 +21,7 @@ DYNEXT_DIR    := dynext
 
 # Set up commands
 MAKE          := @make_c@
-PARROT        := $(BUILD_DIR)/parrot@exe@
+PARROT        := $(BUILD_DIR)/parrot$(EXE)
 PERL          := @perl@
 CHMOD         := @chmod@
 CP            := @cp@
@@ -101,10 +101,11 @@ PHP_SRC_STD_EXT := \
   src/common/php_var.pir \
   src/common/php_versioning.pir
 
-PHP_EXT := \
-  library/php_ctype.pbc \
-  library/php_gmp.pbc \
-  library/php_pcre.pbc
+PHP_LIBS := \
+  pipplib.pbc \
+  php_ctype.pbc \
+  php_gmp.pbc \
+  php_pcre.pbc
 
 # default
 all: pipp$(EXE)
@@ -142,16 +143,15 @@ Makefile: build/templates/Makefile.in
 
 
 # Target for building a standalone Pipp.
-#pipp$(EXE): library/pipplib.pbc pipp.pbc $(PHP_EXT) Test.pir
-pipp.pbc: $(PIPP_GROUP) library/pipplib.pbc $(PHP_EXT)
-
 pipp$(EXE): pipp.pbc
 	$(PBC_TO_EXE) pipp.pbc
+
+pipp.pbc: $(PIPP_GROUP) $(PHP_LIBS)
 
 $(PIPP_GROUP): $(PMC_DEPS) 
 	$(MAKE) $(PMC_DIR) build
 
-library/pipplib.pbc: \
+pipplib.pbc: \
   src/common/builtins.pir \
   src/common/guts.pir \
   src/common/eval.pir \
@@ -160,16 +160,16 @@ library/pipplib.pbc: \
   $(PHP_SRC_STD_EXT) \
   src/common/php_API.pir \
   src/common/php_MACRO.pir
-	$(PARROT) -o library/pipplib.pbc src/common/builtins.pir
+	$(PARROT) -o pipplib.pbc src/common/builtins.pir
 
-library/php_ctype.pbc: src/common/php_ctype.pir src/common/php_MACRO.pir
-	$(PARROT) -o library/php_ctype.pbc src/common/php_ctype.pir
+php_ctype.pbc: src/common/php_ctype.pir src/common/php_MACRO.pir
+	$(PARROT) -o php_ctype.pbc src/common/php_ctype.pir
 
-library/php_gmp.pbc: src/common/php_gmp.pir src/common/php_MACRO.pir
-	$(PARROT) -o library/php_gmp.pbc src/common/php_gmp.pir
+php_gmp.pbc: src/common/php_gmp.pir src/common/php_MACRO.pir
+	$(PARROT) -o php_gmp.pbc src/common/php_gmp.pir
 
-library/php_pcre.pbc: src/common/php_pcre.pir src/common/php_MACRO.pir
-	$(PARROT) -o library/php_pcre.pbc src/common/php_pcre.pir
+php_pcre.pbc: src/common/php_pcre.pir src/common/php_MACRO.pir
+	$(PARROT) -o php_pcre.pbc src/common/php_pcre.pir
 
 src/pct/gen_grammar.pir: $(LIBRARY_DIR)/PGE/Perl6Grammar.pir src/pct/grammar.pg
 	$(PARROT) $(LIBRARY_DIR)/PGE/Perl6Grammar.pir \
@@ -188,22 +188,18 @@ pipp.pbc: \
 Test.pir: Test.php pipp.pbc
 	$(PARROT) pipp.pbc --target=pir --output=Test.pir Test.php
 
-installable: installable_pipp@exe@
+installable: installable_pipp$(EXE)
 
-installable_pipp@exe@: pipp.pbc
+installable_pipp$(EXE): pipp.pbc
 	$(PBC_TO_EXE) pipp.pbc --install
 
 install: installable
-#	$(MAKE) $(OPS_DIR) install
 	$(MAKE) $(PMC_DIR) install
-	$(CP) installable_pipp@exe@ $(BIN_DIR)/parrot-pipp@exe@
-	$(CHMOD) 0755 $(BIN_DIR)/parrot-pipp@exe@
+	$(CP) installable_pipp$(EXE) $(BIN_DIR)/parrot-pipp$(EXE)
+	$(CHMOD) 0755 $(BIN_DIR)/parrot-pipp$(EXE)
 	-$(MKPATH) $(LIB_DIR)/languages/pipp
 	$(CP) pipp.pbc $(LIB_DIR)/languages/pipp/pipp.pbc
-	-$(MKPATH) $(LIB_DIR)/languages/pipp/library
-	$(CP) library/*.pbc $(LIB_DIR)/languages/pipp/library
-	-$(MKPATH) $(LIB_DIR)/languages/pipp/dynext
-	$(CP) dynext/*$(LOAD_EXT) $(LIB_DIR)/languages/pipp/dynext
+	$(CP) $(PHP_LIBS) $(LIB_DIR)/library
 
 #	-$(MKPATH) $(MANDIR)/man1
 #	$(POD2MAN) doc/running.pod > $(MANDIR)/man1/parrot-pipp.1
@@ -215,7 +211,7 @@ win32-inno-installer: installable
 #	$(POD2MAN) doc/running.pod > man/man1/parrot-pipp.1
 #	-$(MKPATH) man/html
 #	pod2html --infile doc/running.pod --outfile man/html/parrot-pipp.html
-	$(CP) installable_pipp@exe@ parrot-pipp.exe
+	$(CP) installable_pipp$(EXE) parrot-pipp.exe
 	$(PERL) $(LIB_DIR)/tools/dev/mk_inno_language.pl pipp
 	iscc parrot-pipp.iss
 
@@ -328,12 +324,12 @@ codetest-pod:
 # cleaning up
 clean: clean-pmc clean-test clean-hash
 	$(RM_F) \
-  library/*.pbc \
+  $(PHP_LIBS) \
   src/pct/gen_grammar.pir \
   src/pct/gen_actions.pir \
   pipp.pbc \
   pipp.c \
-  pipp.$(O) \
+  pipp$(O) \
   pipp$(EXE)
 
 clean-pmc:

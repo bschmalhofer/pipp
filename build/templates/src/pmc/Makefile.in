@@ -1,8 +1,8 @@
 # Build the PMCs for Pipp.
 
 # Set up commands
-CP            := @cp@
 PERL          := @perl@
+CP            := @cp@
 RM_F          := @rm_f@
 PMCBUILD      := $(PERL) @build_dir@/tools/build/dynpmc.pl
 CC            := @cc@
