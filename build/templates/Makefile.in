@@ -322,7 +322,7 @@ codetest-pod:
 	- $(PERL) @build_dir@/t/doc/pod.t $(T_POD)
 
 # cleaning up
-clean: clean-pmc clean-test clean-hash
+clean: clean-pmc clean-test
 	$(RM_F) \
   $(PHP_LIBS) \
   src/pct/gen_grammar.pir \
@@ -342,9 +342,6 @@ clean-test:
   t/php/*.out \
   t/pmc/*.pir \
   pipp_test_run.tar.gz
-
-clean-hash:
-	$(RM_F) "$(HASH_OBJS)"
 
 realclean: clean
 	$(RM_F) Makefile
