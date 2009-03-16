@@ -14,6 +14,7 @@ parrot
 /installable_pipp.ext
 /pipp.o
 /pipp.obj
+/pipp.pbc
 
 # generated from grammar files
 /src/pct/gen_*.pir
