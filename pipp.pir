@@ -80,10 +80,10 @@ Bernhard Schmalhofer - L<Bernhard.Schmalhofer@gmx.de>
     # load bytecode from the standard search pathes
     # the current dir for an uninstalled Pipp
     # versiondir/library for an installed Pipp
-    load_bytecode 'pipplib.pbc'
-    load_bytecode 'php_ctype.pbc'
-    load_bytecode 'php_gmp.pbc'
-    load_bytecode 'php_pcre.pbc'
+    load_bytecode 'pipp_library/pipplib.pbc'
+    load_bytecode 'pipp_library/php_ctype.pbc'
+    load_bytecode 'pipp_library/php_gmp.pbc'
+    load_bytecode 'pipp_library/php_pcre.pbc'
 
     load_bytecode 'CGI/QueryHash.pbc'
     load_bytecode 'dumper.pbc'

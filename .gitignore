@@ -7,7 +7,6 @@
 parrot
 
 # generated libraryies and executables
-/*.pbc
 /pipp.c
 /pipp
 /pipp.exe

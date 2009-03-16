@@ -101,11 +101,11 @@ PHP_SRC_STD_EXT := \
   src/common/php_var.pir \
   src/common/php_versioning.pir
 
-PHP_LIBS := \
-  pipplib.pbc \
-  php_ctype.pbc \
-  php_gmp.pbc \
-  php_pcre.pbc
+PIPP_LIBS := \
+  pipp_library/pipplib.pbc \
+  pipp_library/php_ctype.pbc \
+  pipp_library/php_gmp.pbc \
+  pipp_library/php_pcre.pbc
 
 # default
 all: pipp$(EXE)
@@ -146,12 +146,12 @@ Makefile: build/templates/Makefile.in
 pipp$(EXE): pipp.pbc
 	$(PBC_TO_EXE) pipp.pbc
 
-pipp.pbc: $(PIPP_GROUP) $(PHP_LIBS)
+pipp.pbc: $(PIPP_GROUP) $(PIPP_LIBS)
 
 $(PIPP_GROUP): $(PMC_DEPS) 
 	$(MAKE) $(PMC_DIR) build
 
-pipplib.pbc: \
+pipp_library/pipplib.pbc: \
   src/common/builtins.pir \
   src/common/guts.pir \
   src/common/eval.pir \
@@ -160,16 +160,16 @@ pipplib.pbc: \
   $(PHP_SRC_STD_EXT) \
   src/common/php_API.pir \
   src/common/php_MACRO.pir
-	$(PARROT) -o pipplib.pbc src/common/builtins.pir
+	$(PARROT) -o pipp_library/pipplib.pbc src/common/builtins.pir
 
-php_ctype.pbc: src/common/php_ctype.pir src/common/php_MACRO.pir
-	$(PARROT) -o php_ctype.pbc src/common/php_ctype.pir
+pipp_library/php_ctype.pbc: src/common/php_ctype.pir src/common/php_MACRO.pir
+	$(PARROT) -o pipp_library/php_ctype.pbc src/common/php_ctype.pir
 
-php_gmp.pbc: src/common/php_gmp.pir src/common/php_MACRO.pir
-	$(PARROT) -o php_gmp.pbc src/common/php_gmp.pir
+pipp_library/php_gmp.pbc: src/common/php_gmp.pir src/common/php_MACRO.pir
+	$(PARROT) -o pipp_library/php_gmp.pbc src/common/php_gmp.pir
 
-php_pcre.pbc: src/common/php_pcre.pir src/common/php_MACRO.pir
-	$(PARROT) -o php_pcre.pbc src/common/php_pcre.pir
+pipp_library/php_pcre.pbc: src/common/php_pcre.pir src/common/php_MACRO.pir
+	$(PARROT) -o pipp_library/php_pcre.pbc src/common/php_pcre.pir
 
 src/pct/gen_grammar.pir: $(LIBRARY_DIR)/PGE/Perl6Grammar.pir src/pct/grammar.pg
 	$(PARROT) $(LIBRARY_DIR)/PGE/Perl6Grammar.pir \
@@ -199,7 +199,8 @@ install: installable
 	$(CHMOD) 0755 $(BIN_DIR)/parrot-pipp$(EXE)
 	-$(MKPATH) $(LIB_DIR)/languages/pipp
 	$(CP) pipp.pbc $(LIB_DIR)/languages/pipp/pipp.pbc
-	$(CP) $(PHP_LIBS) $(LIB_DIR)/library
+	-$(MKPATH) $(LIB_DIR)/library/pipp_library
+	$(CP) $(PIPP_LIBS) $(LIB_DIR)/library/pipp_library
 
 #	-$(MKPATH) $(MANDIR)/man1
 #	$(POD2MAN) doc/running.pod > $(MANDIR)/man1/parrot-pipp.1
@@ -324,7 +325,7 @@ codetest-pod:
 # cleaning up
 clean: clean-pmc clean-test
 	$(RM_F) \
-  $(PHP_LIBS) \
+  $(PIPP_LIBS) \
   src/pct/gen_grammar.pir \
   src/pct/gen_actions.pir \
   pipp.pbc \
