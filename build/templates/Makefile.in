@@ -201,6 +201,7 @@ install: installable
 	$(CP) pipp.pbc $(LIB_DIR)/languages/pipp/pipp.pbc
 	-$(MKPATH) $(LIB_DIR)/library/pipp_library
 	$(CP) $(PIPP_LIBS) $(LIB_DIR)/library/pipp_library
+	$(CP) $(PIPP_GROUP) $(LIB_DIR)/dynext
 
 #	-$(MKPATH) $(MANDIR)/man1
 #	$(POD2MAN) doc/running.pod > $(MANDIR)/man1/parrot-pipp.1
@@ -344,8 +345,11 @@ clean-test:
   t/pmc/*.pir \
   pipp_test_run.tar.gz
 
-realclean: clean
+realclean: clean realclean-pmc
 	$(RM_F) Makefile
+
+realclean-pmc:
+	$(MAKE) $(PMC_DIR) realclean
 
 # Local variables:
 #   mode: makefile

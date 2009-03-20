@@ -58,6 +58,7 @@ help:
 	@echo ""
 	@echo "Cleaning:"
 	@echo "  clean:             Clean up."
+	@echo "  realclean:         Also clean up the Makefile."
 	@echo ""
 
 $(PIPP_GROUP): $(PMC_SOURCES)
@@ -73,4 +74,7 @@ install:
 # cleaning up
 clean:
 	$(RM_F) "*dump" "php*.c" "pmc_*h" "pipp_group.h" "*$(O)" "*$(LOAD_EXT)"
+	$(RM_F) "$(PIPP_GROUP)"
 
+realclean: clean
+	$(RM_F) Makefile
