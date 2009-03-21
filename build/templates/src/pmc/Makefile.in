@@ -20,7 +20,7 @@ INSTALL_DIR   := $(LIB_DIR)/dynext
 LOAD_EXT      := @load_ext@
 O             := @o@
 
-PIPP_GROUP    := $(DYNEXT_DIR)/pipp_group$(LOAD_EXT)
+PMC_GROUP    := $(DYNEXT_DIR)/pipp_group$(LOAD_EXT)
 
 PMCS          := \
   php \
@@ -44,7 +44,7 @@ PMC_SOURCES := \
 
 
 # default
-build: $(PIPP_GROUP)
+build: $(PMC_GROUP)
 
 
 # This is a listing of all targets, that are meant to be called by users
@@ -60,7 +60,7 @@ help:
 	@echo "  clean:             Clean up."
 	@echo ""
 
-$(PIPP_GROUP): $(PMC_SOURCES)
+$(PMC_GROUP): $(PMC_SOURCES)
 	$(PMCBUILD) generate $(PMCS)
 	$(PMCBUILD) compile $(PMCS)
 	$(PMCBUILD) linklibs $(PMCS)
