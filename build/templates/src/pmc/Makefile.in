@@ -72,5 +72,6 @@ install:
 
 # cleaning up
 clean:
+	$(RM_F) $(PMC_GROUP)
 	$(RM_F) "*dump" "php*.c" "pmc_*h" "pipp_group.h" "*$(O)" "*$(LOAD_EXT)"
 
