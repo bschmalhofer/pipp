@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-languages/pipp/t/harness - A harness for Pipp
+t/harness - A testing harness for Pipp
 
 =head1 SYNOPSIS
 
@@ -12,9 +12,11 @@ languages/pipp/t/harness - A harness for Pipp
 
   perl t/harness --with-pct
 
-  perl t/harness --verbose t/hello.t
+  perl t/harness --verbose t/pmc/boolean.t
 
 =head1 DESCRIPTION
+
+A harness based on Test::Harness and Test::Harness::Archive.
 
 If I'm called with no args, I run the complete suite.
 
