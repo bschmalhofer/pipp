@@ -74,7 +74,7 @@ install:
 # cleaning up
 clean:
 	$(RM_F) "*dump" "php*.c" "pmc_*h" "pipp_group.h" "*$(O)" "*$(LOAD_EXT)"
-	$(RM_F) "$(PIPP_GROUP)"
+	$(RM_F) "$(PMC_GROUP)"
 
 realclean: clean
 	$(RM_F) Makefile
