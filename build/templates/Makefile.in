@@ -1,7 +1,6 @@
-## arguments we want to run parrot with
-PARROT_ARGS   :=
+# Makefile for pipp
 
-## configuration settings
+# configuration settings
 VERSION_DIR   := @versiondir@
 BIN_DIR       := @bin_dir@
 LIB_DIR       := @lib_dir@$(VERSION_DIR)
@@ -31,7 +30,7 @@ NQP           := $(BUILD_DIR)/compilers/nqp/nqp.pbc
 PCT           := $(BUILD_DIR)/runtime/parrot/library/PCT.pbc
 PBC_TO_EXE    := $(BUILD_DIR)/pbc_to_exe$(EXE)
 
-PIPP_GROUP    := $(DYNEXT_DIR)/pipp_group$(LOAD_EXT)
+PMC_GROUP     := $(DYNEXT_DIR)/pipp_group$(LOAD_EXT)
 
 PMC_DEPS      := \
   $(PMC_DIR)/php.pmc \
@@ -116,9 +115,8 @@ help:
 	@echo "Following targets are available for the user:"
 	@echo ""
 	@echo "Building:"
-	@echo "  all:               Build pipp.pbc"
+	@echo "  all:               Build pipp$(EXE)"
 	@echo "                     This is the default."
-	@echo "  pipp$(EXE):        A fancy executable."
 	@echo ""
 	@echo "Testing:"
 	@echo "  test:              Run the test suite for Pipp."
@@ -146,9 +144,9 @@ Makefile: build/templates/Makefile.in
 pipp$(EXE): pipp.pbc
 	$(PBC_TO_EXE) pipp.pbc
 
-pipp.pbc: $(PIPP_GROUP) $(PIPP_LIBS)
+pipp.pbc: $(PMC_GROUP) $(PIPP_LIBS)
 
-$(PIPP_GROUP): $(PMC_DEPS) 
+$(PMC_GROUP): $(PMC_DEPS) 
 	$(MAKE) $(PMC_DIR) build
 
 pipp_library/pipplib.pbc: \
@@ -226,13 +224,10 @@ test-php:
 	- $(PERL) t/harness --with-php
 
 # run the test suite, create a TAP archive and send it off to smolder
-smolder_test : smoke
-smoke : all
+smoke: all
 	- $(PERL) t/harness --archive --send-to-smolder
 
 
-# make sure debugging output is disabled while running the tests
-export PMCDEBUG=
 
 # this does not work yet
 test-pcc-testsuite: all t/pcc-testsuite
