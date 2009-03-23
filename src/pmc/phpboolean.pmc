@@ -1,11 +1,13 @@
 /*
-Copyright (C) 2008, The Perl Foundation.
 
 =head1 NAME
 
 pmc/phpboolean.pmc - PHP Boolean
 
 =head1 DESCRIPTION
+
+C<PhpBoolean> extends C<Boolean> to provide Pipp-specific
+boolean behavior.
 
 =head2 Methods
 

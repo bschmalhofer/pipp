@@ -15,7 +15,6 @@ Tests C<PhpBoolean> PMC.
 
 =cut
 
-
 .sub 'main' :main
     $P0 = loadlib "pipp_group"
 
