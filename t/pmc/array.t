@@ -18,7 +18,7 @@ Tests the PhpArray PMC.
 .sub main :main
     $P0 = loadlib "pipp_group"
 
-    .include 'include/test_more.pir'
+    .include 'test_more.pir'
 
     plan(91)
 
