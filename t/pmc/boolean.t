@@ -1,4 +1,3 @@
-#! ../../parrot
 # Copyright (C) 2008, The Perl Foundation.
 
 =head1 NAME
@@ -20,9 +19,10 @@ Tests C<PhpBoolean> PMC.
 
     .include "test_more.pir"
 
-    plan(2)
+    plan(5)
 
     truth_tests()
+    type_tests()
 .end
 
 .sub truth_tests
@@ -36,6 +36,21 @@ Tests C<PhpBoolean> PMC.
 
     is(true, 1, "true PhpBoolean is 1")
     is(false, "", "false PhpBoolean is empty")
+.end
+
+.sub type_tests
+    .local pmc true, false
+    .local string true_type, false_type
+
+    true = new 'PhpBoolean'
+    true = 1
+    true_type = typeof true
+    is(true_type, "boolean", "type of true")
+
+    false = new 'PhpBoolean'
+    false = 0
+    false_type = typeof false
+    is(false_type, "boolean", "type of false")
 .end
 
 # Local Variables:

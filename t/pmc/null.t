@@ -1,4 +1,3 @@
-#! ../../parrot
 # Copyright (C) 2008, The Perl Foundation.
 
 =head1 NAME
@@ -20,10 +19,11 @@ Tests C<PhpNull> PMC.
 
     .include "test_more.pir"
 
-    plan(2)
+    plan(3)
 
     truth_tests()
     stringification_tests()
+    type_tests()
 .end
 
 .sub truth_tests
@@ -43,6 +43,17 @@ Tests C<PhpNull> PMC.
     s = null_value
     is_ok = s == ''
     ok( is_ok, 'stringification' )
+    is( null_value, '', 'stringification with is()' )
+.end
+
+.sub type_tests
+    .local pmc    null_value
+    .local string null_type
+
+    null_value = new 'PhpNull'
+
+    null_type = typeof null_value
+    is(null_type, "NULL", "type of null")
 .end
 
 # Local Variables:
