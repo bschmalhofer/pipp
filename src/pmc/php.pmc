@@ -68,11 +68,11 @@ information see F<src/pmc.c>.
 =cut
 
 */
-    void* get_pointer() {
+    VTABLE void* get_pointer() {
         return Php_PMC;
     }
 
-    void set_pointer(void *ptr) {
+    VTABLE void set_pointer(void *ptr) {
         Php_PMC = (PMC *)ptr;
     }
 

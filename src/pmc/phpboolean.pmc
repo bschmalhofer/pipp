@@ -38,7 +38,7 @@ Return the string 'boolean'.
 =cut
 
 */
-    STRING* name() {
+    VTABLE STRING* name() {
         return Parrot_str_new_constant(INTERP, "boolean");
     }
 
@@ -51,7 +51,7 @@ Return the string '1' or ''.
 =cut
 
 */
-    STRING* get_string() {
+    VTABLE STRING* get_string() {
         if (SELF.get_integer())
             return Parrot_str_new_constant(INTERP, "1");
         else

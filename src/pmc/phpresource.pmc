@@ -32,7 +32,7 @@ Raises an exception. Use C<init_pmc()>.
 =cut
 
 */
-    void init() {
+    VTABLE void init() {
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_INVALID_OPERATION,
                        "PhpResource init without pmc");
     }

@@ -32,7 +32,7 @@ Return the string 'NULL'.
 =cut
 
 */
-    STRING* name() {
+    VTABLE STRING* name() {
         return Parrot_str_new_constant(INTERP, "NULL");
     }
 
