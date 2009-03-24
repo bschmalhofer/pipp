@@ -149,7 +149,7 @@ Return the string 'string'.
 
             if (s1 != s2 && (*s2 == '\0' || isspace((unsigned char)*s2))) {
                 retval = pmc_new(INTERP, dynpmc_PhpFloat);
-                VTABLE_set_number(INTERP, retval, d);
+                VTABLE_set_number_native(INTERP, retval, d);
             }
             else {
                 retval = pmc_new(INTERP, dynpmc_PhpInteger);
