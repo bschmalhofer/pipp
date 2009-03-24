@@ -19,7 +19,7 @@ Tests C<PhpBoolean> PMC.
 
     .include "test_more.pir"
 
-    plan(5)
+    plan(4)
 
     truth_tests()
     type_tests()

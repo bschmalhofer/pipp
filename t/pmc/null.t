@@ -19,7 +19,7 @@ Tests C<PhpNull> PMC.
 
     .include "test_more.pir"
 
-    plan(3)
+    plan(4)
 
     truth_tests()
     stringification_tests()
