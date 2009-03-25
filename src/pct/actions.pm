@@ -440,7 +440,6 @@ method switch_statement($/) {
                          :blocktype('immediate'),
                          $( $<statement_list>[$count] )
                      );
-        $then.blocktype('immediate');
         my $expr  := PAST::Op.new(
                          :pasttype('call'),
                          :name('infix:=='),
@@ -460,7 +459,7 @@ method switch_statement($/) {
     }
     if ( $<default> ) {
         my $default := $( $<default>[0] );
-        $default.blocktype('immediate');
+        # $default.blocktype('immediate');
         $past.push( $default );
     }
     while ($count > 0) {
@@ -476,7 +475,6 @@ method switch_statement($/) {
                          :blocktype('immediate'),
                          $( $<statement_list>[$count] )
                      );
-        $then.blocktype('immediate');
         $past  := PAST::Op.new(
                       :pasttype('if'),
                       :node( $/ ),
