@@ -859,6 +859,10 @@ method param_list($/) {
     make $block;
 }
 
+method break($/) {
+    make PAST::Stmts.new( :name('break') );
+}
+
 method empty_statement($/) {
     make PAST::Stmts.new( :name('empty statement') );
 }

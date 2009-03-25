@@ -323,6 +323,7 @@ language_output_is( 'Pipp', <<'CODE', '', 'switch, single non-matching case' );
 switch (22) {
     case 11:
        echo 'no match';
+       break;
 }
 
 ?>
@@ -334,6 +335,7 @@ language_output_is( 'Pipp', <<'CODE', 'match', 'switch, single matching case' );
 switch (22) {
     case 22:
        echo 'match';
+       break;
 }
 
 ?>
@@ -345,6 +347,7 @@ language_output_is( 'Pipp', <<'CODE', 'default', 'switch, default case' );
 switch (22) {
     case 22:
        echo 'default';
+       break;
 }
 
 ?>
@@ -356,8 +359,10 @@ language_output_is( 'Pipp', <<'CODE', 'twentytwo', 'switch, two cases' );
 switch (22) {
     case 21:
        echo 'twentyone';
+       break;
     case 22:
        echo 'twentytwo';
+       break;
 }
 
 ?>

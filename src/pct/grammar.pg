@@ -124,6 +124,7 @@ token close_short_tag {
 # statements
 
 rule statement {
+    | <break>                          {*}  #= break
     | <namespace_definition>           {*}  #= namespace_definition
     | <return_statement>               {*}  #= return_statement
     | <require_once_statement>         {*}  #= require_once_statement
@@ -163,6 +164,9 @@ rule empty_statement {
     ';' {*}
 }
 
+rule break {
+    'break' <.statement_delimiter> {*}
+}
 rule namespace_definition {
     'namespace' <namespace_name>?  {*}       #= open
     <block>                        {*}       #= close
@@ -215,8 +219,8 @@ rule else_clause {
 rule switch_statement {
     'switch' '(' <expression> ')'
     '{'
-        [ 'case' <literal> ':' <statement_list>  ]*
-        [ 'default'        ':' <default=statement_list>  ]?
+        [ 'case' <literal> ':' <statement_list> ]*
+        [ 'default'        ':' <default=statement_list> ]?
     '}' {*}
 }
 
