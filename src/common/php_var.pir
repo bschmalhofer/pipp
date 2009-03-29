@@ -78,7 +78,6 @@ Dumps a string representation of variable to output
 
 =cut
 
-.include "library/dumper.pir"
 .include "cclass.pasm"
 
 # TODO: pass in indent_level, proper escaping

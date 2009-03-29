@@ -516,7 +516,6 @@ NOT IMPLEMENTED.
 
 =cut
 
-.include "library/dumper.pir"
 .include "cclass.pasm"
 
 .sub 'print_r'
