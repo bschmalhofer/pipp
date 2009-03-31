@@ -1016,7 +1016,7 @@ method quote_term($/, $key) {
     my $past;
     if $key eq 'literal' {
         $past := PAST::Val.new(
-            :value( ~$<quote_literal> ),
+            :value( ~$($<quote_literal>) ),
             :returns('PhpString'),
             :node($/)
         );
