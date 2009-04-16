@@ -26,7 +26,7 @@ Tests the sub 'eval' used for supporting embedding Pipp in other applications.
 #.end
 
 .sub 'main' :main
-    .include "include/test_more.pir"
+    .include "test_more.pir"
     plan(1)
 
     ok( 1, 'no tests implemented yet')
