@@ -47,6 +47,8 @@ Sets the referenced PMC to C<initializer>.
 
 */
     VTABLE void init_pmc(PMC *initializer) {
+        PMC_pmc_val(SELF) = initializer;
+        PObj_custom_mark_SET(SELF);
     }
 
 /*
@@ -59,6 +61,7 @@ Get the referenced PMC.
 
 */
     VTABLE PMC *get_pmc() {
+        return PMC_pmc_val(SELF);
     }
 
 /*
