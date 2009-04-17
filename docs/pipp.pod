@@ -14,6 +14,14 @@ Implement PHP.
 Support well behaving PHP extensions.
 See also L<../ROADMAP>.
 
+=head1 Where can I get it?
+
+L<http://github.com/bschmalhofer/pipp/tree/master>.
+
+=head1 Where can I report bugs ?
+
+Pipp uses github Issues for issue tracking, L<http://github.com/bschmalhofer/pipp/issues>.
+
 =head1 Divergences of Pipp
 
 A listing of things that Pipp does differently from the standard PHP.

@@ -7,11 +7,6 @@ internals - Design and Implementation of Pipp
 
 See L<pipp.pod> on where to get the code.
 
-=head1 Issue tracking
-
-Not decided yet. Will be documented in L<pipp.pod>.
-See also F<../ROADMAP>.
-
 =head1 Testing
 
 See L<testing.pod>.
