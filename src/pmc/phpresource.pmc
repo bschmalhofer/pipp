@@ -23,6 +23,9 @@ pmclass PhpResource
     group    pipp_group
     hll      PHP {
 
+   ATTR PMC    *pointee;  /* the resource that is handled by the PhpResource PMC */
+
+
 /*
 
 =item C<void init()>
