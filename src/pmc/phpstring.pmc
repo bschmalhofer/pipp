@@ -142,7 +142,7 @@ Return the string 'string'.
 
         if (s1 != s2 && (*s2 == '\0' || isspace((unsigned char)*s2))) {
             retval = pmc_new(INTERP, dynpmc_PhpInteger);
-            PMC_int_val(retval) = i;
+            VTABLE_set_integer_native(INTERP, retval, i);
         }
         else {
             FLOATVAL d = strtod(s1, &s2);
@@ -153,7 +153,7 @@ Return the string 'string'.
             }
             else {
                 retval = pmc_new(INTERP, dynpmc_PhpInteger);
-                PMC_int_val(retval) = 0;
+                VTABLE_set_integer_native(INTERP, retval, i);
             }
         }
 
