@@ -19,25 +19,29 @@ Tests C<PhpBoolean> PMC.
 
     .include "test_more.pir"
 
-    plan(2)
+    plan(4)
 
-    type_tests()
-.end
-
-.sub type_tests
-    .local pmc my_string, ref_to_my_string
+    .local pmc my_string, ref_to_my_string, dereferenced
     .local string type
 
+    # create a string 
     my_string = new 'PhpString'
     my_string = 'this is a Pipp String'
-    ref_to_my_string = new 'PhpResource', my_string
-
     type = typeof my_string
     is(type, "string", "type of my_string")
 
+    # create a reference to the string
+    ref_to_my_string = new 'PhpResource', my_string
     type = typeof ref_to_my_string
     is(type, "resource", "type of ref_to_my_string")
 
+    # dereference the string
+    dereferenced = deref ref_to_my_string
+    type = typeof dereferenced
+    is(type, "string", "type of dereferenced")
+    diag(dereferenced)
+    is(dereferenced, 'this is a Pipp String', 'content on dereferenced string')
+    
 .end
 
 # Local Variables:
