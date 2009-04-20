@@ -83,7 +83,11 @@ create_files(
 );
 
 #  Done.
-done($config{'make'});
+if (not defined $config{'make'}) {
+    warn "missing field 'make' from parrot_config\n";
+} else {
+    done($config{'make'});
+}
 
 
 #  Process command line arguments into a hash.
@@ -143,7 +147,8 @@ sub create_files {
         }
 
         $config->{'win32_libparrot_copy'} = $^O eq 'MSWin32' ? 'copy $(BUILD_DIR)\libparrot.dll .' : '';
-        $content =~ s/@(\w+)@/$config->{$1}/g;
+        $content =~ s/@(\w+)@/
+            defined $config->{$1} ? $config->{$1} : (warn("'$1' is missing from parrot_config"), '')/ge;
         if ($^O eq 'MSWin32') {
             $content =~ s{/}{\\}g;
         }
