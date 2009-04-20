@@ -50,8 +50,24 @@ Sets the referenced PMC to C<initializer>.
 
 */
     VTABLE void init_pmc(PMC *initializer) {
-        PMC_pmc_val(SELF) = initializer;
-        PObj_custom_mark_SET(SELF);
+        Parrot_PhpResource_attributes *attrs =
+            mem_allocate_zeroed_typed(Parrot_PhpResource_attributes);
+        PMC_data(SELF) = attrs;
+        PARROT_PHPRESOURCE(SELF)->pointee = initializer;
+        PObj_custom_mark_destroy_SETALL(SELF);
+    }
+
+/*
+
+=item C<void destroy()>
+
+Destroys the PMC.
+
+=cut
+
+*/
+    VTABLE void destroy() {
+        mem_sys_free(PMC_data(SELF));
     }
 
 /*
@@ -64,7 +80,7 @@ Get the referenced PMC.
 
 */
     VTABLE PMC *get_pmc() {
-        return PMC_pmc_val(SELF);
+        return  PARROT_PHPRESOURCE(SELF)->pointee;
     }
 
 /*
@@ -77,7 +93,7 @@ Marks the referenced PMC as live.
 
 */
     VTABLE void mark() {
-        pobject_lives(INTERP, (PObj *)PMC_pmc_val(SELF));
+        pobject_lives(INTERP, (PObj *) PARROT_PHPRESOURCE(SELF)->pointee);
     }
 
 /*
