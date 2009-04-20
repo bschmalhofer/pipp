@@ -83,7 +83,11 @@ create_files(
 );
 
 #  Done.
-done($config{'make'});
+if (not defined $config{'make'}) {
+    warn "missing field 'make' from parrot_config\n";
+} else {
+    done($config{'make'});
+}
 
 
 #  Process command line arguments into a hash.
