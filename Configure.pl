@@ -25,7 +25,6 @@ use 5.008;
 use File::Spec  ();
 
 # Modules from CPAN
-use File::Which ();
 
 my %valid_options = (
     'help'          => 'Display configuration help',
@@ -107,9 +106,8 @@ sub get_command_options {
 
 
 sub read_parrot_config {
-    my @parrot_config_exe = @_;
     my %config;
-    for my $exe (@parrot_config_exe) {
+  CONFIG_EXE: for my $exe (@_) {
         no warnings;
         if (open my $parrot_config_fh, '-|', "$exe --dump") {
             print "Reading configuration information from $exe\n";
@@ -119,12 +117,22 @@ sub read_parrot_config {
             close $parrot_config_fh;
 
             if (%config) {
-                my $parrot_config_exe    = File::Which::which($exe) if $exe eq 'parrot_config';
+                # look for absolute path to parrot_config if File::Which is installed
+                my $parrot_config_exe;
+                if ($exe eq 'parrot_config') {
+                    eval { require File::Which;
+                    };
+                    unless ( $@ ) {
+                         File::Which->import();
+                         $parrot_config_exe = File::Which::which($exe);
+                    }
+                }
                 $parrot_config_exe     ||= File::Spec->rel2abs($exe);
                 $parrot_config_exe     ||= File::Spec->rel2abs("$exe$config{EXE}");
                 $parrot_config_exe     ||= $exe;
-                $config{parrot_config_exe} = $parrot_config_exe;
-                last;
+                $config{parrot_config_exe} = $exe;
+
+                last CONFIG_EXE; # got config, so we are finished
             }
         }
     }
