@@ -1,4 +1,6 @@
-# Copyright (C) 2008, The Perl Foundation.
+<?php
+
+/*
 
 =head1 NAME
 
@@ -17,23 +19,29 @@ See L<http://www.php.net/manual/en/ref.url.php>.
 
 =cut
 
-use strict;
-use warnings;
+*/
 
-use FindBin;
-use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
+require_once 'Test.php';
 
-use Test::More     tests => 8;
-use Pipp::Test;
+plan(5);
+$count = 1;
 
+is( base64_encode('Plum Headed Parakeet'), "UGx1bSBIZWFkZWQgUGFyYWtlZXQ=", 'base64_encode', $count);
+$count++;
 
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'base64_encode(str)' );
-<?php
-  echo base64_encode('Plum Headed Parakeet'), "\n";
-?>
-CODE
-UGx1bSBIZWFkZWQgUGFyYWtlZXQ=
-OUT
+is( base64_encode(3.14), "My4xNA==", 'base64_encode(3.14)', $count);
+$count++;
+
+is( base64_encode(TRUE), "MQ==", 'base64_encode(TRUE)', $count);
+$count++;
+
+is( base64_encode(NULL), "", 'base64_encode(NULL)', $count);
+$count++;
+
+is( base64_decode('UGx1bSBIZWFkZWQgUGFyYWtlZXQ='), "Plum Headed Parakeet", 'base64_decode(str)', $count);
+$count++;
+
+/*
 
 language_output_like( 'Pipp', <<'CODE', <<'OUT', 'base64_encode(no arg)' );
 <?php
@@ -41,30 +49,6 @@ language_output_like( 'Pipp', <<'CODE', <<'OUT', 'base64_encode(no arg)' );
 ?>
 CODE
 /base64_encode\(\) expects exactly 1 parameter, 0 given/
-OUT
-
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'base64_encode(3.14)' );
-<?php
-  echo base64_encode(3.14), "\n";
-?>
-CODE
-My4xNA==
-OUT
-
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'base64_encode(TRUE)' );
-<?php
-  echo base64_encode(TRUE), "\n";
-?>
-CODE
-MQ==
-OUT
-
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'base64_encode(NULL)' );
-<?php
-  echo base64_encode(NULL), "\n";
-?>
-CODE
-
 OUT
 
 language_output_like( 'Pipp', <<'CODE', <<'OUT', 'base64_encode(array)' );
@@ -76,14 +60,6 @@ CODE
 /base64_encode\(\) expects parameter 1 to be string, array given/
 OUT
 
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'base64_decode(str)' );
-<?php
-  echo base64_decode('UGx1bSBIZWFkZWQgUGFyYWtlZXQ='), "\n";
-?>
-CODE
-Plum Headed Parakeet
-OUT
-
 language_output_like( 'Pipp', <<'CODE', <<'OUT', 'base64_decode(no arg)' );
 <?php
   echo base64_decode(), "\n";
@@ -92,9 +68,7 @@ CODE
 /base64_decode\(\) expects at least 1 parameter, 0 given/
 OUT
 
-# Local Variables:
-#   mode: cperl
-#   cperl-indent-level: 4
-#   fill-column: 100
-# End:
-# vim: expandtab shiftwidth=4:
+*/
+
+# vim: expandtab shiftwidth=4 ft=php:
+?>
