@@ -22,6 +22,14 @@ function isnt($got, $expected, $desc, $count) {
     proclaim($got != $expected, $desc, $count );
 }
 
+function like($got, $expected, $desc, $count) {
+    proclaim( preg_match($expected, $got), $desc, $count );
+}
+
+function unlike($got, $expected, $desc, $count) {
+    proclaim( ! preg_match($expected, $got), $desc, $count );
+}
+
 function proclaim($cond, $desc, $count) {
     if ( ! $cond ) {
        echo 'not ';
