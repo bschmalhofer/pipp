@@ -19,8 +19,8 @@ php_pcre.pir - PHP pcre  Library
 
 .sub '__onload' :anon :load :init
     push_eh _handler
-    load_bytecode "library/pcre.pir"
-    load_bytecode "library/libpcre.pir"
+    load_bytecode "pcre.pir"                # load_bytecode "pcre.pbc" gives failures
+    load_bytecode "libpcre.pir"             # load_bytecode "libpcre.pbc" gives failures
     $P0 = get_global ['PCRE'], 'init'
     $P1 = $P0()
     new $P0, 'PhpInteger'
