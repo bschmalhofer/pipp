@@ -43,16 +43,10 @@ $count++;
 
 /*
 
+The following test are not executed, as STDERR is not captured yet.
+
 like( base64_encode(), "base64_encode\(\) expects exactly 1 parameter, 0 given", 'base64_encode(no arg)', $count);
 $count++;
-
-language_output_like( 'Pipp', <<'CODE', <<'OUT', 'base64_encode(no arg)' );
-<?php
-  echo base64_encode(), "\n";
-?>
-CODE
-/base64_encode\(\) expects exactly 1 parameter, 0 given/
-OUT
 
 language_output_like( 'Pipp', <<'CODE', <<'OUT', 'base64_encode(array)' );
 <?php
