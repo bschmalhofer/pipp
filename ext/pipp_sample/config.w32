@@ -1,0 +1,13 @@
+// $Id$
+// vim:ft=javascript
+
+// If your extension references something external, use ARG_WITH
+// ARG_WITH("pipp_sample", "for pipp_sample support", "no");
+
+// Otherwise, use ARG_ENABLE
+// ARG_ENABLE("pipp_sample", "enable pipp_sample support", "no");
+
+if (PHP_PIPP_SAMPLE != "no") {
+	EXTENSION("pipp_sample", "pipp_sample.c");
+}
+
