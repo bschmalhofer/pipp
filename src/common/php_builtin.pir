@@ -52,8 +52,6 @@ NOT IMPLEMENTED.
 
 =item C<void debug_print_backtrace(void)>
 
-
-
 NOT IMPLEMENTED.
 
 =cut

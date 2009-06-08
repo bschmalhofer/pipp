@@ -1,7 +1,6 @@
-
 =head1 NAME
 
-pipp.pir - driver program for Pipp, PCT and PHC variants
+pipp.pir - driver program for the PCT and PHC variants of Pipp
 
 =head1 SYNOPSIS
 
@@ -12,23 +11,22 @@ pipp.pir - driver program for Pipp, PCT and PHC variants
    ./pipp --variant=pct t/in_php/01_sea_only.t
 
    ./pipp --variant=phc t/in_php/01_sea_only.t
-   ./pipp --run-nqp        t.nqp
+   ./pipp --run-nqp     t.nqp
 
 =head1 DESCRIPTION
 
-pipp.pbc is the driver for Pipp.
+pipp is the driver for Pipp.
 
 =head1 Variants
 
-=head2 Pipp pct
+=head2 Pipp PCT
 
-Parse PHP with the Parrot compiler toolkit. This is the default variant.
+Parse PHP with the Parrot Compiler Toolkit. This is the default variant.
 
 =head2 Pipp phc
 
 Take XML from phc and transform it with XSLT to PIR setting up PAST.
 Run the PAST with the help of PCT.
-
 
 =head1 SEE ALSO
 
