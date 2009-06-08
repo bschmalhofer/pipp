@@ -23,7 +23,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Test::More     tests => 9;
+use Test::More     tests => 11;
 use Pipp::Test;
 
 
@@ -90,13 +90,12 @@ CODE
 /Wrong parameter count for strlen\(\)/
 OUT
 
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'extension_loaded() returns FALSE, echo' );
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'extension_loaded("asdf") returns FALSE' );
 <?php
   echo extension_loaded("asdf");
 ?>
 CODE
 OUT
-
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'extension_loaded() returns FALSE, var_dump' );
 <?php
@@ -104,6 +103,25 @@ language_output_is( 'Pipp', <<'CODE', <<'OUT', 'extension_loaded() returns FALSE
 ?>
 CODE
 bool(false)
+OUT
+
+# This fails, when pipp_sample has not been copied to the dir 'extension'
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'extension_loaded("pipp_sample")' );
+<?php
+  echo extension_loaded("pipp_sample");
+  echo "\n";
+?>
+CODE
+1
+OUT
+
+# This fails, when pipp_sample has not been copied to the dir 'extension'
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'extension_loaded("pipp_sample")' );
+<?php
+  var_dump( extension_loaded("pipp_sample") );
+?>
+CODE
+bool(true)
 OUT
 
 unlink 'file.txt' if -f 'file.txt';

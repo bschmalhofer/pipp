@@ -1,5 +1,3 @@
-# Copyright (C) 2008-2009, The Perl Foundation.
-
 =begin comments
 
 Pipp::Grammar::Actions - AST transformations for Pipp
@@ -38,7 +36,6 @@ method TOP($/, $key) {
                                   'have_pipp:')
             )
         );
-
 
         # by default all symbols are lexical
         $main.symbol_defaults( :scope('lexical') );

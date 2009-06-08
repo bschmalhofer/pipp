@@ -56,6 +56,7 @@ Bernhard Schmalhofer - L<Bernhard.Schmalhofer@gmx.de>
 .include 'src/pct/gen_grammar.pir'
 .include 'src/pct/gen_actions.pir'
 .include 'src/pct/quote_expression.pir'
+.include 'iglobals.pasm'
 
 .HLL '_pipp'
 
@@ -131,8 +132,10 @@ Bernhard Schmalhofer - L<Bernhard.Schmalhofer@gmx.de>
     pipp_ini = opt['d']
     set_ini( pipp_ini )
 
+    # some initialisation
     set_predefined_variables()
     set_superglobals()
+    load_extensions()
 
     # target of compilation
     .local string target
@@ -444,6 +447,34 @@ ERROR:
 
     $P0 = new 'PhpArray'
     set_root_global ['pipp'], '$_ENV', $P0
+
+.end
+
+# For now try to load a fixed set of extensions.
+.sub load_extensions
+
+    # create the module registry in the internal namespace
+    .local pmc extension_registry
+    extension_registry = new 'Hash'
+    set_hll_global 'extension_registry', extension_registry   
+
+    # set up path for dynamic library loading
+    .local pmc interp, lib_paths, dynext_path
+    interp      = getinterp
+    lib_paths   = interp[.IGLOBALS_LIB_PATHS]
+    dynext_path = lib_paths[2]
+    unshift dynext_path, 'extensions'
+
+    # try to load pipp_sample, it's OK when it's not there
+    .local string lib_name
+    lib_name = 'pipp_sample'
+    .local pmc loaded_lib
+    loaded_lib = loadlib lib_name
+    .local int lib_is_loaded
+    lib_is_loaded = defined loaded_lib
+    unless lib_is_loaded goto LIB_NOT_LOADED
+        extension_registry[lib_name] = 1
+  LIB_NOT_LOADED:    # never mind
 
 .end
 

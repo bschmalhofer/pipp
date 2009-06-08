@@ -1,5 +1,3 @@
-# Copyright (C) 2008, The Perl Foundation.
-
 =head1 NAME
 
 php_builtin.pir - PHP builtin Library
@@ -188,6 +186,19 @@ As currently no extensions are supported, this function always returns false.
 =cut
 
 .sub 'extension_loaded'
+    .param pmc lib_name
+
+    .local pmc extension_registry
+    extension_registry = get_root_global ['_pipp'], 'extension_registry'
+    .local pmc lib_is_loaded
+    lib_is_loaded = extension_registry[lib_name]
+ 
+    unless null lib_is_loaded goto NOT_NULL
+      .RETURN_BOOL(0)
+  NOT_NULL:
+    unless lib_is_loaded goto NOT_LOADED
+      .RETURN_BOOL(1)
+  NOT_LOADED:
     .RETURN_BOOL(0)
 .end
 
