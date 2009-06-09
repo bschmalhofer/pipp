@@ -95,13 +95,14 @@ language_output_is( 'Pipp', <<'CODE', '.', 'get_include_path()' );
 ?>
 CODE
 
+# XXX sort the output from get_loaded_extensions() 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'get_loaded_extensions()' );
 <?php
   print join( ';', get_loaded_extensions());
   echo "\n";
 ?>
 CODE
-standard;Reflection
+standard;Reflection;pipp_sample
 OUT
 
 

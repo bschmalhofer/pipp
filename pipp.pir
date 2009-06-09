@@ -458,6 +458,10 @@ ERROR:
     extension_registry = new 'Hash'
     set_hll_global 'extension_registry', extension_registry   
 
+    # Add the extensions that are planned to be implemented in PIR
+    extension_registry['standard']   = 1
+    extension_registry['Reflection'] = 1
+
     # set up path for dynamic library loading
     .local pmc interp, lib_paths, dynext_path
     interp      = getinterp

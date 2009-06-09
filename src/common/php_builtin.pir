@@ -4,13 +4,19 @@ php_builtin.pir - PHP builtin Library
 
 =head1 DESCRIPTION
 
+Builtin functions of PHP.
+
+=cut
+
+.include 'src/common/php_MACRO.pir'
+.include 'iterator.pasm'
+
 =head2 Functions
 
 =over 4
 
 =cut
 
-.include 'src/common/php_MACRO.pir'
 
 =item C<bool class_exists(string classname [, bool autoload])>
 
@@ -379,20 +385,29 @@ NOT IMPLEMENTED.
 =cut
 
 .sub 'get_loaded_extensions'
-    .local pmc array
-    array = new ['PhpArray']
+    # get the list of loaded extensions from the registry
+    .local pmc extension_registry, loaded_extensions 
+    extension_registry = get_root_global ['_pipp'], 'extension_registry'     # the source
+    loaded_extensions = new ['PhpArray']                                     # the result
 
-    .local pmc extension
+    # go through the hash and get all the keys
+    .local pmc iter, extension
+    .local string key
+    iter = new ['Iterator'], extension_registry
+    iter = .ITERATE_FROM_START
 
+  iter_loop:
+    unless iter goto iter_end
+
+    key = shift iter
     extension = new ['PhpString']
-    extension = 'standard'
-    push array, extension
+    extension = key
+    push loaded_extensions, extension
 
-    extension = new ['PhpString']
-    extension = 'Reflection'
-    push array, extension
+    branch iter_loop
+  iter_end:
 
-    .return(array)
+    .return(loaded_extensions)
 .end
 
 =item C<array get_object_vars(object obj)>
