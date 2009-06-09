@@ -1,10 +1,10 @@
-# Copyright (C) 2008, The Perl Foundation.
-
 =head1 NAME
 
-php_reflection.pir - PHP reflection  Library
+php_reflection.pir - PHP reflection Library
 
 =head1 DESCRIPTION
+
+A PIR implementation of the PHP reflection extension.
 
 =head2 Functions
 
@@ -15,14 +15,21 @@ php_reflection.pir - PHP reflection  Library
 .HLL 'Pipp'
 
 .sub 'onload' :anon :init :load
-    .local pmc p6meta, reflectionclass_proto
+
+    # create the classes 'ReflectionClass' and 'ReflectionExtension' 
+
+    .local pmc p6meta
     p6meta = get_hll_global ['PippObject'], '$!P6META'
+
+    .local pmc reflectionclass_proto
     reflectionclass_proto = p6meta.'new_class'('ReflectionClass')      #, 'parent'=>'Boolean Any')
-    p6meta.'register'('ReflectionClass', 'parent'=>reflectionclass_proto, 'protoobject'=>reflectionclass_proto)
+    p6meta.'register'('ReflectionClass', 'parent' => reflectionclass_proto, 'protoobject' => reflectionclass_proto)
+
+    .local pmc reflectionextension_proto
+    reflectionextension_proto = p6meta.'new_class'('ReflectionExtension')      #, 'parent'=>'Boolean Any')
+    p6meta.'register'('ReflectionExtension', 'parent' => reflectionextension_proto, 'protoobject' => reflectionextension_proto)
+
 .end
-
-
-
 
 
 =item C<mixed Reflection::export(Reflector r [, bool return])>
@@ -274,7 +281,8 @@ NOT IMPLEMENTED.
 
 =item C<string ReflectionClass::getName()>
 
-Returns the class' name
+Returns the name of the reflected class.
+Always returns 'Foo'.
 
 NOT IMPLEMENTED.
 
@@ -581,7 +589,7 @@ NOT IMPLEMENTED.
 
 .namespace ['ReflectionExtension']
 .sub '__construct' :method
-    not_implemented()
+    .param pmc name
 .end
 
 =item C<string ReflectionExtension::__toString()>
@@ -698,7 +706,7 @@ NOT IMPLEMENTED.
 
 .namespace ['ReflectionExtension']
 .sub 'getName' :method
-    not_implemented()
+    .return ('pipp_sample')
 .end
 
 =item C<string ReflectionExtension::getVersion()>

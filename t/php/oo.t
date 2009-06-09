@@ -19,7 +19,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Pipp::Test tests => 17;
+use Pipp::Test tests => 18;
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'definition of a class' );
 <?php
@@ -298,6 +298,18 @@ echo "\n";
 ?>
 CODE
 Foo
+OUT
+
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'ReflectionExtension::getName()' );
+<?php
+
+$refl_1 = new ReflectionExtension('pipp_sample');
+echo $refl_1->getName();
+echo "\n";
+
+?>
+CODE
+pipp_sample
 OUT
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'static member' );

@@ -45,6 +45,7 @@ PMC_DEPS      := \
 INTERNALS_PIR := \
   src/classes/Object.pir
 
+# TODO: php_reflection is not in 'standard'
 PHP_SRC_STD_EXT := \
   src/common/php_API.pir \
   src/common/php_array.pir \
@@ -86,6 +87,7 @@ PHP_SRC_STD_EXT := \
   src/common/php_proc_open.pir \
   src/common/php_quot_print.pir \
   src/common/php_rand.pir \
+  src/common/php_reflection.pir \
   src/common/php_reg.pir \
   src/common/php_sha1.pir \
   src/common/php_soundex.pir \
