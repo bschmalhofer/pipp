@@ -135,12 +135,7 @@ OUT
 
 class Foo {
 
-    has $.member is rw;
-
-    # default value for members is not implemented yet in Rakudo
-    method set_member() {
-        $.member = 'a member of Foo';
-    }
+    has $.member = 'a member of Foo';
 
     method echo_member() {
         print $.member;
@@ -149,7 +144,6 @@ class Foo {
 }
 
 my Foo $foo .= new();
-$foo.set_member();
 $foo.echo_member();
 
 =cut
