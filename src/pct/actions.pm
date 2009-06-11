@@ -30,10 +30,10 @@ method TOP($/, $key) {
         # Create the main startup block.
         # This makes sure that needed libs are loaded
         $main.loadinit().push(
-            PAST::Op.new( :inline('$P0 = compreg "Pipp"',
-                                  'unless null $P0 goto have_pipp',
-                                  'load_bytecode "pipp.pbc"',
-                                  'have_pipp:')
+            PAST::Op.new( :inline("  $P0 = compreg 'Pipp'",
+                                  "  unless null $P0 goto pipp_pbc_is_loaded",
+                                  "      load_bytecode 'pipp.pbc'",
+                                  "pipp_pbc_is_loaded:")
             )
         );
 
