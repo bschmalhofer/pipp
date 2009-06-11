@@ -97,6 +97,22 @@ See C<!keyword_class> in Rakudo.
     .return (metaclass)
 .end
 
+=item pipp_meta_compose(Class metaclass)
+
+Compose the class.  This includes resolving any inconsistencies
+and creating the protoobjects.
+
+=cut
+
+.sub 'pipp_meta_compose' :multi(['Class'])
+    .param pmc metaclass
+
+    .local pmc p6meta
+    p6meta = get_hll_global ['PippObject'], '$!P6META'
+
+    .tailcall p6meta.'register'(metaclass, 'parent' => 'PippObject')
+.end
+
 
 =item pipp_add_attribute(class, attr_name, attr_value)
 

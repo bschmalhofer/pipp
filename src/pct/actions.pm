@@ -924,20 +924,11 @@ method class_definition($/, $key) {
                 :pasttype('call'),
                 :name('!PROTOINIT'),
                 PAST::Op.new(
-                    :pasttype('callmethod'),
-                    :name('register'),
-                    PAST::Var.new(
-                        :scope('package'),
-                        :name('$!P6META'),
-                        :namespace('PippObject')
-                    ),
+                    :pasttype('call'),
+                    :name('pipp_meta_compose'),
                     PAST::Var.new(
                         :scope('register'),
                         :name('def')
-                    ),
-                    PAST::Val.new(
-                        :value('PippObject'),
-                        :named('parent')
                     )
                 )
             )
