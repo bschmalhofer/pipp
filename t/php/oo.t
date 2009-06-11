@@ -1,5 +1,3 @@
-# Copyright (C) 2008-2009, The Perl Foundation.
-
 =head1 NAME
 
 t/php/oo.t - testing object oriented features
@@ -90,7 +88,7 @@ language_output_is( 'Pipp', <<'CODE', <<'OUT', 'class with a public member' );
 <?php
 
 class Dings {
-    public $foo_member = 'a member of Foo';
+    public $foo_member is rw = 'a member of Foo';
 
     function bums() {
         echo "The function bums() in class Dings has been called.\n";
@@ -152,7 +150,7 @@ language_output_is( 'Pipp', <<'CODE', <<'OUT', 'accessing an attribute', todo =>
 <?php
 
 class Foo {
-    public $member = 'a member of Foo';
+    public $member is rw = 'a member of Foo';
 
     function echo_member() {
         echo $this->member;
