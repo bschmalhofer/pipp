@@ -886,7 +886,8 @@ method class_definition($/, $key) {
                 ),
                 PAST::Op.new(
                     :pasttype('call'),
-                    :name('pipp_create_class'),
+                    :name('pipp_meta_create'),
+                    'class',
                     PAST::Val.new( :value($?CLASS) )
                 )
             )

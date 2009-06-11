@@ -76,20 +76,25 @@ For returning a value from a function.
     .return (value)
 .end
 
-=item pipp_create_class(name)
+=item pipp_meta_create(type,name)
 
 Internal helper method to create a class.
 See C<!keyword_class> in Rakudo.
 
 =cut
 
-.sub 'pipp_create_class'
+.sub 'pipp_meta_create'
+    .param string type
     .param string name
 
-    .local pmc class
-    class = newclass name
+    if type == 'class' goto class
+    'die'("Unsupported type ", type)
 
-    .return (class)
+  class:
+    .local pmc metaclass
+    metaclass = newclass name
+
+    .return (metaclass)
 .end
 
 
