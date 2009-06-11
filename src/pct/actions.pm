@@ -68,10 +68,7 @@ method SEA($/) {
     make PAST::Op.new(
         :name('echo'),
         :node($/),
-        PAST::Val.new(
-            :value(~$/),
-            :returns('PhpString')
-        )
+        ~$/
     );
 }
 
@@ -113,12 +110,9 @@ method block($/) {
 
 method inline_sea_short_tag($/) {
    make PAST::Op.new(
-       PAST::Val.new(
-           :value(~$<SEA_empty_allowed>),
-           :returns('PhpString')
-       ),
+       :node($/),
        :name('echo'),
-       :node($/)
+       ~$<SEA_empty_allowed>
    );
 }
 
@@ -719,7 +713,7 @@ method class_member_definition($/) {
                 :name('def'),
                 :scope('register')
             ),
-            PAST::Val.new( :value($member_name) )
+            $member_name
         ),
         PAST::Op.new(
             :pasttype('call'),
@@ -728,9 +722,7 @@ method class_member_definition($/) {
                 :name('def'),
                 :scope('register'),
             ),
-            PAST::Val.new(
-                :value($member_name)
-            ),
+            $member_name,
             $<literal>.ast
         ),
         # add accessors for the attribute
@@ -888,7 +880,7 @@ method class_definition($/, $key) {
                     :pasttype('call'),
                     :name('pipp_meta_create'),
                     'class',
-                    PAST::Val.new( :value($?CLASS) )
+                    $?CLASS
                 )
             )
         );
@@ -945,7 +937,7 @@ method class_definition($/, $key) {
                     ),
                     PAST::Val.new(
                         :value('PippObject'),
-                        :named( PAST::Val.new( :value('parent') ) )
+                        :named('parent')
                     )
                 )
             )
