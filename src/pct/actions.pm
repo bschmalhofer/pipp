@@ -52,7 +52,7 @@ method TOP($/, $key) {
 
         # a PHP script consists of a list of statements
         for $<sea_or_code> {
-            $block.push( $($_) );
+            $block.push( $_.ast );
         }
 
         make $block;
@@ -60,7 +60,7 @@ method TOP($/, $key) {
 }
 
 method sea_or_code($/, $key) {
-    make $( $/{$key} );
+    make $/{$key}.ast;
 }
 
 # The sea, text, surrounding the island, code, is printed out
@@ -76,13 +76,13 @@ method SEA($/) {
 }
 
 method code_short_tag($/) {
-    make $( $<statement_list> );
+    make $<statement_list>.ast;
 }
 
 method code_echo_tag($/) {
-    my $stmts := $( $<statement_list> );
+    my $stmts := $<statement_list>.ast;
 
-    my $echo := $( $<argument_list> );
+    my $echo := $<argument_list>.ast;
     $echo.name( 'echo' );
 
     $stmts.unshift( $echo );
@@ -91,24 +91,24 @@ method code_echo_tag($/) {
 }
 
 method code_script_tag($/) {
-    make $( $<statement_list> );
+    make $<statement_list>.ast;
 }
 
 method statement($/, $key) {
-    make $( $/{$key} );
+    make $/{$key}.ast;
 }
 
 method statement_list($/) {
     my $stmts := PAST::Stmts.new( :node($/) );
     for $<statement> {
-        $stmts.push( $($_) );
+        $stmts.push( $_.ast );
     }
 
     make $stmts;
 }
 
 method block($/) {
-    make $( $<statement_list> );
+    make $<statement_list>.ast;
 }
 
 method inline_sea_short_tag($/) {
@@ -133,7 +133,7 @@ method namespace_definition($/, $key) {
             PAST::Block.new(
                 :namespace($?NS),
                 :blocktype('immediate'),
-                $( $<block> )
+                $<block>.ast
             );
         $?NS := '';
 
@@ -146,7 +146,7 @@ method return_statement($/) {
         :name('return'),
         :pasttype('call'),
         :node( $/ ),
-        $( $/<expression> )
+        $/<expression>.ast
     );
 }
 
@@ -155,12 +155,12 @@ method require_once_statement($/) {
         :name('require'),
         :pasttype('call'),
         :node( $/ ),
-        $( $/<quote> )
+        $/<quote>.ast
     );
 }
 
 method echo_statement($/) {
-    my $past := $( $<argument_list> );
+    my $past := $<argument_list>.ast;
     $past.name( 'echo' );
 
     make $past;
@@ -171,23 +171,23 @@ method print_statement($/) {
         :pasttype('call'),
         :name('print'),
         :node($/),
-        $( $<expression> )
+        $<expression>.ast
     );
 }
 
 method expression_statement($/) {
-    make $( $<expression> );
+    make $<expression>.ast;
 }
 
 method closure_call($/) {
-    my $past := $( $<argument_list> );
-    $past.unshift( $( $<var> ) );
+    my $past := $<argument_list>.ast;
+    $past.unshift( $<var>.ast );
 
     make $past;
 }
 
 method function_call($/) {
-    my $past := $( $<argument_list> );
+    my $past := $<argument_list>.ast;
     $past.name( ~$<function_name> );
 
     make $past;
@@ -201,14 +201,14 @@ method instantiate_array($/) {
                 );
 
     for $<array_argument> {
-        $past.push( $($_) );
+        $past.push( $_.ast );
     }
 
     make $past;
 }
 
 method array_argument($/, $key) {
-    make $( $/{$key} );
+    make $/{$key}.ast;
 }
 
 method key_value_pair($/) {
@@ -217,16 +217,16 @@ method key_value_pair($/) {
        :pasttype( 'call' ),
        :name( 'infix:=>' ),
        :returns( 'Array' ),
-       $( $<key> ),
-       $( $<value> )
+        $<key>.ast,
+        $<value>.ast
    );
 }
 
 method method_call($/) {
-    my $past := $( $<argument_list> );
+    my $past := $<argument_list>.ast;
     $past.name( ~$<method_name> );
     $past.pasttype( 'callmethod' );
-    $past.unshift( $( $<var> ) );
+    $past.unshift( $<var>.ast );
 
     make $past;
 }
@@ -236,7 +236,7 @@ method constructor_call($/) {
     my $class_name := ~$<class_name>;
     # The constructor needs a list of it's arguments, or an empty list
     my $cons_call  := +$<argument_list> ??
-                        $( $<argument_list>[0] )
+                         $<argument_list>[0].ast
                         !!
                         PAST::Op.new();
     $cons_call.pasttype('callmethod');
@@ -329,7 +329,7 @@ method constant_definition($/) {
                 :viviself('PhpNull'),
                 :namespace($ns)
             ),
-            $( $<literal> )
+            $<literal>.ast
         )
     );
 
@@ -358,7 +358,7 @@ method argument_list($/) {
                     :node($/)
                 );
     for $<expression> {
-        $past.push( $($_) );
+        $past.push( $_.ast );
     }
 
     make $past;
@@ -369,8 +369,8 @@ method do_while_statement($/) {
     make PAST::Op.new(
         :pasttype('repeat_while'),
         :node($/),
-        $( $<expression> ),
-        $( $<block> )
+        $<expression>.ast,
+        $<block>.ast
     );
 }
 
@@ -378,22 +378,22 @@ method if_statement($/) {
     my $past := PAST::Op.new(
         :node($/),
         :pasttype('if'),
-        $( $<expression> ),
-        $( $<block> )
+        $<expression>.ast,
+        $<block>.ast
     );
 
     my $else := undef;
     if +$<else_clause> {
-        $else := $( $<else_clause>[0]<block> );
+        $else := $<else_clause>[0]<block>.ast;
     }
     my $first_eif := undef;
     if +$<elseif_clause> {
         my $count := +$<elseif_clause> - 1;
-        $first_eif := $( $<elseif_clause>[$count] );
+        $first_eif := $<elseif_clause>[$count].ast;
         while $count != 0 {
-            my $eif := $( $<elseif_clause>[$count] );
+            my $eif := $<elseif_clause>[$count].ast;
             $count--;
-            my $eifchild := $( $<elseif_clause>[$count] );
+            my $eifchild := $<elseif_clause>[$count].ast;
             if ($else) {
                 $eif.push($else);
             }
@@ -418,23 +418,23 @@ method elseif_clause($/) {
     make PAST::Op.new(
         :node($/),
         :pasttype('if'),
-        $( $<expression> ),
-        $( $<block> )
+        $<expression>.ast,
+        $<block>.ast
     );
 }
 
 # taken from lolcode
 method switch_statement($/) {
     my $past;
-    my $it    := $( $<expression> );
+    my $it    := $<expression>.ast;
     my $count := +$<literal>;
     if $count >= 1 {
         # there is at least a single case
         $count    := $count - 1;
-        my $val   := $( $<literal>[$count] );
+        my $val   := $<literal>[$count].ast;
         my $then  := PAST::Block.new(
                          :blocktype('immediate'),
-                         $( $<statement_list>[$count] )
+                         $<statement_list>[$count].ast
                      );
         my $expr  := PAST::Op.new(
                          :pasttype('call'),
@@ -454,13 +454,13 @@ method switch_statement($/) {
         $past := PAST::Stmts.new();
     }
     if ( $<default> ) {
-        my $default := $( $<default>[0] );
+        my $default := $<default>[0].ast;
         # $default.blocktype('immediate');
         $past.push( $default );
     }
     while ($count > 0) {
         $count := $count - 1;
-        my $val   := $( $<literal>[$count] );
+        my $val   := $<literal>[$count].ast;
         my $expr  := PAST::Op.new(
                          :pasttype('call'),
                          :name('infix:=='),
@@ -469,7 +469,7 @@ method switch_statement($/) {
                      );
         my $then  := PAST::Block.new(
                          :blocktype('immediate'),
-                         $( $<statement_list>[$count] )
+                         $<statement_list>[$count].ast
                      );
         $past  := PAST::Op.new(
                       :pasttype('if'),
@@ -486,8 +486,8 @@ method switch_statement($/) {
 method var_assign($/) {
     make PAST::Op.new(
         :pasttype('bind'),
-        $( $<var> ),
-        $( $<expression> ),
+        $<var>.ast,
+        $<expression>.ast,
     );
 }
 
@@ -513,7 +513,7 @@ method array_elem($/) {
             :viviself('PhpArray'),
             :lvalue(1),
         ),
-        $( $<expression> )
+        $<expression>.ast
     );
 }
 
@@ -544,7 +544,7 @@ method simple_var($/) {
 }
 
 method var($/, $key) {
-    make $( $/{$key} );
+    make $/{$key}.ast;
 }
 
 method this($/) {
@@ -566,16 +566,16 @@ method while_statement($/) {
     make PAST::Op.new(
         :node($/),
         :pasttype('while'),
-        $( $<expression> ),
-        $( $<block> )
+        $<expression>.ast,
+        $<block>.ast
     );
 }
 
 method for_statement($/) {
-    my $init  := $( $<var_assign> );
+    my $init  := $<var_assign>.ast;
 
-    my $cond  := $( $<expression>[0] );
-    my $work  := PAST::Stmts.new( $( $<block> ), $( $<expression>[1] ) );
+    my $cond  := $<expression>[0].ast;
+    my $work  := PAST::Stmts.new( $<block>.ast, $<expression>[1].ast );
     my $while := PAST::Op.new(
                        $cond,
                        $work,
@@ -589,7 +589,7 @@ method for_statement($/) {
 # Handle the operator precedence table.
 method expression($/, $key) {
     if $key eq 'end' {
-        make $( $<expr> );
+        make $<expr>.ast;
     }
     else {
         my $past := PAST::Op.new( :name($<type>),
@@ -599,7 +599,7 @@ method expression($/, $key) {
                                   :node($/)
                                 );
         for @($/) {
-            $past.push( $($_) );
+            $past.push( $_.ast );
         }
 
         make $past;
@@ -608,11 +608,11 @@ method expression($/, $key) {
 
 
 method term($/, $key) {
-    make $( $/{$key} );
+    make $/{$key}.ast;
 }
 
 method literal($/, $key) {
-    make $( $/{$key} );
+    make $/{$key}.ast;
 }
 
 method true($/) {
@@ -660,7 +660,7 @@ method closure($/, $key) {
 
     if $key eq 'open' {
         # note that $<param_list> creates a new PAST::Block.
-        my $block := $( $<param_list> );
+        my $block := $<param_list>.ast;
 
         # set up scope 'package' for the superglobals
         our @?SUPER_GLOBALS;
@@ -678,7 +678,7 @@ method closure($/, $key) {
         my $block := @?BLOCK.shift();
 
         $block.control('return_pir');
-        $block.push( $( $<block> ) );
+        $block.push( $<block>.ast );
 
         make $block;
     }
@@ -689,7 +689,7 @@ method function_definition($/, $key) {
 
     if $key eq 'open' {
         # note that $<param_list> creates a new PAST::Block.
-        my $block := $( $<param_list> );
+        my $block := $<param_list>.ast;
 
         # set up scope 'package' for the superglobals
         our @?SUPER_GLOBALS;
@@ -702,7 +702,7 @@ method function_definition($/, $key) {
 
         $block.name( ~$<function_name> );
         $block.control('return_pir');
-        $block.push( $( $<block> ) );
+        $block.push( $<block>.ast );
 
         make $block;
     }
@@ -731,7 +731,7 @@ method class_member_definition($/) {
             PAST::Val.new(
                 :value($member_name)
             ),
-            $( $<literal> )
+            $<literal>.ast
         ),
         # add accessors for the attribute
         PAST::Block.new(
@@ -766,7 +766,7 @@ method class_static_member_definition($/) {
                 :viviself('PhpNull'),
                 :namespace($ns)
             ),
-            $( $<literal> )
+            $<literal>.ast
         )
     );
 
@@ -778,7 +778,7 @@ method class_method_definition($/, $key) {
 
     if $key eq 'open' {
         # note that $<param_list> creates a new PAST::Block.
-        my $block := $( $<param_list> );
+        my $block := $<param_list>.ast;
         $block.name( ~$<method_name> );
         $block.blocktype( 'method' );
         $block.control('return_pir');
@@ -807,7 +807,7 @@ method class_method_definition($/, $key) {
     else {
         our $?NS;
         our $?CLASS;
-        my $ns :=  $?NS ~ '\\' ~ $?CLASS ~ '::';
+        my $ns := $?NS ~ '\\' ~ $?CLASS ~ '::';
 
         my $block := @?BLOCK.shift();
 
@@ -828,7 +828,7 @@ method class_method_definition($/, $key) {
             )
         );
 
-        $block.push( $( $<block> ) );
+        $block.push( $<block>.ast );
 
         make $block;
     }
@@ -893,7 +893,7 @@ method class_definition($/, $key) {
         );
 
         # assign predeclared constant __CLASS__
-        my $ns :=  $?NS ~ '\\' ~ $?CLASS ~ '::';
+        my $ns := $?NS ~ '\\' ~ $?CLASS ~ '::';
         $block.push(
             PAST::Op.new(
                 :pasttype('bind'),
@@ -922,7 +922,7 @@ method class_definition($/, $key) {
 
         # setup of class constants is done in the 'loadinit' node
         for $<class_member_or_method_definition> {
-            $block.push( $($_) );
+            $block.push( $_.ast );
         }
 
         # It's a new class definition. Make proto-object.
@@ -957,11 +957,11 @@ method class_definition($/, $key) {
 }
 
 method class_member_or_method_definition($/, $key) {
-    make $( $/{$key} );
+    make $/{$key}.ast;
 }
 
 method quote($/) {
-    make $( $<quote_expression> );
+    make $<quote_expression>.ast;
 }
 
 method quote_expression($/, $key) {
@@ -976,7 +976,7 @@ method quote_expression($/, $key) {
     }
     elsif $key eq 'quote_concat' {
         if +$<quote_concat> == 1 {
-            $past := $( $<quote_concat>[0] );
+            $past := $<quote_concat>[0].ast;
         }
         else {
             $past := PAST::Op.new(
@@ -985,7 +985,7 @@ method quote_expression($/, $key) {
                 :node( $/ )
             );
             for $<quote_concat> {
-                $past.push( $($_) );
+                $past.push( $_.ast );
             }
         }
     }
@@ -995,11 +995,11 @@ method quote_expression($/, $key) {
 method quote_concat($/) {
     my $terms := +$<quote_term>;
     my $count := 1;
-    my $past := $( $<quote_term>[0] );
+    my $past := $<quote_term>[0].ast;
     while ($count != $terms) {
         $past := PAST::Op.new(
             $past,
-            $( $<quote_term>[$count] ),
+             $<quote_term>[$count].ast,
             :pirop('concat'),
             :pasttype('pirop')
         );
@@ -1012,19 +1012,19 @@ method quote_term($/, $key) {
     my $past;
     if $key eq 'literal' {
         $past := PAST::Val.new(
-            :value( ~$($<quote_literal>) ),
+            :value( ~$<quote_literal>.ast ),
             :returns('PhpString'),
             :node($/)
         );
     }
     else {
-        $past := $( $/{ $key } );
+        $past := $/{$key}.ast;
     }
     make $past;
 }
 
 method curly_interpolation($/) {
-    make $( $<var> );
+    make $<var>.ast;
 }
 
 
