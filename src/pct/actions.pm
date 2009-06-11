@@ -922,14 +922,10 @@ method class_definition($/, $key) {
         $block.push(
             PAST::Op.new(
                 :pasttype('call'),
-                :name('!PROTOINIT'),
-                PAST::Op.new(
-                    :pasttype('call'),
-                    :name('pipp_meta_compose'),
-                    PAST::Var.new(
-                        :scope('register'),
-                        :name('def')
-                    )
+                :name('pipp_meta_compose'),
+                PAST::Var.new(
+                    :scope('register'),
+                    :name('def')
                 )
             )
         );

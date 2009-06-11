@@ -110,7 +110,18 @@ and creating the protoobjects.
     .local pmc p6meta
     p6meta = get_hll_global ['PippObject'], '$!P6META'
 
-    .tailcall p6meta.'register'(metaclass, 'parent' => 'PippObject')
+    .local pmc proto
+    proto = p6meta.'register'(metaclass, 'parent' => 'PippObject')
+
+    # See if there's any attribute initializers.
+    .local pmc WHENCE
+    $P0 = p6meta.'get_parrotclass'(proto)
+    WHENCE = getprop '%!WHENCE', $P0
+    if null WHENCE goto no_whence
+
+    setprop proto, '%!WHENCE', WHENCE
+  no_whence:
+    .return (proto)
 .end
 
 
