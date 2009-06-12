@@ -87,12 +87,18 @@ See C<!keyword_class> in Rakudo.
     .param string type
     .param string name
 
+    .local pmc nsarray
+    $P0 = get_hll_global [ 'Pipp';'Compiler' ], 'parse_name'
+    $P1 = null
+    nsarray = $P0($P1, name)
+
     if type == 'class' goto class
     'die'("Unsupported type ", type)
 
   class:
-    .local pmc metaclass
-    metaclass = newclass name
+    .local pmc ns, metaclass
+    ns = get_hll_namespace nsarray
+    metaclass = newclass ns
 
     .return (metaclass)
 .end

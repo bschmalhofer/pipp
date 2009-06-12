@@ -710,7 +710,7 @@ method class_member_definition($/) {
             :pasttype('call'),
             :name('pipp_add_attribute'),
             PAST::Var.new(
-                :name('def'),
+                :name('metaclass'),
                 :scope('register')
             ),
             $member_name
@@ -719,7 +719,7 @@ method class_member_definition($/) {
             :pasttype('call'),
             :name('!ADD_TO_WHENCE'),
             PAST::Var.new(
-                :name('def'),
+                :name('metaclass'),
                 :scope('register'),
             ),
             $member_name,
@@ -864,15 +864,16 @@ method class_definition($/, $key) {
             :node($/),
             :blocktype('declaration'),
             :pirflags( ':init :load' ),
-            :namespace($?CLASS)
         );
+        $block.namespace( $?CLASS );
+        #$block.namespace( Pipp::Compiler.parse_name($?CLASS) );
 
         # Start of class definition; make PAST to create class object
         $block.push(
             PAST::Op.new(
                 :pasttype('bind'),
                 PAST::Var.new(
-                    :name('def'),
+                    :name('metaclass'),
                     :scope('register'),
                     :isdecl(1)
                 ),
@@ -925,7 +926,7 @@ method class_definition($/, $key) {
                 :name('pipp_meta_compose'),
                 PAST::Var.new(
                     :scope('register'),
-                    :name('def')
+                    :name('metaclass')
                 )
             )
         );

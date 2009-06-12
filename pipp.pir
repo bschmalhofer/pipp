@@ -60,6 +60,8 @@ Bernhard Schmalhofer - L<Bernhard.Schmalhofer@gmx.de>
 
 .HLL '_pipp'
 
+.namespace []
+
 .const string VERSION = "0.0.1"
 
 .sub '__onload' :anon :load :init
@@ -481,6 +483,21 @@ ERROR:
   LIB_NOT_LOADED:    # never mind
 
 .end
+
+.HLL 'pipp'
+
+.namespace ['Pipp';'Compiler']
+
+.sub 'parse_name' :method
+    .param string name
+
+    .local pmc list
+    list = new 'ResizablePMCArray'
+    push list, name
+
+    .return (list)
+.end
+
 
 # Local Variables:
 #   mode: pir
