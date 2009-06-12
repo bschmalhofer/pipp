@@ -488,6 +488,13 @@ ERROR:
 
 .namespace ['Pipp';'Compiler']
 
+.sub 'onload' :load :init :anon
+
+    .local pmc p6meta, pipp_compiler
+    p6meta = get_hll_global ['PippObject'], '$!P6META'
+    pipp_compiler = p6meta.'new_class'('Pipp::Compiler')
+.end
+
 .sub 'parse_name' :method
     .param string name
 

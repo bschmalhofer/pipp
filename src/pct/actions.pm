@@ -864,9 +864,8 @@ method class_definition($/, $key) {
             :node($/),
             :blocktype('declaration'),
             :pirflags( ':init :load' ),
+            :namespace( Pipp::Compiler.parse_name($?CLASS) )
         );
-        $block.namespace( $?CLASS );
-        #$block.namespace( Pipp::Compiler.parse_name($?CLASS) );
 
         # Start of class definition; make PAST to create class object
         $block.push(
