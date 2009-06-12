@@ -283,7 +283,7 @@ See C<!keyword_has> in Rakudo.
     # TODO: check whether the attr exists
     addattribute metaclass, name
 
-    .local pmc attrhash, it
+    .local pmc attrhash
     $P0 = metaclass.'attributes'()
     attrhash = $P0[name]
 
@@ -300,34 +300,19 @@ See C<!keyword_has> in Rakudo.
     attrhash['itype'] = itype
   itype_done:
 
+    # and set any other attributes that came in via the slurpy hash
+    .local pmc it
+    it = iter attr
+  attr_loop:
+    unless it goto attr_done
+    $S0 = shift it
+    $P0 = attr[$S0]
+    attrhash[$S0] = $P0
+    goto attr_loop
+  attr_done:
+
     .return ()
 .end
-
-=item !ADD_TO_WHENCE
-
-Adds a key/value mapping to what will become the WHENCE on a proto-object (we
-don't have a proto-object to stick them on yet, so we put a property on the
-class temporarily, then attach it as the WHENCE clause later).
-
-=cut
-
-.sub '!ADD_TO_WHENCE'
-    .param pmc class
-    .param pmc attr_name
-    .param pmc value
-
-    # Get hash if we have it, if not make it.
-    .local pmc whence_hash
-    whence_hash = getprop '%!WHENCE', class
-    unless null whence_hash goto have_hash
-    whence_hash = new 'PhpArray'
-    setprop class, '%!WHENCE', whence_hash
-
-    # Make entry.
-  have_hash:
-    whence_hash[attr_name] = value
-.end
-
 
 =back
 

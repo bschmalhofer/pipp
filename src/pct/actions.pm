@@ -704,8 +704,10 @@ method function_definition($/, $key) {
 
 method class_member_definition($/) {
     my $member_name := ~$<var_name><ident>;
-
-    make PAST::Stmts.new(
+    
+    my $past := PAST::Stmts.new();
+   
+    $past.push(
         PAST::Op.new(
             :pasttype('call'),
             :name('pipp_meta_attribute'),
@@ -715,18 +717,11 @@ method class_member_definition($/) {
             ),
             $member_name,
             'PhpString'
-        ),
-        PAST::Op.new(
-            :pasttype('call'),
-            :name('!ADD_TO_WHENCE'),
-            PAST::Var.new(
-                :name('metaclass'),
-                :scope('register'),
-            ),
-            $member_name,
-            $<literal>.ast
-        ),
-        # add accessors for the attribute
+        )
+    );
+
+    # add accessors for the attribute
+    $past.push(
         PAST::Block.new(
             :blocktype('declaration'),
             :name($member_name),
@@ -740,6 +735,18 @@ method class_member_definition($/) {
             )
         )
     );
+
+    # Now the init closure
+    if $<literal> {
+        my $var := PAST::Var.new( $<literal>.ast );
+        $var.scope('attribute');
+        my $init_value := $var.viviself();
+        $init_value := make_attr_init_closure($init_value);
+        $init_value.named('init_value');
+        $past.push($init_value);
+    }
+
+    make $past;
 }
 
 method class_static_member_definition($/) {
@@ -1006,6 +1013,26 @@ method quote_term($/, $key) {
 
 method curly_interpolation($/) {
     make $<var>.ast;
+}
+
+sub make_attr_init_closure($init_value) {
+    # Need to not just build the closure, but new_closure it; otherwise, we
+    # run into trouble if our initialization value involves a parameter from
+    # a parametric role.
+    PAST::Op.new(
+        :inline('%r = newclosure %0'),
+        PAST::Block.new(
+            :blocktype('method'),
+            PAST::Stmts.new(
+                PAST::Var.new( :name('$_'), :scope('parameter') ),
+                PAST::Op.new( :pasttype('bind'),
+                    PAST::Var.new( :name('self'), :scope('lexical'), :isdecl(1) ),
+                    PAST::Var.new( :name('self'), :scope('register') )
+                )
+            ),
+            PAST::Stmts.new( $init_value )
+        )
+    );
 }
 
 
