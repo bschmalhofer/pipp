@@ -266,14 +266,14 @@ and creating the protoobjects.
 .end
 
 
-=item pipp_add_attribute(class, attr_name, attr_value)
+=item pipp_meta_attribute(class, attr_name, attr_value)
 
 Adds an attribute with the given name to the class or role.
 See C<!keyword_has> in Rakudo.
 
 =cut
 
-.sub 'pipp_add_attribute'
+.sub 'pipp_meta_attribute'
     .param pmc class
     .param string attr_name
 

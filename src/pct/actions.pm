@@ -708,7 +708,7 @@ method class_member_definition($/) {
     make PAST::Stmts.new(
         PAST::Op.new(
             :pasttype('call'),
-            :name('pipp_add_attribute'),
+            :name('pipp_meta_attribute'),
             PAST::Var.new(
                 :name('metaclass'),
                 :scope('register')
