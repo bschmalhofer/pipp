@@ -713,7 +713,8 @@ method class_member_definition($/) {
                 :name('metaclass'),
                 :scope('register')
             ),
-            $member_name
+            $member_name,
+            'PhpString'
         ),
         PAST::Op.new(
             :pasttype('call'),

@@ -266,18 +266,39 @@ and creating the protoobjects.
 .end
 
 
-=item pipp_meta_attribute(class, attr_name, attr_value)
+=item pipp_meta_attribute(class, name)
 
-Adds an attribute with the given name to the class or role.
+Adds an attribute with the given name to the class.
 See C<!keyword_has> in Rakudo.
 
 =cut
 
 .sub 'pipp_meta_attribute'
-    .param pmc class
-    .param string attr_name
+    .param pmc metaclass
+    .param string name
+    .param string itypename     :optional
+    .param int    has_itypename :opt_flag
+    .param pmc    attr          :slurpy :named
 
-    addattribute class, attr_name
+    # TODO: check whether the attr exists
+    addattribute metaclass, name
+
+    .local pmc attrhash, it
+    $P0 = metaclass.'attributes'()
+    attrhash = $P0[name]
+
+    # Set any itype for the attribute.
+    unless has_itypename goto itype_done
+    .local pmc itype
+    if itypename == 'PhpString' goto itype_pmc
+    itype = get_class itypename
+    goto have_itype
+  itype_pmc:
+    $P0 = get_root_namespace ['parrot';'PhpString']
+    itype = get_class $P0
+  have_itype:
+    attrhash['itype'] = itype
+  itype_done:
 
     .return ()
 .end
