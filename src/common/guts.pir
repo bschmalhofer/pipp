@@ -103,6 +103,124 @@ See C<!keyword_class> in Rakudo.
     .return (metaclass)
 .end
 
+=item pipp_get_flattened_roles_list
+
+Flattens out the list of roles.
+
+=cut
+
+.sub 'pipp_get_flattened_roles_list'
+    .param pmc unflat_list
+    .local pmc flat_list, it, cur_role, nested_roles, nested_it
+    flat_list = root_new ['parrot';'ResizablePMCArray']
+    it = iter unflat_list
+  it_loop:
+    unless it goto it_loop_end
+    cur_role = shift it
+    $I0 = isa cur_role, 'Role'
+    unless $I0 goto error_not_a_role
+    push flat_list, cur_role
+    nested_roles = getprop '@!roles', cur_role
+    if null nested_roles goto it_loop
+    nested_roles = 'pipp_get_flattened_roles_list'(nested_roles)
+    nested_it = iter nested_roles
+  nested_it_loop:
+    unless nested_it goto it_loop
+    $P0 = shift nested_it
+    push flat_list, $P0
+    goto nested_it_loop
+  it_loop_end:
+    .return (flat_list)
+  error_not_a_role:
+    'die'('Can not compose a non-role.')
+.end
+
+=item pipp_compose_role_attributes(class, role)
+
+Helper method to compose the attributes of a role into a class.
+
+=cut
+
+.sub 'pipp_compose_role_attributes'
+    .param pmc class
+    .param pmc role
+
+    .local pmc role_attrs, class_attrs, ra_iter, fixup_list
+    .local string cur_attr
+    role_attrs = inspect role, "attributes"
+    class_attrs = class."attributes"()
+    fixup_list = root_new ['parrot';'ResizableStringArray']
+    ra_iter = iter role_attrs
+  ra_iter_loop:
+    unless ra_iter goto ra_iter_loop_end
+    cur_attr = shift ra_iter
+
+    # Check that this attribute doesn't conflict with one already in the class.
+    $I0 = exists class_attrs[cur_attr]
+    unless $I0 goto no_conflict
+
+    # We have a name conflict. Let's compare the types. If they match, then we
+    # can merge the attributes.
+    .local pmc class_attr_type, role_attr_type
+    $P0 = class_attrs[cur_attr]
+    if null $P0 goto conflict
+    class_attr_type = $P0['type']
+    if null class_attr_type goto conflict
+    $P0 = role_attrs[cur_attr]
+    if null $P0 goto conflict
+    role_attr_type = $P0['type']
+    if null role_attr_type goto conflict
+    goto merge
+
+  conflict:
+    $S0 = "Conflict of attribute '"
+    $S0 = concat cur_attr
+    $S0 = concat "' in composition of role '"
+    $S1 = role
+    $S0 = concat $S1
+    $S0 = concat "'"
+    'die'($S0)
+
+  no_conflict:
+    addattribute class, cur_attr
+    push fixup_list, cur_attr
+  merge:
+    goto ra_iter_loop
+  ra_iter_loop_end:
+
+    # Now we need, for any merged in attributes, to copy property data.
+    .local pmc fixup_iter, class_props, role_props, props_iter
+    class_attrs = class."attributes"()
+    fixup_iter = iter fixup_list
+  fixup_iter_loop:
+    unless fixup_iter goto fixup_iter_loop_end
+    cur_attr = shift fixup_iter
+    role_props = role_attrs[cur_attr]
+    class_props = class_attrs[cur_attr]
+    props_iter = iter role_props
+  props_iter_loop:
+    unless props_iter goto props_iter_loop_end
+    $S0 = shift props_iter
+    $P0 = role_props[$S0]
+    class_props[$S0] = $P0
+    goto props_iter_loop
+  props_iter_loop_end:
+    goto fixup_iter_loop
+  fixup_iter_loop_end:
+.end
+
+=item pipp_meta_compose()
+
+Default meta composer -- does nothing.
+
+=cut
+
+.sub 'pipp_meta_compose' :multi()
+    .param pmc metaclass
+    # Currently, nothing to do.
+    .return (metaclass)
+.end
+
 =item pipp_meta_compose(Class metaclass)
 
 Compose the class.  This includes resolving any inconsistencies
@@ -115,6 +233,23 @@ and creating the protoobjects.
 
     .local pmc p6meta
     p6meta = get_hll_global ['PippObject'], '$!P6META'
+
+    # Parrot handles composing methods into roles, but we need to handle the
+    # attribute composition ourselves.
+    .local pmc roles, roles_it
+    roles = getprop '@!roles', metaclass
+    if null roles goto roles_it_loop_end
+    roles = 'pipp_get_flattened_roles_list'(roles)
+    roles_it = iter roles
+  roles_it_loop:
+    unless roles_it goto roles_it_loop_end
+    $P0 = shift roles_it
+    $I0 = does metaclass, $P0
+    if $I0 goto roles_it_loop
+    metaclass.'add_role'($P0)
+    'pipp_compose_role_attributes'(metaclass, $P0)
+    goto roles_it_loop
+  roles_it_loop_end:
 
     .local pmc proto
     proto = p6meta.'register'(metaclass, 'parent' => 'PippObject')
@@ -170,29 +305,6 @@ class temporarily, then attach it as the WHENCE clause later).
     # Make entry.
   have_hash:
     whence_hash[attr_name] = value
-.end
-
-
-=item !PROTOINIT
-
-Called after a new proto-object has been made for a new class or grammar. It
-finds any WHENCE data that we may need to add.
-
-=cut
-
-.sub '!PROTOINIT'
-    .param pmc proto
-
-    # See if there's any attribute initializers.
-    .local pmc p6meta, WHENCE
-    p6meta = get_hll_global ['PippObject'], '$!P6META'
-    $P0 = p6meta.'get_parrotclass'(proto)
-    WHENCE = getprop '%!WHENCE', $P0
-    if null WHENCE goto no_whence
-
-    setprop proto, '%!WHENCE', WHENCE
-  no_whence:
-    .return (proto)
 .end
 
 
