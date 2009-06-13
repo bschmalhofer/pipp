@@ -703,10 +703,20 @@ method function_definition($/, $key) {
 }
 
 method class_member_definition($/) {
-    my $member_name := ~$<var_name><ident>;
-    
+
     my $past := PAST::Stmts.new();
-   
+
+    # accessor method for the attribute
+    my $member_name := ~$<var_name><ident>;
+    $past.push(
+        PAST::Block.new(
+            :blocktype('method'),
+            :name($member_name),
+            PAST::Var.new( :name($member_name) )
+        )
+    );
+
+    # create the attribute
     $past.push(
         PAST::Op.new(
             :pasttype('call'),
