@@ -703,11 +703,16 @@ method function_definition($/, $key) {
 }
 
 method class_member_definition($/) {
+    our @?BLOCK; # A stack of PAST::Block
 
     my $past := PAST::Stmts.new();
+    my $member_name := ~$<var_name><ident>;
+
+    # declare the attribute
+    my $block := @?BLOCK[0];
+    $block.symbol( $member_name, :scope('attribute') );
 
     # accessor method for the attribute
-    my $member_name := ~$<var_name><ident>;
     $past.push(
         PAST::Block.new(
             :blocktype('method'),
