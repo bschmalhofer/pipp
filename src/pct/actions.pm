@@ -717,7 +717,7 @@ method class_member_definition($/) {
     );
 
     # create the attribute
-    $past.push(
+    my $call_meta_attribute := 
         PAST::Op.new(
             :pasttype('call'),
             :name('pipp_meta_attribute'),
@@ -727,34 +727,20 @@ method class_member_definition($/) {
             ),
             $member_name,
             'PhpString'
-        )
-    );
-
-    # add accessors for the attribute
-    $past.push(
-        PAST::Block.new(
-            :blocktype('declaration'),
-            :name($member_name),
-            :pirflags(':method'),
-            :node( $/ ),
-            PAST::Stmts.new(
-                PAST::Var.new(
-                    :name($member_name),
-                    :scope('attribute')
-                )
-            )
-        )
-    );
+        );
 
     # Now the init closure
     if $<literal> {
-        my $var := PAST::Var.new( $<literal>.ast );
-        $var.scope('attribute');
-        my $init_value := $var.viviself();
-        $init_value := make_attr_init_closure($init_value);
+        my $init_value :=
+            PAST::Val.new(
+                :value( ~$<literal>),
+                :returns( 'PhpString' )
+            );
+        my $init_value := make_attr_init_closure($<literal>.ast);
         $init_value.named('init_value');
-        $past.push($init_value);
+        $call_meta_attribute.push($init_value);
     }
+    $past.push( $call_meta_attribute );
 
     make $past;
 }
