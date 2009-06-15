@@ -11,6 +11,7 @@ pipp.pir - driver program for the PCT and PHC variants of Pipp
    ./pipp --variant=pct t/in_php/01_sea_only.t
 
    ./pipp --variant=phc t/in_php/01_sea_only.t
+
    ./pipp --run-nqp     t.nqp
 
 =head1 DESCRIPTION
@@ -40,17 +41,30 @@ Bernhard Schmalhofer - L<Bernhard.Schmalhofer@gmx.de>
 
 .HLL 'pipp'
 
+.namespace []
+
 .sub '' :anon :load :init
 
     # Pipp uses the Parrot Compiler Toolkit
     load_bytecode 'PCT.pbc'
 
+    # set up PippObject with P6 features,
+    # P6metaclass in set up in P6library.pir
+    $P0 = get_root_global ['parrot'], 'P6metaclass'
+    $P0.'new_class'('PippObject', 'name' => 'Object')
+
+    # cache the metaclass of 'PippObject'
+    .local pmc p6meta
+    p6meta = $P0.'HOW'()
+    set_hll_global ['PippObject'], '$!P6META', p6meta
+
     # Export namespaces to the appropriate HLL ns
     .local pmc parrotns, phpns, exports
     parrotns = get_root_namespace ['parrot']
-    phpns = get_hll_namespace
-    exports = split ' ', 'PAST PCT PGE'
+    phpns    = get_hll_namespace
+    exports  = split ' ', 'PAST PCT PGE'
     parrotns.'export_to'(phpns, exports)
+
 .end
 
 .include 'src/pct/gen_grammar.pir'
