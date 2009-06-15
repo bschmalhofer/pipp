@@ -76,12 +76,30 @@ Return the invocant's auto-vivification closure.
 =item __construct
 
 A default constructor. Used for checking that there are no args.
-TODO: Should be a method.
+See BUILD in Rakudo.
 
 =cut
 
 .sub '__construct' :method
-    .return ()
+    .local pmc p6meta, parrotclass, attributes, it
+    p6meta = get_hll_global ['PippObject'], '$!P6META'
+    parrotclass = p6meta.'get_parrotclass'(self)
+    attributes = inspect parrotclass, 'attributes'
+    it = iter attributes
+  attrinit_loop:
+    unless it goto attrinit_done
+    .local string attrname, keyname
+    .local pmc attr, attrhash
+    attrname = shift it
+    attr = getattribute self, parrotclass, attrname
+    attrhash = attributes[attrname]
+    $P0 = attrhash['init_value']
+    if null $P0 goto attrinit_loop
+    $P0 = $P0(self, attr)
+    attr = $P0
+    goto attrinit_loop
+  attrinit_done:
+    .return (self)
 .end
 
 =back
