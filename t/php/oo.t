@@ -387,9 +387,9 @@ $a->prinT_Class();
 ?>
 CODE
 A
-ecHO_class
+A::ecHO_class
 A
-prinT_Class
+A::prinT_Class
 OUT
 
 # Local Variables:

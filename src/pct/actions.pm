@@ -815,6 +815,7 @@ method class_method_definition($/, $key) {
         my $ns := $?NS ~ '\\' ~ $?CLASS ~ '::';
 
         my $block := @?BLOCK.shift();
+        my $method_name := $?CLASS ~ '::' ~ $block.name();
 
         $block.push(
             PAST::Op.new(
@@ -827,7 +828,7 @@ method class_method_definition($/, $key) {
                     :namespace($ns)
                 ),
                 PAST::Val.new(
-                    :value($block.name()),
+                    :value($method_name),
                     :returns('PhpString'),
                 )
             )
