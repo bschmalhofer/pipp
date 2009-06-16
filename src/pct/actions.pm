@@ -27,7 +27,12 @@ method TOP($/, $key) {
     if $key eq 'open' {
 
         # Create the main startup block.
-        my $main := PAST::Block.new(:hll('pipp'), :pirflags(':main') );
+        my $?FILE := Q:PIR { %r = find_caller_lex '$?FILES' };
+        my $main  := PAST::Block.new(
+                         :hll('pipp'),
+                         :pirflags(':main'),
+                         PAST::Op.new(:inline(".annotate 'file', '" ~ $?FILE ~ "'"))
+                     );
 
         # This makes sure that needed libs are loaded
         $main.loadinit().push(

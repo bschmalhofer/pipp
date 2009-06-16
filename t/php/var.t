@@ -1,5 +1,3 @@
-# Copyright (C) 2008, The Perl Foundation.
-
 =head1 NAME
 
 t/php/var.t - Standard Library var
