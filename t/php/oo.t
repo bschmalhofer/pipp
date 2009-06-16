@@ -146,7 +146,7 @@ $foo.echo_member();
 
 =cut
 
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'accessing an attribute', todo => 'not implemented yet' );
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'accessing an attribute' );
 <?php
 
 class Foo {
