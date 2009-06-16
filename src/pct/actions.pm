@@ -730,8 +730,7 @@ method class_member_definition($/) {
                 :name('metaclass'),
                 :scope('register')
             ),
-            $member_name,
-            'PhpString'
+            $member_name
         );
 
     # Now the init closure

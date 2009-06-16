@@ -143,31 +143,20 @@ See C<!keyword_has> in Rakudo.
 =cut
 
 .sub 'pipp_meta_attribute'
-    .param pmc metaclass
+    .param pmc    metaclass
     .param string name
-    .param string itypename     :optional
-    .param int    has_itypename :opt_flag
     .param pmc    attr          :slurpy :named
 
     # TODO: check whether the attr exists
+    # $P77 = get_root_global ['parrot'], '_dumper'
+    # $P77(metaclass, 'metaclass')
+    # $P77(name, 'name')
     addattribute metaclass, name
 
     .local pmc attrhash
     $P0 = metaclass.'attributes'()
     attrhash = $P0[name]
-
-    # Set any itype for the attribute.
-    unless has_itypename goto itype_done
-    .local pmc itype
-    if itypename == 'PhpString' goto itype_pmc
-    itype = get_class itypename
-    goto have_itype
-  itype_pmc:
-    $P0 = get_root_namespace ['parrot';'PhpString']
-    itype = get_class $P0
-  have_itype:
-    attrhash['itype'] = itype
-  itype_done:
+    # $P77(attrhash, 'attrhash')
 
     # and set any other attributes that came in via the slurpy hash
     .local pmc it
