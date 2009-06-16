@@ -82,7 +82,9 @@ See BUILD in Rakudo.
     $P0 = attrhash['init_value']
     if null $P0 goto attrinit_loop
     $P0 = $P0(self, attr)
-    attr = $P0
+    # $P77 = get_root_global ['parrot'], '_dumper'
+    # $P77( $P0, 'returned from init_value')
+    setattribute self, parrotclass, attrname, $P0
     goto attrinit_loop
   attrinit_done:
     .return (self)
