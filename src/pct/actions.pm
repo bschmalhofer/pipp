@@ -678,33 +678,28 @@ method number($/) {
     );
 }
 
-method closure($/, $key) {
-    our @?BLOCK; # A stack of PAST::Block
+method closure_def($/) {
+    our $?BLOCK_OPEN;
 
-    if $key eq 'open' {
-        # note that $<param_list> creates a new PAST::Block.
-        my $block := $<param_list>.ast;
+    # note that $<param_list> creates a new PAST::Block.
+    $?BLOCK_OPEN := $<param_list>.ast;
 
-        # set up scope 'package' for the superglobals
-        our @?SUPER_GLOBALS;
-        for ( @?SUPER_GLOBALS ) { $block.symbol( :scope('package'), $_ ); }
+    my $block := $?BLOCK_OPEN;
 
-        # declare the bound vars a lexical
-        if +$<bind_list> == 1 {
-            for $<bind_list>[0]<var_name> {
-                $block.symbol( ~$_, :comment('bound with use') );
-            }
+    # set up scope 'package' for the superglobals
+    our @?SUPER_GLOBALS;
+    for ( @?SUPER_GLOBALS ) { $block.symbol( :scope('package'), $_ ); }
+
+    # declare the bound vars a lexical
+    if +$<bind_list> == 1 {
+        for $<bind_list>[0]<var_name> {
+            $block.symbol( ~$_, :comment('bound with use') );
         }
-        @?BLOCK.unshift( $block );
     }
-    else {
-        my $block := @?BLOCK.shift();
 
-        $block.control('return_pir');
-        $block.push( $<block_without_scope>.ast );
+    $block.control('return_pir');
 
-        make $block;
-    }
+    make $block;
 }
 
 method routine_def($/) {

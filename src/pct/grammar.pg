@@ -455,7 +455,7 @@ rule literal {
 
 rule term {
     | <method_call>            {*}   #= method_call
-    | <closure>                {*}   #= closure
+    | <closure_def>            {*}   #= closure_def
     | <closure_call>           {*}   #= closure_call
     | <function_call>          {*}   #= function_call
     | <instantiate_array>      {*}   #= instantiate_array
@@ -472,9 +472,9 @@ rule term {
 
 
 # declarations
-rule closure {
-    'function' <param_list> <bind_list>?  {*}   #= open
-    <block_without_scope>                 {*}   #= close
+rule closure_def {
+    'function' <param_list> <bind_list>?  {*}
+    <block_with_scope>
 }
 
 rule bind_list {
