@@ -141,7 +141,7 @@ rule statement {
     | <inline_sea_short_tag>           {*}  #= inline_sea_short_tag
     | <inline_sea_script_tag>          {*}  #= inline_sea_script_tag
     | [ <var_assign> ';' ]             {*}  #= var_assign
-    | <function_def>                   {*}  #= function_def
+    | <routine_def>                    {*}  #= routine_def
     | <class_def>                      {*}  #= class_def
     | <empty_statement>                {*}  #= empty_statement
 }
@@ -474,14 +474,14 @@ rule term {
 # declarations
 rule closure {
     'function' <param_list> <bind_list>?  {*}   #= open
-    <block_with_scope>                    {*}   #= close
+    <block_without_scope>                 {*}   #= close
 }
 
 rule bind_list {
     'use' '(' [ '&'? <var_name> [',' '&'? <var_name>]* ]? ')'
 }
 
-rule function_def {
+rule routine_def {
     'function' <function_name> <param_list> {*}  #= open
     <block_with_scope>                      {*}  #= close
 }
@@ -549,7 +549,7 @@ rule class_static_member_def {
 
 rule class_method_def {
     'function' <method_name> <param_list> {*}  #= open
-    <block_with_scope>                    {*}  #= close
+    <block_without_scope>                 {*}  #= close
 }
 
 token curly_interpolation {

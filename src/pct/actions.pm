@@ -695,13 +695,13 @@ method closure($/, $key) {
         my $block := @?BLOCK.shift();
 
         $block.control('return_pir');
-        $block.push( $<block_with_scope>.ast );
+        $block.push( $<block_without_scope>.ast );
 
         make $block;
     }
 }
 
-method function_def($/, $key) {
+method routine_def($/, $key) {
     our @?BLOCK; # A stack of PAST::Block
 
     if $key eq 'open' {
@@ -852,7 +852,7 @@ method class_method_def($/, $key) {
             )
         );
 
-        $block.push( $<block_with_scope>.ast );
+        $block.push( $<block_without_scope>.ast );
 
         make $block;
     }
