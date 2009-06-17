@@ -135,6 +135,38 @@ and creating the protoobjects.
 .end
 
 
+=item pipp_meta_trait(metaclass, type, name)
+
+Add a trait with the given C<type> and C<name> to C<metaclass>.
+
+=cut
+
+.sub 'pipp_meta_trait'
+    .param pmc metaclass
+    .param string type
+    .param string name
+    .param pmc pos_args   :slurpy
+    .param pmc named_args :slurpy :named
+
+    if type == 'trait_auxiliary:extends' goto extends
+    'die'("Unknown trait auxiliary ", type)
+
+  extends:
+    ##  get the (parrot)class object associated with name
+    $P0 = compreg 'pipp'
+    $P0 = $P0.'parse_name'(name)
+    $S0 = pop $P0
+    $P0 = get_hll_global $P0, $S0
+
+    ##  add it as parent to metaclass
+    $P1 = get_hll_global ['PippObject'], '$!P6META'
+    $P0 = $P1.'get_parrotclass'($P0)
+    metaclass.'add_parent'($P0)
+
+    .return ()
+.end
+
+
 =item pipp_meta_attribute(class, name)
 
 Adds an attribute with the given name to the class.

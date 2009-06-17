@@ -491,10 +491,24 @@ rule method_declaration {
 }
 
 rule class_definition {
-    'class' <class_name> [ 'implements' <interface_name> ]?  {*}  #= open
-    '{' <class_member_or_method_definition>* '}'             {*}  #= close
+    'class' <class_name> <trait>*                 {*}  #= open
+    '{' <class_member_or_method_definition>* '}'  {*}  #= close
 }
 
+rule trait {
+    [
+    | <trait_auxiliary>
+    ]
+    {*}
+}
+
+rule trait_auxiliary {
+    [
+    | $<sym>=[extends] <class_name>
+    | $<sym>=[implements] <interface_name>
+    ]
+    {*}
+}
 rule class_member_or_method_definition {
     | <constant_definition> {*}                  #= constant_definition
     | <class_member_definition> {*}              #= class_member_definition

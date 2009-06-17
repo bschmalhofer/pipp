@@ -17,7 +17,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Pipp::Test tests => 18;
+use Pipp::Test tests => 19;
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'definition of a class' );
 <?php
@@ -392,6 +392,28 @@ A
 A::prinT_Class
 OUT
 
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'simple inheritance' );
+<?php
+
+class Hacker {
+    public $member = 'a member of Hacker';
+
+    function echo_member() {
+        echo $this->member;
+        echo "\n";
+    }
+}
+
+class PHPHacker extends Hacker {
+}
+
+$hacker = new PHPHacker;
+$hacker->echo_member();
+
+?>
+CODE
+a member of Hacker
+OUT
 # Local Variables:
 #   mode: cperl
 #   cperl-indent-level: 4
