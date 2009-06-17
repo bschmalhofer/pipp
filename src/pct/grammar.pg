@@ -151,7 +151,7 @@ rule statement_list {
 }
 
 rule block {
-    '{' <statement_list> '}'           {*}
+    '{' ~ '}' <statement_list>         {*}
 }
 
 rule statement_delimiter {
