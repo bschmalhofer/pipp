@@ -102,14 +102,20 @@ method statement($/, $key) {
 
 method statement_block($/, $key) {
     our @?BLOCK;
+    our $?BLOCK_OPEN;
+    ##  when entering a block, use any $?BLOCK_OPEN if it exists,
+    ##  otherwise create an empty block with an empty first child to
+    ##  hold any parameters we might encounter inside the block.
     if $key eq 'open' {
-            # @?BLOCK.unshift( PAST::Block.new( PAST::Stmts.new(), :node($/)));
+        if $?BLOCK_OPEN {
+            @?BLOCK.unshift( $?BLOCK_OPEN );
+            $?BLOCK_OPEN := 0;
+        }
     }
     elsif $key eq 'close' {
-        # my $past := @?BLOCK.shift();
-        # $past.push($<statementlist>.ast);
-        # make $past;
-        make $<statementlist>.ast;
+        my $past := @?BLOCK.shift();
+        $past.push($<statementlist>.ast);
+        make $past;
     }
 }
 
@@ -701,28 +707,22 @@ method closure($/, $key) {
     }
 }
 
-method routine_def($/, $key) {
-    our @?BLOCK; # A stack of PAST::Block
+method routine_def($/) {
+    our $?BLOCK_OPEN;
 
-    if $key eq 'open' {
-        # note that $<param_list> creates a new PAST::Block.
-        my $block := $<param_list>.ast;
+    # note that $<param_list> creates a new PAST::Block.
+    $?BLOCK_OPEN := $<param_list>.ast;
 
-        # set up scope 'package' for the superglobals
-        our @?SUPER_GLOBALS;
-        for ( @?SUPER_GLOBALS ) { $block.symbol( :scope('package'), $_ ); }
+    my $block := $?BLOCK_OPEN;
 
-        @?BLOCK.unshift( $block );
-    }
-    else {
-        my $block := @?BLOCK.shift();
+    # set up scope 'package' for the superglobals
+    our @?SUPER_GLOBALS;
+    for ( @?SUPER_GLOBALS ) { $block.symbol( :scope('package'), $_ ); }
 
-        $block.name( ~$<function_name> );
-        $block.control('return_pir');
-        $block.push( $<block_with_scope>.ast );
+    $block.name( ~$<function_name> );
+    $block.control('return_pir');
 
-        make $block;
-    }
+    make $block;
 }
 
 method class_member_def($/) {

@@ -482,8 +482,8 @@ rule bind_list {
 }
 
 rule routine_def {
-    'function' <function_name> <param_list> {*}  #= open
-    <block_with_scope>                      {*}  #= close
+    'function' <function_name> <param_list> {*}
+    <block_with_scope>
 }
 
 rule param_list {
