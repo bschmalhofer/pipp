@@ -931,31 +931,32 @@ method class_def($/, $key) {
         for ( @?SUPER_GLOBALS ) { $block.symbol( :scope('package'), $_ ); }
 
         @?BLOCK.unshift( $block );
+
+        return 0;
     }
-    else {
-        my $block := @?BLOCK.shift();
 
-        # setup of class constants is done in the 'loadinit' node
-        for $<class_member_or_method_def> {
-            $block.push( $_.ast );
-        }
+    my $block := @?BLOCK.shift();
 
-        # It's a new class definition. Make proto-object.
-        $block.push(
-            PAST::Op.new(
-                :pasttype('call'),
-                :name('pipp_meta_compose'),
-                PAST::Var.new(
-                    :scope('register'),
-                    :name('metaclass')
-                )
+    # setup of class constants is done in the 'loadinit' node
+    for $<class_member_or_method_def> {
+        $block.push( $_.ast );
+    }
+
+    # It's a new class definition. Make proto-object.
+    $block.push(
+        PAST::Op.new(
+            :pasttype('call'),
+            :name('pipp_meta_compose'),
+            PAST::Var.new(
+                :scope('register'),
+                :name('metaclass')
             )
-        );
+        )
+    );
 
-        $?CLASS := '';
+    $?CLASS := '';
 
-        make $block;
-    }
+    make $block;
 }
 
 method class_member_or_method_def($/, $key) {
