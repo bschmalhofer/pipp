@@ -150,6 +150,15 @@ rule statement_list {
     <statement>*                       {*}
 }
 
+##  Distinguish lists of statements that produce blocks
+##  from those that don't.
+
+rule statement_block {
+    {*}                                          #= open
+    <statement_list>
+    {*}                                          #= close
+}
+
 # blocks are delimited by curlies
 # only functions introduce a lexical scope
 rule block_without_scope {
@@ -157,7 +166,7 @@ rule block_without_scope {
 }
 
 rule block_with_scope {
-    '{' ~ '}' <statement_list>         {*}
+    '{' ~ '}' <statement_block>        {*}
 }
 
 rule statement_delimiter {

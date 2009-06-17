@@ -100,6 +100,19 @@ method statement($/, $key) {
     make $/{$key}.ast;
 }
 
+method statement_block($/, $key) {
+    our @?BLOCK;
+    if $key eq 'open' {
+            # @?BLOCK.unshift( PAST::Block.new( PAST::Stmts.new(), :node($/)));
+    }
+    elsif $key eq 'close' {
+        # my $past := @?BLOCK.shift();
+        # $past.push($<statement_list>.ast);
+        # make $past;
+        make $<statement_list>.ast;
+    }
+}
+
 method statement_list($/) {
     my $stmts := PAST::Stmts.new( :node($/) );
     for $<statement> {
@@ -115,7 +128,7 @@ method block_without_scope($/) {
 
 # this doesn't introduce a scope yet
 method block_with_scope($/) {
-    make $<statement_list>.ast;
+    make $<statement_block>.ast;
 }
 
 method inline_sea_short_tag($/) {
