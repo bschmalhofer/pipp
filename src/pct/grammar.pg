@@ -150,7 +150,13 @@ rule statement_list {
     <statement>*                       {*}
 }
 
-rule block {
+# blocks are delimited by curlies
+# only functions introduce a lexical scope
+rule block_without_scope {
+    '{' ~ '}' <statement_list>         {*}
+}
+
+rule block_with_scope {
     '{' ~ '}' <statement_list>         {*}
 }
 
@@ -169,7 +175,7 @@ rule break {
 }
 rule namespace_def {
     'namespace' <namespace_name>?  {*}       #= open
-    <block>                        {*}       #= close
+    <block_without_scope>          {*}       #= close
 }
 
 # return can appear inside and outside functions
@@ -204,14 +210,14 @@ rule argument_list {
 }
 
 rule if_statement {
-    'if' '(' <expression> ')' <block>
+    'if' '(' <expression> ')' <block_without_scope>
     <elseif_clause>*
     <else_clause>?
     {*}
 }
 
 rule else_clause {
-    'else' <block>
+    'else' <block_without_scope>
 }
 
 
@@ -225,22 +231,22 @@ rule switch_statement {
 }
 
 rule elseif_clause {
-    'elseif' '(' <expression> ')' <block>
+    'elseif' '(' <expression> ')' <block_without_scope>
     {*}
 }
 
 rule while_statement {
-    'while' '(' <expression> ')' <block>
+    'while' '(' <expression> ')' <block_without_scope>
     {*}
 }
 
 rule do_while_statement {
-    'do' <block> 'while' '(' <expression> ')' <.statement_delimiter>
+    'do' <block_without_scope> 'while' '(' <expression> ')' <.statement_delimiter>
     {*}
 }
 
 rule for_statement {
-    'for' '(' <var_assign> ';' <expression> ';' <expression> ')' <block>
+    'for' '(' <var_assign> ';' <expression> ';' <expression> ')' <block_without_scope>
     {*}
 }
 
@@ -459,7 +465,7 @@ rule term {
 # declarations
 rule closure {
     'function' <param_list> <bind_list>?  {*}   #= open
-    <block>                               {*}   #= close
+    <block_with_scope>                    {*}   #= close
 }
 
 rule bind_list {
@@ -468,7 +474,7 @@ rule bind_list {
 
 rule function_def {
     'function' <function_name> <param_list> {*}  #= open
-    <block>                                 {*}  #= close
+    <block_with_scope>                      {*}  #= close
 }
 
 rule param_list {
@@ -491,7 +497,7 @@ rule method_declaration {
 }
 
 rule class_def {
-    'class' <class_name> <trait>*                 {*}  #= open
+    'class' <class_name> <trait>*          {*}  #= open
     '{' <class_member_or_method_def>* '}'  {*}  #= close
 }
 
@@ -534,7 +540,7 @@ rule class_static_member_def {
 
 rule class_method_def {
     'function' <method_name> <param_list> {*}  #= open
-    <block>                               {*}  #= close
+    <block_with_scope>                    {*}  #= close
 }
 
 token curly_interpolation {

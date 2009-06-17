@@ -109,7 +109,12 @@ method statement_list($/) {
     make $stmts;
 }
 
-method block($/) {
+method block_without_scope($/) {
+    make $<statement_list>.ast;
+}
+
+# this doesn't introduce a scope yet
+method block_with_scope($/) {
     make $<statement_list>.ast;
 }
 
@@ -132,7 +137,7 @@ method namespace_def($/, $key) {
             PAST::Block.new(
                 :namespace($?NS),
                 :blocktype('immediate'),
-                $<block>.ast
+                $<block_without_scope>.ast
             );
         $?NS := '';
 
@@ -369,7 +374,7 @@ method do_while_statement($/) {
         :pasttype('repeat_while'),
         :node($/),
         $<expression>.ast,
-        $<block>.ast
+        $<block_without_scope>.ast
     );
 }
 
@@ -378,12 +383,12 @@ method if_statement($/) {
         :node($/),
         :pasttype('if'),
         $<expression>.ast,
-        $<block>.ast
+        $<block_without_scope>.ast
     );
 
     my $else := undef;
     if +$<else_clause> {
-        $else := $<else_clause>[0]<block>.ast;
+        $else := $<else_clause>[0]<block_without_scope>.ast;
     }
     my $first_eif := undef;
     if +$<elseif_clause> {
@@ -418,7 +423,7 @@ method elseif_clause($/) {
         :node($/),
         :pasttype('if'),
         $<expression>.ast,
-        $<block>.ast
+        $<block_without_scope>.ast
     );
 }
 
@@ -566,7 +571,7 @@ method while_statement($/) {
         :node($/),
         :pasttype('while'),
         $<expression>.ast,
-        $<block>.ast
+        $<block_without_scope>.ast
     );
 }
 
@@ -574,7 +579,7 @@ method for_statement($/) {
     my $init  := $<var_assign>.ast;
 
     my $cond  := $<expression>[0].ast;
-    my $work  := PAST::Stmts.new( $<block>.ast, $<expression>[1].ast );
+    my $work  := PAST::Stmts.new( $<block_without_scope>.ast, $<expression>[1].ast );
     my $while := PAST::Op.new(
                        $cond,
                        $work,
@@ -677,7 +682,7 @@ method closure($/, $key) {
         my $block := @?BLOCK.shift();
 
         $block.control('return_pir');
-        $block.push( $<block>.ast );
+        $block.push( $<block_with_scope>.ast );
 
         make $block;
     }
@@ -701,7 +706,7 @@ method function_def($/, $key) {
 
         $block.name( ~$<function_name> );
         $block.control('return_pir');
-        $block.push( $<block>.ast );
+        $block.push( $<block_with_scope>.ast );
 
         make $block;
     }
@@ -834,7 +839,7 @@ method class_method_def($/, $key) {
             )
         );
 
-        $block.push( $<block>.ast );
+        $block.push( $<block_with_scope>.ast );
 
         make $block;
     }
