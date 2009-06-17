@@ -125,13 +125,13 @@ token close_short_tag {
 
 rule statement {
     | <break>                          {*}  #= break
-    | <namespace_definition>           {*}  #= namespace_definition
+    | <namespace_def>                  {*}  #= namespace_def
     | <return_statement>               {*}  #= return_statement
     | <require_once_statement>         {*}  #= require_once_statement
     | <echo_statement>                 {*}  #= echo_statement
     | <print_statement>                {*}  #= print_statement
     | <expression_statement>           {*}  #= expression_statement
-    | <constant_definition>            {*}  #= constant_definition
+    | <constant_def>                   {*}  #= constant_def
     | <global_declaration>             {*}  #= global_declaration
     | <if_statement>                   {*}  #= if_statement
     | <switch_statement>               {*}  #= switch_statement
@@ -141,8 +141,8 @@ rule statement {
     | <inline_sea_short_tag>           {*}  #= inline_sea_short_tag
     | <inline_sea_script_tag>          {*}  #= inline_sea_script_tag
     | [ <var_assign> ';' ]             {*}  #= var_assign
-    | <function_definition>            {*}  #= function_definition
-    | <class_definition>               {*}  #= class_definition
+    | <function_def>                   {*}  #= function_def
+    | <class_def>                      {*}  #= class_def
     | <empty_statement>                {*}  #= empty_statement
 }
 
@@ -167,7 +167,7 @@ rule empty_statement {
 rule break {
     'break' <.statement_delimiter> {*}
 }
-rule namespace_definition {
+rule namespace_def {
     'namespace' <namespace_name>?  {*}       #= open
     <block>                        {*}       #= close
 }
@@ -466,7 +466,7 @@ rule bind_list {
     'use' '(' [ '&'? <var_name> [',' '&'? <var_name>]* ]? ')'
 }
 
-rule function_definition {
+rule function_def {
     'function' <function_name> <param_list> {*}  #= open
     <block>                                 {*}  #= close
 }
@@ -478,7 +478,7 @@ rule param_list {
 
 # OO
 
-rule interface_definition {
+rule interface_def {
     'interface' <interface_name> [ 'implements' <interface_name> ]? '{'
         <method_declaration>*
     '}'
@@ -490,9 +490,9 @@ rule method_declaration {
     {*}
 }
 
-rule class_definition {
+rule class_def {
     'class' <class_name> <trait>*                 {*}  #= open
-    '{' <class_member_or_method_definition>* '}'  {*}  #= close
+    '{' <class_member_or_method_def>* '}'  {*}  #= close
 }
 
 rule trait {
@@ -509,29 +509,30 @@ rule trait_auxiliary {
     ]
     {*}
 }
-rule class_member_or_method_definition {
-    | <constant_definition> {*}                  #= constant_definition
-    | <class_member_definition> {*}              #= class_member_definition
-    | <class_static_member_definition> {*}       #= class_static_member_definition
-    | <class_method_definition> {*}              #= class_method_definition
+
+rule class_member_or_method_def {
+    | <constant_def> {*}                         #= constant_def
+    | <class_member_def> {*}                     #= class_member_def
+    | <class_static_member_def> {*}              #= class_static_member_def
+    | <class_method_def> {*}                     #= class_method_def
 }
 
 # In PHP 5.3 a constant definition outside a declared namespace or class is forbidden
 # In Pipp this is not checked
-rule constant_definition {
+rule constant_def {
     'const' <ident> '=' <literal> <.statement_delimiter>
     {*}
 }
 
-rule class_member_definition {
+rule class_member_def {
     'public' <var_name> '=' <literal> <.statement_delimiter> {*}
 }
 
-rule class_static_member_definition {
+rule class_static_member_def {
     'public' 'static' <var_name> '=' <literal> <.statement_delimiter> {*}
 }
 
-rule class_method_definition {
+rule class_method_def {
     'function' <method_name> <param_list> {*}  #= open
     <block>                               {*}  #= close
 }

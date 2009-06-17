@@ -121,7 +121,7 @@ method inline_sea_short_tag($/) {
    );
 }
 
-method namespace_definition($/, $key) {
+method namespace_def($/, $key) {
     our $?NS;
 
     if $key eq 'open' {
@@ -312,7 +312,7 @@ method class_constant($/) {
     );
 }
 
-method constant_definition($/) {
+method constant_def($/) {
     our $?CLASS;
     our $?NS;
     my $past := PAST::Block.new(:blocktype('immediate'));
@@ -683,7 +683,7 @@ method closure($/, $key) {
     }
 }
 
-method function_definition($/, $key) {
+method function_def($/, $key) {
     our @?BLOCK; # A stack of PAST::Block
 
     if $key eq 'open' {
@@ -707,7 +707,7 @@ method function_definition($/, $key) {
     }
 }
 
-method class_member_definition($/) {
+method class_member_def($/) {
     our @?BLOCK; # A stack of PAST::Block
 
     my $past := PAST::Stmts.new();
@@ -754,7 +754,7 @@ method class_member_definition($/) {
     make $past;
 }
 
-method class_static_member_definition($/) {
+method class_static_member_def($/) {
     our $?CLASS;
     our $?NS;
     my $past := PAST::Block.new(:blocktype('immediate'));
@@ -778,7 +778,7 @@ method class_static_member_definition($/) {
     make $past;
 }
 
-method class_method_definition($/, $key) {
+method class_method_def($/, $key) {
     our @?BLOCK; # A stack of PAST::Block
 
     if $key eq 'open' {
@@ -867,7 +867,7 @@ method empty_statement($/) {
     make PAST::Stmts.new( :name('empty statement') );
 }
 
-method class_definition($/, $key) {
+method class_def($/, $key) {
     our @?BLOCK; # A stack of PAST::Block
     our $?CLASS; # for namespacing of constants
     if $key eq 'open' {
@@ -928,7 +928,7 @@ method class_definition($/, $key) {
         my $block := @?BLOCK.shift();
 
         # setup of class constants is done in the 'loadinit' node
-        for $<class_member_or_method_definition> {
+        for $<class_member_or_method_def> {
             $block.push( $_.ast );
         }
 
@@ -950,7 +950,7 @@ method class_definition($/, $key) {
     }
 }
 
-method class_member_or_method_definition($/, $key) {
+method class_member_or_method_def($/, $key) {
     make $/{$key}.ast;
 }
 
