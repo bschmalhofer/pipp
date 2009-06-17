@@ -548,8 +548,8 @@ rule class_static_member_def {
 }
 
 rule class_method_def {
-    'function' <method_name> <param_list> {*}  #= open
-    <block_without_scope>                 {*}  #= close
+    'function' <method_name> <param_list> {*}
+    <block_with_scope>
 }
 
 token curly_interpolation {

@@ -796,66 +796,61 @@ method class_static_member_def($/) {
     make $past;
 }
 
-method class_method_def($/, $key) {
-    our @?BLOCK; # A stack of PAST::Block
+method class_method_def($/) {
+    our $?BLOCK_OPEN;
 
-    if $key eq 'open' {
-        # note that $<param_list> creates a new PAST::Block.
-        my $block := $<param_list>.ast;
-        $block.name( ~$<method_name> );
-        $block.blocktype( 'method' );
-        $block.control('return_pir');
+    # note that $<param_list> creates a new PAST::Block.
+    $?BLOCK_OPEN := $<param_list>.ast;
 
-        $block.push(
-            PAST::Op.new(
-                :pasttype('bind'),
-                PAST::Var.new(
-                    :name('$this'),
-                    :scope('lexical'),
-                    :isdecl(1)
-                ),
-                PAST::Var.new(
-                    :name('self'),
-                    :scope('register')
-                )
+    my $block := $?BLOCK_OPEN;
+
+    $block.name( ~$<method_name> );
+    $block.blocktype( 'method' );
+    $block.control('return_pir');
+
+    $block.push(
+        PAST::Op.new(
+            :pasttype('bind'),
+            PAST::Var.new(
+                :name('$this'),
+                :scope('lexical'),
+                :isdecl(1)
+            ),
+            PAST::Var.new(
+                :name('self'),
+                :scope('register')
             )
-        );
+        )
+    );
 
-        # set up scope 'package' for the superglobals
-        our @?SUPER_GLOBALS;
-        for ( @?SUPER_GLOBALS ) { $block.symbol( :scope('package'), $_ ); }
+    # set up scope 'package' for the superglobals
+    our @?SUPER_GLOBALS;
+    for ( @?SUPER_GLOBALS ) { $block.symbol( :scope('package'), $_ ); }
 
-        @?BLOCK.unshift( $block );
-    }
-    else {
-        our $?NS;
-        our $?CLASS;
-        my $ns := $?NS ~ '\\' ~ $?CLASS ~ '::';
+    our $?NS;
+    our $?CLASS;
+    my $ns := $?NS ~ '\\' ~ $?CLASS ~ '::';
 
-        my $block := @?BLOCK.shift();
-        my $method_name := $?CLASS ~ '::' ~ $block.name();
+    my $method_name := $?CLASS ~ '::' ~ $block.name();
 
-        $block.push(
-            PAST::Op.new(
-                :pasttype('bind'),
-                PAST::Var.new(
-                    :name('__METHOD__'),
-                    :isdecl(1),
-                    :scope('package'),
-                    :viviself('PhpNull'),
-                    :namespace($ns)
-                ),
-                PAST::Val.new(
-                    :value($method_name),
-                    :returns('PhpString'),
-                )
+    $block.push(
+        PAST::Op.new(
+            :pasttype('bind'),
+            PAST::Var.new(
+                :name('__METHOD__'),
+                :isdecl(1),
+                :scope('package'),
+                :viviself('PhpNull'),
+                :namespace($ns)
+            ),
+            PAST::Val.new(
+                :value($method_name),
+                :returns('PhpString'),
             )
-        );
+        )
+    );
 
-        $block.push( $<block_without_scope>.ast );
-
-        make $block;
-    }
+    make $block;
 }
 
 method param_list($/) {
