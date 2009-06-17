@@ -54,21 +54,21 @@ regex SEA {
 
 rule code_echo_tag {
     <.code_start_echo_tag> <argument_list> <.statement_delimiter>
-        <statement_list>
+        <statementlist>
     <.close_short_tag>?
     {*}
 }
 
 rule code_script_tag {
     <.open_script_tag>
-        <statement_list>
+        <statementlist>
     <.close_script_tag>?
     {*}
 }
 
 rule code_short_tag {
     <.open_short_tag>
-        <statement_list>
+        <statementlist>
     <.close_short_tag>?
     {*}
 }
@@ -146,7 +146,7 @@ rule statement {
     | <empty_statement>                {*}  #= empty_statement
 }
 
-rule statement_list {
+rule statementlist {
     <statement>*                       {*}
 }
 
@@ -155,14 +155,14 @@ rule statement_list {
 
 rule statement_block {
     {*}                                          #= open
-    <statement_list>
+    <statementlist>
     {*}                                          #= close
 }
 
 # blocks are delimited by curlies
 # only functions introduce a lexical scope
 rule block_without_scope {
-    '{' ~ '}' <statement_list>         {*}
+    '{' ~ '}' <statementlist>         {*}
 }
 
 rule block_with_scope {
@@ -234,8 +234,8 @@ rule else_clause {
 rule switch_statement {
     'switch' '(' <expression> ')'
     '{'
-        [ 'case' <literal> ':' <statement_list> ]*
-        [ 'default'        ':' <default=statement_list> ]?
+        [ 'case' <literal> ':' <statementlist> ]*
+        [ 'default'        ':' <default=statementlist> ]?
     '}' {*}
 }
 

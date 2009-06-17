@@ -78,11 +78,11 @@ method SEA($/) {
 }
 
 method code_short_tag($/) {
-    make $<statement_list>.ast;
+    make $<statementlist>.ast;
 }
 
 method code_echo_tag($/) {
-    my $stmts := $<statement_list>.ast;
+    my $stmts := $<statementlist>.ast;
 
     my $echo := $<argument_list>.ast;
     $echo.name( 'echo' );
@@ -93,7 +93,7 @@ method code_echo_tag($/) {
 }
 
 method code_script_tag($/) {
-    make $<statement_list>.ast;
+    make $<statementlist>.ast;
 }
 
 method statement($/, $key) {
@@ -107,13 +107,13 @@ method statement_block($/, $key) {
     }
     elsif $key eq 'close' {
         # my $past := @?BLOCK.shift();
-        # $past.push($<statement_list>.ast);
+        # $past.push($<statementlist>.ast);
         # make $past;
-        make $<statement_list>.ast;
+        make $<statementlist>.ast;
     }
 }
 
-method statement_list($/) {
+method statementlist($/) {
     my $stmts := PAST::Stmts.new( :node($/) );
     for $<statement> {
         $stmts.push( $_.ast );
@@ -123,7 +123,7 @@ method statement_list($/) {
 }
 
 method block_without_scope($/) {
-    make $<statement_list>.ast;
+    make $<statementlist>.ast;
 }
 
 # this doesn't introduce a scope yet
@@ -451,7 +451,7 @@ method switch_statement($/) {
         my $val   := $<literal>[$count].ast;
         my $then  := PAST::Block.new(
                          :blocktype('immediate'),
-                         $<statement_list>[$count].ast
+                         $<statementlist>[$count].ast
                      );
         my $expr  := PAST::Op.new(
                          :pasttype('call'),
@@ -486,7 +486,7 @@ method switch_statement($/) {
                      );
         my $then  := PAST::Block.new(
                          :blocktype('immediate'),
-                         $<statement_list>[$count].ast
+                         $<statementlist>[$count].ast
                      );
         $past  := PAST::Op.new(
                       :pasttype('if'),
