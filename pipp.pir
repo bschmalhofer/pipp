@@ -508,7 +508,7 @@ ERROR:
     # create a (shared) metaclass node
     $P0 = get_hll_global ['PAST'], 'Var'
     $P0 = $P0.'new'( 'name'=>'metaclass', 'scope'=>'register' )
-    set_hll_global ['Perl6';'Grammar';'Actions'], '$?METACLASS', $P0
+    set_hll_global ['Pipp';'Grammar';'Actions'], '$?METACLASS', $P0
 
 .end
 

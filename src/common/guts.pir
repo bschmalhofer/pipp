@@ -145,18 +145,22 @@ Add a trait with the given C<type> and C<name> to C<metaclass>.
     .param pmc metaclass
     .param string type
     .param string name
-    .param pmc pos_args   :slurpy
-    .param pmc named_args :slurpy :named
 
     if type == 'trait_auxiliary:extends' goto extends
     'die'("Unknown trait auxiliary ", type)
 
   extends:
-    ##  get the (parrot)class object associated with name
-    $P0 = compreg 'pipp'
-    $P0 = $P0.'parse_name'(name)
-    $S0 = pop $P0
-    $P0 = get_hll_global $P0, $S0
+    .local pmc nsarray
+    $P0 = get_hll_global [ 'Pipp';'Compiler' ], 'parse_name'
+    $P1 = null
+    nsarray = $P0($P1, name)
+ $P77 = get_root_global ['parrot'], '_dumper'
+
+    $P77(nsarray)
+    $S0 = pop nsarray
+    $P77($S0)
+    $P0 = get_hll_global nsarray, $S0
+    $P77($P0)
 
     ##  add it as parent to metaclass
     $P1 = get_hll_global ['PippObject'], '$!P6META'

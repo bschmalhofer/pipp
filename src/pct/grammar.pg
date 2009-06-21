@@ -1,5 +1,3 @@
-# Copyright (C) 2006-2009, The Perl Foundation.
-
 # PHP grammar for Pipp PCT
 grammar Pipp::Grammar is PCT::Grammar;
 

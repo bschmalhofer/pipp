@@ -907,6 +907,19 @@ method class_def($/, $key) {
             )
         );
 
+        our $?METACLASS;
+        if $<trait> {
+            for $<trait> {
+                #  Trait nodes come in as PAST::Op( :name('list') ).
+                #  We just modify them to call pipp_meta_trait and add
+                #  the metaclass as the first argument.
+                my $trait := $_.ast;
+                $trait.name('pipp_meta_trait');
+                $trait.unshift($?METACLASS),
+                $block.push($trait);
+            }
+        }
+
         # assign predeclared constant __CLASS__
         my $ns := $?NS ~ '\\' ~ $?CLASS ~ '::';
         $block.push(
@@ -1028,6 +1041,17 @@ method quote_term($/, $key) {
 
 method curly_interpolation($/) {
     make $<var>.ast;
+}
+
+method trait($/) {
+    make $<trait_auxiliary>.ast;
+}
+
+method trait_auxiliary($/) {
+    my $sym   := ~$<sym>;
+    my $trait := PAST::Op.new( :name('infix:,'), 'trait_auxiliary:' ~ $sym, ~$<class_name> );
+
+    make $trait;
 }
 
 sub make_attr_init_closure($init_value) {
