@@ -43,9 +43,7 @@ Bernhard Schmalhofer - L<Bernhard.Schmalhofer@gmx.de>
 
 .namespace []
 
-.sub '' :anon :load :init
-
-    # Pipp uses the Parrot Compiler Toolkit
+.sub '' :load :init :anon
     load_bytecode 'PCT.pbc'
 
     # set up PippObject with P6 features,
@@ -78,7 +76,7 @@ Bernhard Schmalhofer - L<Bernhard.Schmalhofer@gmx.de>
 
 .const string VERSION = "0.0.1"
 
-.sub '__onload' :anon :load :init
+.sub '' :load :init :anon 
 
     # %valflags specifies when PAST::Val nodes are allowed to
     # be used as a constant.  The 'e' flag indicates that the
@@ -123,7 +121,7 @@ Bernhard Schmalhofer - L<Bernhard.Schmalhofer@gmx.de>
 
 .end
 
-.sub 'pipp' :main
+.sub 'main' :main
     .param pmc argv
 
     .local string prog, source_fn
@@ -502,11 +500,16 @@ ERROR:
 
 .namespace ['Pipp';'Compiler']
 
-.sub 'onload' :load :init :anon
-
+.sub '' :load :init :anon
     .local pmc p6meta, pipp_compiler
     p6meta = get_hll_global ['PippObject'], '$!P6META'
-    pipp_compiler = p6meta.'new_class'('Pipp::Compiler')
+    pipp_compiler = p6meta.'new_class'('Pipp::Compiler', 'parent' => 'PCT::HLLCompiler')
+
+    # create a (shared) metaclass node
+    $P0 = get_hll_global ['PAST'], 'Var'
+    $P0 = $P0.'new'( 'name'=>'metaclass', 'scope'=>'register' )
+    set_hll_global ['Perl6';'Grammar';'Actions'], '$?METACLASS', $P0
+
 .end
 
 .sub 'parse_name' :method
