@@ -740,14 +740,12 @@ method class_member_def($/) {
     );
 
     # create the attribute
+    our $?METACLASS;
     my $call_meta_attribute := 
         PAST::Op.new(
             :pasttype('call'),
             :name('pipp_meta_attribute'),
-            PAST::Var.new(
-                :name('metaclass'),
-                :scope('register')
-            ),
+            $?METACLASS,
             $member_name
         );
 
@@ -956,15 +954,12 @@ method class_def($/, $key) {
     }
 
     # It's a new class definition. Make proto-object.
-    $block.push(
-        PAST::Op.new(
-            :pasttype('call'),
-            :name('pipp_meta_compose'),
-            PAST::Var.new(
-                :scope('register'),
-                :name('metaclass')
-            )
-        )
+    our $?METACLASS;
+    $block.push( PAST::Op.new(
+                     :pasttype('call'),
+                     :name('pipp_meta_compose'),
+                     $?METACLASS
+                 )
     );
 
     $?CLASS := '';
