@@ -579,7 +579,7 @@ method member($/) {
         :pasttype('callmethod'),
         :name('member'),
         PAST::Var.new(
-            :name('$this'),
+            :name('self'),
             :scope('lexical')
         )
     );
@@ -801,18 +801,10 @@ method class_method_def($/) {
     $block.blocktype( 'method' );
     $block.control('return_pir');
 
-    $block.push(
-        PAST::Op.new(
-            :pasttype('bind'),
-            PAST::Var.new(
-                :name('$this'),
-                :scope('lexical'),
-                :isdecl(1)
-            ),
-            PAST::Var.new(
-                :name('self'),
-                :scope('register')
-            )
+    # Add lexical 'self'
+    $block.unshift(
+        PAST::Var.new( :name('self'), :scope('lexical'), :isdecl(1),
+            :viviself( PAST::Var.new( :name('self'), :scope('register' ) ) )
         )
     );
 

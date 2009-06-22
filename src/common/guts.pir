@@ -117,7 +117,7 @@ Default meta composer -- does nothing.
 
 =item pipp_meta_compose(Class metaclass)
 
-Compose the class.  This includes resolving any inconsistencies
+Compose the class. This includes resolving any inconsistencies
 and creating the protoobjects.
 
 =cut
@@ -128,10 +128,7 @@ and creating the protoobjects.
     .local pmc p6meta
     p6meta = get_hll_global ['PippObject'], '$!P6META'
 
-    .local pmc proto
-    proto = p6meta.'register'(metaclass, 'parent' => 'PippObject')
-
-    .return (proto)
+    .tailcall p6meta.'register'(metaclass, 'parent' => 'PippObject')
 .end
 
 
@@ -154,13 +151,8 @@ Add a trait with the given C<type> and C<name> to C<metaclass>.
     $P0 = get_hll_global [ 'Pipp';'Compiler' ], 'parse_name'
     $P1 = null
     nsarray = $P0($P1, name)
- $P77 = get_root_global ['parrot'], '_dumper'
-
-    $P77(nsarray)
     $S0 = pop nsarray
-    $P77($S0)
     $P0 = get_hll_global nsarray, $S0
-    $P77($P0)
 
     ##  add it as parent to metaclass
     $P1 = get_hll_global ['PippObject'], '$!P6META'
