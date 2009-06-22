@@ -62,31 +62,42 @@ Return the invocant's auto-vivification closure.
 =item __construct
 
 A default constructor. Used for checking that there are no args.
-See BUILD in Rakudo.
+See BUILD, BUILDALL, CREATE in Rakudo.
 
 =cut
 
 .sub '__construct' :method
-    .local pmc p6meta, parrotclass, attributes, it
+    .local pmc p6meta, parrot_class
     p6meta = get_hll_global ['PippObject'], '$!P6META'
-    parrotclass = p6meta.'get_parrotclass'(self)
-    attributes = inspect parrotclass, 'attributes'
-    it = iter attributes
+    parrot_class = p6meta.'get_parrotclass'(self)
+
+    .local pmc parents, class_it, cur_class
+    parents = inspect parrot_class, 'all_parents'
+    class_it = iter parents
+  classinit_loop:
+    unless class_it goto classinit_loop_end
+    cur_class = shift class_it
+    # $P77 = get_root_global ['parrot'], '_dumper'
+    # $P77( cur_class)
+
+    .local pmc attributes, attribute_it
+    attributes = inspect cur_class, 'attributes'
+    attribute_it = iter attributes
   attrinit_loop:
-    unless it goto attrinit_done
+    unless attribute_it goto attrinit_done
     .local string attrname, keyname
     .local pmc attr, attrhash
-    attrname = shift it
-    attr = getattribute self, parrotclass, attrname
+    attrname = shift attribute_it
+    attr = getattribute self, cur_class, attrname
     attrhash = attributes[attrname]
     $P0 = attrhash['init_value']
     if null $P0 goto attrinit_loop
     $P0 = $P0(self, attr)
-    # $P77 = get_root_global ['parrot'], '_dumper'
-    # $P77( $P0, 'returned from init_value')
-    setattribute self, parrotclass, attrname, $P0
+    setattribute self, cur_class, attrname, $P0
     goto attrinit_loop
   attrinit_done:
+
+  classinit_loop_end:
     .return (self)
 .end
 
