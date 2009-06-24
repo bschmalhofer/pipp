@@ -96,8 +96,12 @@ See BUILD, BUILDALL, CREATE in Rakudo.
     setattribute self, cur_class, attrname, $P0
     goto attrinit_loop
   attrinit_done:
-
+    # Only go to next class if we didn't already reach the top of the Pipp
+    # hierarchy.
+    $S0 = cur_class
+    if $S0 != 'PippObject' goto classinit_loop
   classinit_loop_end:
+
     .return (self)
 .end
 
