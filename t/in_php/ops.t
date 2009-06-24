@@ -23,13 +23,10 @@ Test various operators.
 require_once 'Test.php';
 
 plan(2);
-$count = 1;
 
 $x = ( $y = 2 ) * 3;
-is( $x, 6, 'multiplication', $count );
-$count++;
-is( $y, 2, 'inner assignment', $count );
-$count++;
+is( $x, 6, 'multiplication');
+is( $y, 2, 'inner assignment');
 
 # vim: expandtab shiftwidth=4 ft=php:
 ?>

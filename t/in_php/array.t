@@ -1,7 +1,5 @@
 <?php
 
-# Copyright (C) 2008, The Perl Foundation.
-
 /*
 
 =head1 NAME
@@ -27,38 +25,28 @@ Set up tests in an array, like in arithmetics.t
 require_once 'Test.php';
 
 plan(8);
-$count = 1;
 
 $hello['world'] = 'hi';
 $hello['World'] = 'Hi';
 $hello['WORLD'] = 'HI';
 
-is( $hello['world'], 'hi', "hello['world']", $count);
-$count++;
+is( $hello['world'], 'hi', "hello['world']");
 
-is( $hello['World'], 'Hi', "hello['World']", $count);
-$count++;
+is( $hello['World'], 'Hi', "hello['World']");
 
-is( $hello['WORLD'], 'HI', "hello['WORLD']", $count);
-$count++;
-
+is( $hello['WORLD'], 'HI', "hello['WORLD']");
 
 $thrice[3] = 9;
 $thrice[2] = 6;
 
-is( $thrice[3], 9, "thrice[3]", $count);
-$count++;
+is( $thrice[3], 9, "thrice[3]");
 
-is( $thrice[2], 6, "thrice[2]", $count);
-$count++;
+is( $thrice[2], 6, "thrice[2]");
 
-is( "3 times 3 equals $thrice[3]", "3 times 3 equals 9", "3 times 3 equals 9", $count);
-$count++;
+is( "3 times 3 equals $thrice[3]", "3 times 3 equals 9", "3 times 3 equals 9");
 
-is( count($hello), 3, 'count of $hello', $count );
-$count++;
-is( count($thrice), 2, 'count of $thrice', $count );
-$count++;
+is( count($hello), 3, 'count of $hello');
+is( count($thrice), 2, 'count of $thrice');
 
 # vim: expandtab shiftwidth=4 ft=php:
 ?>
