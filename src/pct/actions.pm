@@ -577,7 +577,7 @@ method this($/) {
 method member($/) {
     make PAST::Op.new(
         :pasttype('callmethod'),
-        :name('member'),
+        :name($<member_name>),
         PAST::Var.new(
             :name('self'),
             :scope('lexical')

@@ -17,7 +17,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Pipp::Test tests => 21;
+use Pipp::Test tests => 22;
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'definition of a class' );
 <?php
@@ -155,6 +155,25 @@ class Foo {
     function echo_member() {
         echo $this->member;
         echo "\n";
+    }
+}
+
+$foo = new Foo;
+$foo->echo_member();
+
+?>
+CODE
+a member of Foo
+OUT
+
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'attribute no called "member"', todo => 'only "member" is supported' );
+<?php
+
+class Foo {
+    public $bar = "a member of Foo\n";
+
+    function echo_member() {
+        echo $this->bar;
     }
 }
 
