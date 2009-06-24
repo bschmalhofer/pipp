@@ -8,36 +8,33 @@ function plan( $number_of_tests ) {
 }
 
 function ok($cond, $desc) {
-    proclaim($cond, $desc);
-}
-
-function nok($cond, $desc) {
-    proclaim(!$cond, $desc);
-}
-
-function is($got, $expected, $desc) {
-    proclaim($got == $expected, $desc);
-}
-
-function isnt($got, $expected, $desc) {
-    proclaim($got != $expected, $desc);
-}
-
-function like($got, $expected, $desc) {
-    proclaim( preg_match($expected, $got), $desc);
-}
-
-function unlike($got, $expected, $desc) {
-    proclaim( ! preg_match($expected, $got), $desc);
-}
-
-function proclaim($cond, $desc) {
     global $_test_ntests;
+
     $_test_ntests++;
     if ( ! $cond ) {
        echo 'not ';
     }
     echo "ok $_test_ntests - $desc\n";  
+}
+
+function nok($cond, $desc) {
+    ok(!$cond, $desc);
+}
+
+function is($got, $expected, $desc) {
+    ok($got == $expected, $desc);
+}
+
+function isnt($got, $expected, $desc) {
+    ok($got != $expected, $desc);
+}
+
+function like($got, $expected, $desc) {
+    ok( preg_match($expected, $got), $desc);
+}
+
+function unlike($got, $expected, $desc) {
+    ok( ! preg_match($expected, $got), $desc);
 }
 
 ?>
