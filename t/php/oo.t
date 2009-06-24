@@ -435,7 +435,7 @@ a member of Hacker
 OUT
 
 
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'attribute access', todo => 'not yet implemented' );
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'attribute access' );
 <?php
 
 class Hacker {
@@ -450,7 +450,7 @@ CODE
 a member of Hacker
 OUT
 
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'inheritance, three generations', todo => 'not yet implemented' );
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'inheritance, three generations' );
 <?php
 
 class Hacker {

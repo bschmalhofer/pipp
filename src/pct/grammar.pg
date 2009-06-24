@@ -422,7 +422,7 @@ rule this {
 }
 
 rule member {
-    <this> '->' <member_name>
+    <var> '->' <member_name>
     {*}
 }
 
