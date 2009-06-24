@@ -99,8 +99,6 @@ See C<!keyword_class> in Rakudo.
     .local pmc ns, metaclass
     ns = get_hll_namespace nsarray
     metaclass = newclass ns
-    $P0 = box type
-    setprop metaclass, 'pkgtype', $P0
     'pipp_set_resolves_list'(metaclass)
 
     #$P77 = get_root_global ['parrot'], '_dumper'
