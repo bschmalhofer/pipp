@@ -166,7 +166,7 @@ CODE
 a member of Foo
 OUT
 
-language_output_is( 'Pipp', <<'CODE', <<'OUT', 'attribute no called "member"', todo => 'only "member" is supported' );
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'attribute no called "member"' );
 <?php
 
 class Foo {
