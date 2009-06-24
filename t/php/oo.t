@@ -17,7 +17,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../lib", "$FindBin::Bin/../../lib";
 
-use Pipp::Test tests => 19;
+use Pipp::Test tests => 21;
 
 language_output_is( 'Pipp', <<'CODE', <<'OUT', 'definition of a class' );
 <?php
@@ -414,6 +414,51 @@ $hacker->echo_member();
 CODE
 a member of Hacker
 OUT
+
+
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'attribute access', todo => 'not yet implemented' );
+<?php
+
+class Hacker {
+    public $member_1 = "a member of Hacker\n";
+}
+
+$hacker = new Hacker;
+echo $hacker->member_1;
+
+?>
+CODE
+a member of Hacker
+OUT
+
+language_output_is( 'Pipp', <<'CODE', <<'OUT', 'inheritance, three generations', todo => 'not yet implemented' );
+<?php
+
+class Hacker {
+    public $member_1 = "a member of Hacker\n";
+}
+
+class PerlHacker extends Hacker {
+    public $member_2 = "a member of PerlHacker\n";
+}
+
+class MooseHacker extends PerlHacker {
+    public $member_3 = "a member of MooseHacker\n";
+}
+
+$hacker = new MooseHacker;
+echo $hacker->member_1;
+echo $hacker->member_2;
+echo $hacker->member_3;
+
+?>
+CODE
+a member of Hacker
+a member of PerlHacker
+a member of MooseHacker
+OUT
+
+
 # Local Variables:
 #   mode: cperl
 #   cperl-indent-level: 4
