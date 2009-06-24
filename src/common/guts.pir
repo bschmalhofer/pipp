@@ -99,37 +99,8 @@ See C<!keyword_class> in Rakudo.
     .local pmc ns, metaclass
     ns = get_hll_namespace nsarray
     metaclass = newclass ns
-    'pipp_set_resolves_list'(metaclass)
 
-    #$P77 = get_root_global ['parrot'], '_dumper'
-    #$P77(name, 'name')
-    #$P77(type, 'type')
-    #$P77(metaclass, 'metaclass')
     .return (metaclass)
-.end
-
-=item pipp_set_resolves_list(class)
-
-Gets all the methods that the class has and adds them to the resolves list.
-
-=cut
-
-.sub 'pipp_set_resolves_list'
-    .param pmc class
-    .local pmc meths, it, res_list
-    meths = class.'methods'()
-    it = iter meths
-    res_list = root_new ['parrot';'ResizableStringArray']
-  it_loop:
-    unless it goto it_loop_end
-    $S0 = shift it
-    $P0 = meths[$S0]
-    $I0 = isa $P0, 'MultiSub'
-    if $I0 goto it_loop
-    push res_list, $S0
-    goto it_loop
-  it_loop_end:
-    class.'resolve_method'(res_list)
 .end
 
 =item pipp_meta_compose()
