@@ -306,17 +306,17 @@ NOT IMPLEMENTED.
   L1:
 
     .local string res
-    .local pmc iter
-    iter = new ['Iterator'], pieces
+    .local pmc it
+    it = iter pieces
 
-    $P0 = shift iter
+    $P0 = shift it
     $S0 = $P0
     concat res, $S0
     $I1 = 0
     args_loop:
-        unless iter goto args_end
+        unless it goto args_end
         concat res, glue
-        $P0 = shift iter
+        $P0 = shift it
         $S0 = $P0
         concat res, $S0
         goto args_loop

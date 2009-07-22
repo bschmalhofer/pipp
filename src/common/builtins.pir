@@ -11,12 +11,12 @@
 # steal builtins from Perl6
 .sub 'print'
     .param pmc list            :slurpy
-    .local pmc iter
+    .local pmc it
 
-    iter = new 'Iterator', list
+    it = iter list
   iter_loop:
-    unless iter goto iter_end
-    $P0 = shift iter
+    unless it goto iter_end
+    $P0 = shift it
     print $P0
     goto iter_loop
 
@@ -27,11 +27,11 @@
 .sub 'echo'
     .param pmc list            :slurpy
 
-    .local pmc iter
-    iter = new 'Iterator', list
+    .local pmc it
+    it = iter list
   iter_loop:
-    unless iter goto iter_end
-    $P0 = shift iter
+    unless it goto iter_end
+    $P0 = shift it
     print $P0
     goto iter_loop
 

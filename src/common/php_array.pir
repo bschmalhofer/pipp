@@ -67,13 +67,13 @@ Creates an array
 .sub 'array'
     .param pmc args :slurpy
 
-    .local pmc array, iter
+    .local pmc array, it
     array = new 'PhpArray'
-    iter = new 'Iterator', args
+    it = iter args
     $I1 = 0
     args_loop:
-        unless iter goto args_end
-        $P0 = shift iter
+        unless it goto args_end
+        $P0 = shift it
         $I0 = isa $P0, 'ResizablePMCArray'
         unless $I0 goto add_var
         $P1 = $P0[0]

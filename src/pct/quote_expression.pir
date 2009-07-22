@@ -72,13 +72,13 @@ Unlike in Perl 5, the newline before the delimiter is not part of the string.
     action = options['action']
 
     ##  set up options based on flags
-    .local pmc flagarray, iter
+    .local pmc flagarray, it
     flagarray = split ' ', flags
-    iter = new 'Iterator', flagarray
+    it = iter flagarray
   iter_loop:
-    unless iter goto iter_end
+    unless it goto iter_end
     .local string oname
-    oname = shift iter
+    oname = shift it
     oname = substr oname, 1   # remove the leading colon
     options[oname] = 1
     if oname == 'qq' goto opt_qq

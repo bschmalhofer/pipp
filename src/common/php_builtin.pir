@@ -391,15 +391,15 @@ NOT IMPLEMENTED.
     loaded_extensions = new ['PhpArray']                                     # the result
 
     # go through the hash and get all the keys
-    .local pmc iter, extension
+    .local pmc it, extension
     .local string key
-    iter = new ['Iterator'], extension_registry
-    iter = .ITERATE_FROM_START
+    it = iter extension_registry
+    set it, .ITERATE_FROM_START
 
   iter_loop:
-    unless iter goto iter_end
+    unless it goto iter_end
 
-    key = shift iter
+    key = shift it
     extension = new ['PhpString']
     extension = key
     push loaded_extensions, extension
