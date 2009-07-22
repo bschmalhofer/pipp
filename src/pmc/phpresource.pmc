@@ -93,7 +93,7 @@ Marks the referenced PMC as live.
 
 */
     VTABLE void mark() {
-        pobject_lives(INTERP, (PObj *) PARROT_PHPRESOURCE(SELF)->pointee);
+        Parrot_gc_mark_PObj_alive(INTERP, (PObj *) PARROT_PHPRESOURCE(SELF)->pointee);
     }
 
 /*

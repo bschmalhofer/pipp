@@ -1149,8 +1149,8 @@ Recursively mark this PHPArray and all its contents as live.
         GET_ATTR_hash_table(INTERP, SELF, ht);
 
         for (b = ht->tableHead; b != NULL; b = b->tableNext) {
-            pobject_lives(INTERP, (PObj *)b->key);
-            pobject_lives(INTERP, (PObj *)b->value);
+            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)b->key);
+            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)b->value);
         }
     }
 
