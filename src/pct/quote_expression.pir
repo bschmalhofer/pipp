@@ -387,7 +387,7 @@ Unlike in Perl 5, the newline before the delimiter is not part of the string.
     goto scan_loop
 
   succeed:
-    mob.'result_object'(literal)
+    mob.'!make'(literal)
     mob.'to'(pos)
     .return (mob)
   fail_backchar_digit:
