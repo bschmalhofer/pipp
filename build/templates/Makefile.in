@@ -4,7 +4,7 @@
 VERSION_DIR   := @versiondir@
 BIN_DIR       := @bindir@
 LIB_DIR       := @libdir@$(VERSION_DIR)
-DOC_DIR       := @doc_dir@$(VERSION_DIR)
+DOC_DIR       := @docdir@$(VERSION_DIR)
 MANDIR        := @mandir@$(VERSION_DIR)
 
 # Set up extensions
