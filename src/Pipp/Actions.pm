@@ -11,7 +11,7 @@ method sea_or_island_list($/) {
 }
 
 method sea_or_island($/) {
-    make $<sea> ?? $<sea>.ast !! $<EXPR>.ast;
+    make $<sea> ?? $<sea>.ast !! $<island_script_tag>.ast;
 }
 
 method sea($/) {
@@ -22,7 +22,11 @@ method sea($/) {
     );
 }
 
-method statementlist($/) {
+method island_script_tag($/) {
+    make $<statement_list>.ast;
+}
+
+method statement_list($/) {
     my $past := PAST::Stmts.new( :node($/) );
     for $<statement> { $past.push( $_.ast ); }
     make $past;

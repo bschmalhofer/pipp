@@ -13,29 +13,47 @@ token TOP {
 
 ## Lexer items
 
-# This <ws> rule treats # as "comment to eol".
+# This <ws> rule does not handle comments
 token ws {
     <!ww>
-    [ '#' \N* \n? | \s+ ]*
+    [ \s+ ]*
 }
 
-## code islands in a sea of test
+## code islands in a sea of text
 
 rule sea_or_island_list { [ <sea_or_island> | <?> ] ** ';' }
 
-
 rule sea_or_island {
+    | <island_script_tag>
     | <sea>
-    | <EXPR>
 }
 
 rule sea {
-    .*
+    '<'? .+? ( <before '<'> | $ )
 }
+
+## long tags
+
+rule island_script_tag {
+    <.open_script_tag>
+        <statement_list>
+    <.close_script_tag>?
+}
+
+token quoted_lang_name { '"php"' | '\'php\'' }
+
+rule open_script_tag {
+    '<script' <.ws> 'language' <.ws>? '=' <.ws>? <quoted_lang_name> <.ws>? '>'
+}
+
+rule close_script_tag {
+    '</script' <.ws>? '>'
+}
+
 
 ## Statements
 
-rule statementlist { [ <statement> | <?> ] ** ';' }
+rule statement_list { [ <statement> | <?> ] ** ';' }
 
 rule statement {
     | <statement_control>
