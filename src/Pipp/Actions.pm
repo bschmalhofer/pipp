@@ -10,12 +10,6 @@ method sea_or_island_list($/) {
     make $past;
 }
 
-method statementlist($/) {
-    my $past := PAST::Stmts.new( :node($/) );
-    for $<statement> { $past.push( $_.ast ); }
-    make $past;
-}
-
 method sea_or_island($/) {
     make $<sea> ?? $<sea>.ast !! $<EXPR>.ast;
 }
@@ -26,6 +20,12 @@ method sea($/) {
         :node($/),
         ~$/
     );
+}
+
+method statementlist($/) {
+    my $past := PAST::Stmts.new( :node($/) );
+    for $<statement> { $past.push( $_.ast ); }
+    make $past;
 }
 
 method statement($/) {
