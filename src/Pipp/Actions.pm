@@ -11,7 +11,15 @@ method sea_or_island_list($/) {
 }
 
 method sea_or_island($/) {
-    make $<sea> ?? $<sea>.ast !! $<island_script_tag>.ast;
+    if ( $<sea> ) {
+        make $<sea>.ast;
+    }
+    elsif ( $<island_script_tag> ) {
+        make $<island_script_tag>.ast;
+    }
+    elsif ( $<island_short_tag> ) {
+        make $<island_short_tag>.ast;
+    }
 }
 
 method sea($/) {
@@ -23,6 +31,10 @@ method sea($/) {
 }
 
 method island_script_tag($/) {
+    make $<statement_list>.ast;
+}
+
+method island_short_tag($/) {
     make $<statement_list>.ast;
 }
 

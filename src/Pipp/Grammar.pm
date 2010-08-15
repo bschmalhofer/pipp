@@ -25,6 +25,7 @@ rule sea_or_island_list { [ <sea_or_island> | <?> ] ** ';' }
 
 rule sea_or_island {
     | <island_script_tag>
+    | <island_short_tag>
     | <sea>
 }
 
@@ -32,7 +33,7 @@ rule sea {
     '<'? .+? ( <before '<'> | $ )
 }
 
-## long tags
+## long script tags
 
 rule island_script_tag {
     <.open_script_tag>
@@ -50,6 +51,21 @@ rule close_script_tag {
     '</script' <.ws>? '>'
 }
 
+## short tags
+
+token open_short_tag {
+    '<?' 'php'?
+}
+
+token close_short_tag {
+    '?>' \n?
+}
+
+rule island_short_tag {
+    <.open_short_tag>
+        <statement_list>
+    <.close_short_tag>?
+}
 
 ## Statements
 
