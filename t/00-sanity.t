@@ -1,6 +1,5 @@
-# This just checks that the basic parsing and call to builtin say() works.
-say '1..4';
-say 'ok 1';
-say 'ok ', 2;
-say 'ok ', 2 + 1;
-say 'ok', ' ', 4;
+1..4
+ok 1 - second line of sea
+ok 2 - third line of sea
+ok 3 - fourth line of sea
+ok 4 - fifth line of sea

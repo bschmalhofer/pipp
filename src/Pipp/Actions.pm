@@ -1,13 +1,31 @@
 class Pipp::Actions is HLL::Actions;
 
 method TOP($/) {
-    make PAST::Block.new( $<statementlist>.ast , :hll<pipp>, :node($/) );
+    make PAST::Block.new( $<sea_or_island_list>.ast , :hll<pipp>, :node($/) );
+}
+
+method sea_or_island_list($/) {
+    my $past := PAST::Stmts.new( :node($/) );
+    for $<sea_or_island> { $past.push( $_.ast ); }
+    make $past;
 }
 
 method statementlist($/) {
     my $past := PAST::Stmts.new( :node($/) );
     for $<statement> { $past.push( $_.ast ); }
     make $past;
+}
+
+method sea_or_island($/) {
+    make $<sea> ?? $<sea>.ast !! $<EXPR>.ast;
+}
+
+method sea($/) {
+    make PAST::Op.new(
+        :name('print'),
+        :node($/),
+        ~$/
+    );
 }
 
 method statement($/) {

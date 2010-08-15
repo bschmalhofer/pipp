@@ -7,7 +7,7 @@ This is the grammar for Pipp in Perl 6 rules.
 grammar Pipp::Grammar is HLL::Grammar;
 
 token TOP {
-    <statementlist>
+    <sea_or_island_list>
     [ $ || <.panic: "Syntax error"> ]
 }
 
@@ -17,6 +17,20 @@ token TOP {
 token ws {
     <!ww>
     [ '#' \N* \n? | \s+ ]*
+}
+
+## code islands in a sea of test
+
+rule sea_or_island_list { [ <sea_or_island> | <?> ] ** ';' }
+
+
+rule sea_or_island {
+    | <sea>
+    | <EXPR>
+}
+
+rule sea {
+    .*
 }
 
 ## Statements
