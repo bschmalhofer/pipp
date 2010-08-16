@@ -26,7 +26,7 @@ token ws {
 
 ## code islands in a sea of text
 
-rule sea_or_island_list { [ <sea_or_island> | <?> ] ** ';' }
+rule sea_or_island_list { <sea_or_island>* }
 
 rule sea_or_island {
     | <island_script_tag>
