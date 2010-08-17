@@ -56,18 +56,18 @@ token close_script_tag {
 
 ## short tags
 
+rule island_short_tag {
+    <.open_short_tag>
+        <statementlist>
+    <.close_short_tag>?
+}
+
 token open_short_tag {
     '<?' 'php'?
 }
 
 token close_short_tag {
     '?>' \n?
-}
-
-rule island_short_tag {
-    <.open_short_tag>
-        <statementlist>
-    <.close_short_tag>?
 }
 
 ## Statements
