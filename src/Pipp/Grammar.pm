@@ -46,13 +46,11 @@ rule island_script_tag {
     <.close_script_tag>?
 }
 
-token quoted_lang_name { '"php"' | '\'php\'' }
-
-rule open_script_tag {
-    '<script' <.ws> 'language' <.ws>? '=' <.ws>? <quoted_lang_name> <.ws>? '>'
+token open_script_tag {
+    '<script' <.ws> 'language' <.ws>? '=' <.ws>? [ '"php"' | '\'php\'' ] <.ws>? '>'
 }
 
-rule close_script_tag {
+token close_script_tag {
     '</script' <.ws>? '>'
 }
 
