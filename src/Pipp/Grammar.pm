@@ -96,7 +96,7 @@ rule parameters {
 proto rule statement { <...> }
 
 rule statement:sym<assignment> {
-    <primary> '=' <EXPR>
+    <primary> '=' <EXPR> ';'
 }
 
 rule statement:sym<do> {
@@ -176,8 +176,10 @@ rule postfix_expression:sym<key> { '{' <EXPR> '}' }
 
 rule postfix_expression:sym<member> { '.' <identifier> }
 
+# TODO: this incorrectly allows function names with a leading '$'
+# and variable names without a leading '$'
 token identifier {
-    <!keyword> <ident>
+    <!keyword> '$'? <ident>
 }
 
 token keyword {

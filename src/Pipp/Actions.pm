@@ -11,9 +11,9 @@ method begin_TOP ($/) {
 
 method TOP($/) {
     our @?BLOCK;
-    my $past := @?BLOCK.shift();
-    $past.push($<sea_or_island_list>.ast);
-    make $past;
+    my $block := @?BLOCK.shift();
+    $block.push($<sea_or_island_list>.ast);
+    make $block;
 }
 
 method sea_or_island_list($/) {
@@ -296,13 +296,13 @@ method begin_block($/) {
     our $?BLOCK;
     our @?BLOCK;
     $?BLOCK := PAST::Block.new(:blocktype('immediate'),
-                                   :node($/));
+                               :node($/));
     @?BLOCK.unshift($?BLOCK);
 }
 
 method block($/) {
     our $?BLOCK;
-    our @?BLOCK;
+    our @?BLOCK; # A stack of PAST::Block's, files and functions introduce blocks
     my $past := @?BLOCK.shift();
     $?BLOCK  := @?BLOCK[0];
 
@@ -362,11 +362,11 @@ method postfix_expression:sym<member>($/) {
 
 method identifier($/) {
      our @?BLOCK;
-     my $name  := ~$<ident>;
+     my $name  := ~$/;
      my $scope := 'package'; # default value
      # go through all scopes and check if the symbol
      # is registered as a local. If so, set scope to
-     # local.
+     # lexical.
      for @?BLOCK {
          if $_.symbol($name) {
              $scope := 'lexical';
